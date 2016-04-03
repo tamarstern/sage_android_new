@@ -1,11 +1,22 @@
 package com.example.myfirstapp;
 
-import java.io.Serializable;
-import java.text.MessageFormat;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Locale;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -24,23 +35,12 @@ import com.sage.tasks.GetRecipiesActivity;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
-import android.widget.ProgressBar;
+import java.io.Serializable;
+import java.text.MessageFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Locale;
 
 public class ProfilePageActivity extends AppCompatActivity {
 
@@ -69,9 +69,12 @@ public class ProfilePageActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile_page);
 
-		progressBar = (ProgressBar) findViewById(R.id.get_profile_recipies_progress);
+		View footer = getLayoutInflater().inflate(R.layout.progress_bar_footer, null);
+		progressBar = (ProgressBar) footer.findViewById(R.id.get_recipies_progress);
+
 		progressBar.setVisibility(View.GONE);
 		listView = (ListView) findViewById(android.R.id.list);
+		listView.addFooterView(footer);
 		initListView();
 
 		Intent i = getIntent();
@@ -147,8 +150,6 @@ public class ProfilePageActivity extends AppCompatActivity {
 		}
 
 		InitProfileDisplay();
-
-		// getAllRecipiesForUser();
 
 		return super.onCreateOptionsMenu(menu);
 

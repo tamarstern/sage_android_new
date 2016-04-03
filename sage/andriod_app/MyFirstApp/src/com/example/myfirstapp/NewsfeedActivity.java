@@ -1,21 +1,5 @@
 package com.example.myfirstapp;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.apache.http.util.TextUtils;
-
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-import com.sage.adapters.NewsfeedArrayAdapter;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeUserBasicData;
-import com.sage.services.GetNewsFeedRecipesForUser;
-import com.sage.tasks.GetRecipiesActivity;
-import com.sage.utils.AnalyticsUtils;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +14,22 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+import com.sage.adapters.NewsfeedArrayAdapter;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeUserBasicData;
+import com.sage.services.GetNewsFeedRecipesForUser;
+import com.sage.tasks.GetRecipiesActivity;
+import com.sage.utils.AnalyticsUtils;
+
+import org.apache.http.util.TextUtils;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class NewsfeedActivity extends AppCompatActivity {
 
@@ -51,12 +51,15 @@ public class NewsfeedActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_newsfeed);
 
-		progressBar = (ProgressBar) findViewById(R.id.get_recipies_progress);
+		View footer = getLayoutInflater().inflate(R.layout.progress_bar_footer, null);
+		progressBar = (ProgressBar) footer.findViewById(R.id.get_recipies_progress);
+
 		progressBar.setVisibility(View.GONE);
 
 		initializeSupportActionBar();
 
 		listView = (ListView) findViewById(android.R.id.list);
+		listView.addFooterView(footer);
 		initListView();
 
 		AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.OPEN_NEWSFEED_ACTIVITY);

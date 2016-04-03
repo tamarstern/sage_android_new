@@ -36,18 +36,7 @@
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical" >
     </ListView>
-    
-     <ProgressBar
-        android:id="@+id/get_search_recipies_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:indeterminate="true"
-        android:indeterminateDrawable="@drawable/progress" />
-    
+
 
     <fragment
         android:id="@+id/buttom_toolbar_fragment"

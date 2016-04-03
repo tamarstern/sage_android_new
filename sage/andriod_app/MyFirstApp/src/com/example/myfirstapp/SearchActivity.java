@@ -1,16 +1,5 @@
 package com.example.myfirstapp;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-import com.sage.adapters.NewsfeedArrayAdapter;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.RecipeUserBasicData;
-import com.sage.services.GetSearchRecipes;
-import com.sage.tasks.GetRecipiesActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,12 +13,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
+
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+import com.sage.adapters.NewsfeedArrayAdapter;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.RecipeUserBasicData;
+import com.sage.services.GetSearchRecipes;
+import com.sage.tasks.GetRecipiesActivity;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -45,6 +45,7 @@ public class SearchActivity extends AppCompatActivity {
 	private ProgressBar progressBar;
 	private boolean afterStop;
 
+
 	private int pageNumber = 0;
 	private int preLast = 0;
 	private boolean shouldIncreasePage = true;
@@ -54,9 +55,13 @@ public class SearchActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
-		progressBar = (ProgressBar) findViewById(R.id.get_search_recipies_progress);
+
+		View footer = getLayoutInflater().inflate(R.layout.progress_bar_footer, null);
+		progressBar = (ProgressBar) footer.findViewById(R.id.get_recipies_progress);
+
 		progressBar.setVisibility(View.GONE);
 		listView = (ListView) findViewById(android.R.id.list);
+		listView.addFooterView(footer);
 		initListView();
 		initializeActionBar();
 
@@ -84,7 +89,7 @@ public class SearchActivity extends AppCompatActivity {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
-				if (totalItemCount == 0) {
+				if (searchEditText == null || isSearchTextEmpty()) {
 					return;
 				}
 				if (afterStop) {
@@ -131,6 +136,7 @@ public class SearchActivity extends AppCompatActivity {
 
 			@Override
 			public void onClick(View v) {
+
 				getSearchRecipies();
 			}
 		});
@@ -153,8 +159,7 @@ public class SearchActivity extends AppCompatActivity {
 		if (searchEditText == null) {
 			return;
 		}
-		if (searchEditText.getEditableText() == null
-				|| TextUtils.isEmpty(searchEditText.getEditableText().toString())) {
+		if (isSearchTextEmpty()) {
 			Toast.makeText(this, R.string.did_not_enter_search_text, Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -164,6 +169,11 @@ public class SearchActivity extends AppCompatActivity {
 
 		new GetRecipiesForSearch<RecipeUserBasicData>(this).execute(token, userName, pageNumber);
 
+	}
+
+	private boolean isSearchTextEmpty() {
+		return searchEditText.getEditableText() == null
+				|| TextUtils.isEmpty(searchEditText.getEditableText().toString());
 	}
 
 	private class GetRecipiesForSearch<T extends RecipeUserBasicData> extends GetRecipiesActivity {

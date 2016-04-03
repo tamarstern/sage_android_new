@@ -56,10 +56,6 @@
         "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\menu_my_profile.xml"
     },
     {
-        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\debug\\menu\\personal_page.xml",
-        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\personal_page.xml"
-    },
-    {
         "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\debug\\menu\\login.xml",
         "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\login.xml"
     }

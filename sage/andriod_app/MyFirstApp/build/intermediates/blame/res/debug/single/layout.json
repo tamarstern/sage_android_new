@@ -16,6 +16,10 @@
         "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\layout\\recipe_title_fragment.xml"
     },
     {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\debug\\layout\\progress_bar_footer.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\layout\\progress_bar_footer.xml"
+    },
+    {
         "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\debug\\layout\\messenger_button_send_blue_small.xml",
         "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\exploded-aar\\com.facebook.android\\facebook-android-sdk\\4.10.1\\res\\layout\\messenger_button_send_blue_small.xml"
     },

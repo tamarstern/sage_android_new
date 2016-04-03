@@ -15,7 +15,7 @@
         android:layout_gravity="top"
         android:background="#797979"
         android:elevation="4dp"
-        android:theme="@style/ToolbarStyle"
+        android:theme="@style/ActionBarThemeOverlay"
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
     </android.support.v7.widget.Toolbar>
 
@@ -38,20 +38,6 @@
         android:scrollbars="vertical" >
     </ListView>
     
-     <ProgressBar
-        android:id="@+id/get_profile_recipies_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:indeterminate="true"
-        android:indeterminateDrawable="@drawable/progress" />
-    
-
-    
-
     <fragment
         android:id="@+id/buttom_toolbar_fragment"
         android:name="com.sage.fragments.ToolbarFragment"

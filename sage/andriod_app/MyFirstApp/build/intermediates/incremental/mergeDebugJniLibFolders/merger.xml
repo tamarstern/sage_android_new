@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\sage_android\sage\andriod_app\MyFirstApp\src\main\jniLibs"/></dataSet><dataSet config="debug"><source path="D:\sage_android\sage\andriod_app\MyFirstApp\build-types\debug\jniLibs"/></dataSet></merger>

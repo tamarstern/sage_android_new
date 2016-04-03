@@ -15,7 +15,7 @@
     <string name="shared_lbl">shared</string>
     <string name="recipe_lbl">recipe</string>
     <string name="settings">Setting</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login">Sage</string>
     <string name="app_id">Sage</string>
     <string name="facebook_app_id">405758049632877</string>
     <string name="title_activity_new_receipe">NewReceipeActivity</string>

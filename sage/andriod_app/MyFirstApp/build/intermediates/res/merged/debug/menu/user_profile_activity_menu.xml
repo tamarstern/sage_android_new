@@ -8,7 +8,7 @@
     <item
         android:id="@+id/action_unfollow"
         android:title="@string/unfollow_user"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_who_i_follow"
         android:icon="@drawable/users_i_follow"
