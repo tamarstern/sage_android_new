@@ -188,7 +188,7 @@ public class SearchActivity extends AppCompatActivity {
 		@Override
 		protected void performCustomActionsOnPreExecute() {
 			shouldIncreasePage = true;
-			if (listView.getAdapter().getCount() > 0) {
+			if (listView.getAdapter().getCount()-1 > 0) {
 				progressBar.setVisibility(View.VISIBLE);
 			} else {
 				super.performCustomActionsOnPreExecute();
@@ -201,7 +201,7 @@ public class SearchActivity extends AppCompatActivity {
 
 			loadingMore = false;
 			shouldIncreasePage = false;
-			if (listView.getAdapter().getCount() > 0) {
+			if (listView.getAdapter().getCount()-1 > 0) {
 				progressBar.setVisibility(View.GONE);
 			} else {
 				super.performCustomActionsOnException();
@@ -211,7 +211,7 @@ public class SearchActivity extends AppCompatActivity {
 		@Override
 		protected void performCustomActionsOnPostExecute() {
 			loadingMore = false;
-			if (listView.getAdapter().getCount() > 0) {
+			if (listView.getAdapter().getCount()-1 > 0) {
 				progressBar.setVisibility(View.GONE);
 			} else {
 				super.performCustomActionsOnPostExecute();
