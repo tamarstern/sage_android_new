@@ -32,11 +32,11 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
-    <style name="ActionBarThemeOverlay" parent="">
+    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">#ffffff</item>
         <item name="colorControlNormal">#ffffff</item>
         <item name="colorControlHighlight">#ffffff</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">#ffffff</item>
     </style>
 
 
