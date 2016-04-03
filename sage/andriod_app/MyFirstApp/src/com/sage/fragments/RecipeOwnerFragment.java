@@ -1,5 +1,17 @@
 package com.sage.fragments;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.example.myfirstapp.R;
 import com.sage.activity.interfaces.IInitLinkDetailsListener;
 import com.sage.entities.EntityDataTransferConstants;
@@ -9,21 +21,7 @@ import com.sage.entities.RecipeType;
 import com.sage.listeners.ProfilePageClickListener;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.EntityUtils;
-import com.sage.utils.RecipeDetailsBinder;
 import com.sage.utils.RecipeOwnerContext;
-
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class RecipeOwnerFragment extends Fragment implements IInitLinkDetailsListener {
 
@@ -60,24 +58,12 @@ public class RecipeOwnerFragment extends Fragment implements IInitLinkDetailsLis
 
 		boolean isLinkRecipe = receiptDetails.getRecipeType().equals(RecipeType.LINK);
 		if (isLinkRecipe) {
-			final RecipeLinkDetails linkDetails = (RecipeLinkDetails) receiptDetails;
-			String ownerName = RecipeOwnerContext.getOwner(linkDetails.getUrl());
-			if (!TextUtils.isEmpty(ownerName)) {
-				ownerDisplayName.setText(ownerName);
-				ownerDisplayName.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-
-						ActivityUtils.openDisplayLinkActivity(activity, linkDetails,
-								EntityUtils.isLoggedInUserRecipe(receiptDetails.getUserId(), activity));
-					}
-				});
-			}
+			initLinkOwnerName(activity);
 		} else {
 			String ownerObjectId = receiptDetails.getOwnerObjectId();
 			if (!TextUtils.isEmpty(ownerObjectId)) {
-				if (ownerObjectId.equals(receiptDetails.getUserObjectId())) {
+				if (ownerObjectId.equals(receiptDetails.getUserObjectId())
+						&& EntityUtils.isLoggedInUserRecipe(receiptDetails.getUserId(), this.getActivity())) {
 					panel.setVisibility(View.GONE);
 					return recipeDetailsPanel;
 				}
@@ -90,6 +76,23 @@ public class RecipeOwnerFragment extends Fragment implements IInitLinkDetailsLis
 			}
 		}
 		return recipeDetailsPanel;
+	}
+
+	private void initLinkOwnerName(final Activity activity) {
+		final RecipeLinkDetails linkDetails = (RecipeLinkDetails) receiptDetails;
+		String ownerName = RecipeOwnerContext.getOwner(linkDetails.getUrl());
+		if (!TextUtils.isEmpty(ownerName)) {
+            ownerDisplayName.setText(ownerName);
+            ownerDisplayName.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    ActivityUtils.openDisplayLinkActivity(activity, linkDetails,
+							EntityUtils.isLoggedInUserRecipe(receiptDetails.getUserId(), activity));
+                }
+            });
+        }
 	}
 
 	@Override
