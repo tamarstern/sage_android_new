@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sage_leaf_background"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:fadeScrollbars="false"
+        android:scrollX="0px"
+        android:scrollY="0px"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarSize="20dip"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical" >
+    </ListView>
+
+    <fragment
+        android:id="@+id/buttom_toolbar_fragment"
+        android:name="com.sage.fragments.ToolbarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+</LinearLayout>

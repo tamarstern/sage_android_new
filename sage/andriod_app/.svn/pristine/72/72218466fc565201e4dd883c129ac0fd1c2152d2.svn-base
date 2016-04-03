@@ -1,0 +1,18 @@
+package com.sage.entities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RecipeCategory extends RecipeCategoryBase {
+
+	private List<RecipeSubCategory> subCategories = new ArrayList<RecipeSubCategory>();
+
+	public List<RecipeSubCategory> getSubCategories() {
+		return subCategories;
+	}
+
+	public void setSubCategories(List<RecipeSubCategory> subCategories) {
+		this.subCategories = subCategories;
+	}
+
+}

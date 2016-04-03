@@ -1,0 +1,101 @@
+package com.example.myfirstapp;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.sage.adapters.CategoriesArrayAdapter;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeSubCategory;
+import com.sage.listeners.EditCategoryPopupClickListener;
+
+import android.app.ListActivity;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+
+public class ActivityCategoriesPage extends ListActivity implements ICategoryEditListener {
+
+	ListView listView;
+
+	private List<RecipeCategory> categories = new ArrayList<RecipeCategory>();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_categories_page);
+
+		initCategories();
+
+		Button addNewCategoryButton = (Button) findViewById(R.id.add_new_category);
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		ViewGroup view = (ViewGroup) getWindow().getDecorView();
+		
+		EditCategoryPopupClickListener editCategoryClickListener = new EditCategoryPopupClickListener(inflater, view, null);
+		editCategoryClickListener.registerListener(this);
+		addNewCategoryButton.setOnClickListener(editCategoryClickListener);
+
+		String[] categoriesHeaders = getCategoriesHeaders();
+		CategoriesArrayAdapter adapter = new CategoriesArrayAdapter(this, categories, categoriesHeaders);
+		setListAdapter(adapter);
+	}
+
+	private String[] getCategoriesHeaders() {
+
+		List<String> categoryNames = new ArrayList<String>();
+
+		for (RecipeCategory category : categories) {
+			categoryNames.add(category.getName());
+		}
+
+		String[] namesArray = categoryNames.toArray(new String[categoryNames.size()]);
+		return namesArray;
+
+	}
+
+	private void initCategories() {
+		RecipeCategory cakes = new RecipeCategory();
+		cakes.setName("Cakes");
+
+		RecipeSubCategory cheeseCakes = new RecipeSubCategory();
+		cheeseCakes.setName("Cheese Cakes");
+		cakes.getSubCategories().add(cheeseCakes);
+
+		RecipeSubCategory chocolateCakes = new RecipeSubCategory();
+		chocolateCakes.setName("Chocolate Cakes");
+		cakes.getSubCategories().add(chocolateCakes);
+
+		RecipeSubCategory fruiteCakes = new RecipeSubCategory();
+		fruiteCakes.setName("Fruite Cakes");
+		cakes.getSubCategories().add(fruiteCakes);
+
+		categories.add(cakes);
+
+		RecipeCategory pies = new RecipeCategory();
+		pies.setName("Pies");
+
+		RecipeSubCategory vegiPie = new RecipeSubCategory();
+		vegiPie.setName("Vegi Pie");
+		pies.getSubCategories().add(vegiPie);
+
+		RecipeSubCategory meatPies = new RecipeSubCategory();
+		meatPies.setName("MeatPies");
+		pies.getSubCategories().add(meatPies);
+
+		categories.add(pies);
+
+	}
+
+	@Override
+	public void onSaveCategory(RecipeCategory category) {
+		categories.add(category);
+
+		String[] categoriesHeaders = getCategoriesHeaders();
+		CategoriesArrayAdapter adapter = new CategoriesArrayAdapter(this, categories, categoriesHeaders);
+		setListAdapter(adapter);
+
+	}
+}

@@ -1,0 +1,68 @@
+package com.sage.fragments;
+
+import com.example.myfirstapp.R;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeDetails;
+import com.sage.listeners.SaveNoNamePopupClickListener;
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+
+public class SavePublishRecipeFragment extends Fragment {
+
+	private static final int ZERO_RATING = 0;
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		View savePublishRecipe = inflater.inflate(R.layout.save_and_publish_recipe_fragment, container, false);
+
+		Activity activity = getActivity();
+		Intent i = activity.getIntent();
+
+		RecipeDetails receiptDetails = (RecipeDetails) i.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
+
+		setRatingImage(receiptDetails, savePublishRecipe);
+
+		Button saveRecipe = (Button) savePublishRecipe.findViewById(R.id.save_recipe);
+
+		saveRecipe.setOnClickListener(new SaveNoNamePopupClickListener(inflater, container, savePublishRecipe,
+				receiptDetails, activity));
+
+		return savePublishRecipe;
+	}
+
+	private void setRatingImage(RecipeDetails receiptDetails, View savePublishRecipe) {
+		ImageView rating = (ImageView) savePublishRecipe.findViewById(R.id.receipt_rating);
+		Integer ratingValue = receiptDetails == null ? ZERO_RATING : receiptDetails.getRating();
+		switch (ratingValue) {
+		case 0:
+			rating.setImageResource(R.drawable.stars0);
+			break;
+		case 1:
+			rating.setImageResource(R.drawable.stars1);
+			break;
+		case 2:
+			rating.setImageResource(R.drawable.stars2);
+			break;
+		case 3:
+			rating.setImageResource(R.drawable.stars3);
+			break;
+		case 4:
+			rating.setImageResource(R.drawable.stars4);
+			break;
+		case 5:
+			rating.setImageResource(R.drawable.stars5);
+			break;
+
+		}
+	}
+
+}

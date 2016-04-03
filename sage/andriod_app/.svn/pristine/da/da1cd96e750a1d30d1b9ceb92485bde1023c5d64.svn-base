@@ -1,0 +1,71 @@
+package com.sage.entities;
+
+import java.io.Serializable;
+
+public class ReceiptDetails implements Serializable {
+	
+	private static final long serialVersionUID = 672748343523798530L;
+
+	private String title;
+	
+	private String ingredients;
+	
+	private String preparation;
+	
+	private String comments;
+	
+	private Integer imageId;
+	
+	public ReceiptDetails() {
+		
+	}
+
+	public ReceiptDetails(String title,String ingredients, String preparation, String comments, Integer imageId ) {
+		this.title = title;
+		this.ingredients = ingredients;
+		this.preparation = preparation;
+		this.comments = comments;
+		this.setImageId(imageId); 
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(String ingredients) {
+		this.ingredients = ingredients;
+	}
+
+	public String getPreparation() {
+		return preparation;
+	}
+
+	public void setPreparation(String preparation) {
+		this.preparation = preparation;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public Integer getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(Integer imageId) {
+		this.imageId = imageId;
+	}
+
+}

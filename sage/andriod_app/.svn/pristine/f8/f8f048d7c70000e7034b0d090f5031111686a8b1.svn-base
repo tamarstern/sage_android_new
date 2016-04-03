@@ -1,0 +1,155 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:weightSum="4"
+    tools:context="com.example.myfirstapp.TextReceiptPageActivity" >
+
+    <RelativeLayout
+        android:id="@+id/receipt_all_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_weight="3.5" >
+
+        <TextView
+            android:id="@+id/receipt_name"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/header_text_border"
+            android:gravity="center"
+            android:text="@string/hello_world"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ScrollView
+            android:id="@+id/receiptDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/receipt_name" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/receipt_rating"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:adjustViewBounds="true"
+                  
+                    android:contentDescription="@string/description"
+                    android:padding="9dp"
+                    android:paddingBottom="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/stars0" />
+
+                <ImageView
+                    android:id="@+id/receipt_main_pic"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/receipt_rating"
+                    android:layout_marginBottom="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/main_picture_border"
+                    android:contentDescription="@string/description"
+                    android:padding="9dp"
+                    android:paddingBottom="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/picture1" />
+
+                <TextView
+                    android:id="@+id/receipt_ingredients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/receipt_main_pic"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/text_border"
+                    android:paddingLeft="5dp"
+                    android:text="@string/hello_world" />
+
+                <TextView
+                    android:id="@+id/receipt_preparation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/receipt_ingredients"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/text_border"
+                    android:text="@string/hello_world" />
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_bar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal"
+        android:weightSum="4" >
+
+        <Button
+            android:id="@+id/home"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/button_style"
+            android:drawablePadding="0dp"
+            android:drawableTop="@drawable/house"
+            android:text="@string/home"
+            android:textColor="#000000"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/receipt_box"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/button_style"
+            android:drawablePadding="0dp"
+            android:drawableTop="@drawable/book_open"
+            android:text="@string/receipt_box"
+            android:textColor="#000000"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/new_receipt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/button_style"
+            android:drawablePadding="0dp"
+            android:drawableTop="@drawable/document_add"
+            android:text="@string/new_receipt"
+            android:textColor="#000000"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/settings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/button_style"
+            android:drawablePadding="0dp"
+            android:drawableTop="@drawable/settings"
+            android:text="@string/settings"
+            android:textColor="#000000"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+</LinearLayout>

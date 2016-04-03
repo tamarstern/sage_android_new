@@ -1,0 +1,23 @@
+<resources>
+
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_user_name">User Name</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Login</string>
+    <string name="action_register_now">New? Register Now</string>
+    <string name="action_register">Register</string>
+    <string name="register_new_user_label">New To Sage?\nEnter your email and select a password.\nIt’s that easy!</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="plus_sign_out">Switch Google+ account</string>
+    <string name="plus_disconnect">Disconnect from Google+</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="label_or">OR</string>
+    <string name="label_forgot_password"><u>Forgot Password</u></string>
+
+</resources>

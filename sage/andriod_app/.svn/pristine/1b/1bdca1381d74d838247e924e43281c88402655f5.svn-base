@@ -1,0 +1,17 @@
+package com.sage.entities;
+
+import java.util.List;
+
+public class RecipeSubCategory extends RecipeCategoryBase {
+
+	private List<String> recipeNames;
+
+	public List<String> getRecipeNames() {
+		return recipeNames;
+	}
+
+	public void setRecipeNames(List<String> recipeNames) {
+		this.recipeNames = recipeNames;
+	}
+
+}

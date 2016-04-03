@@ -1,0 +1,176 @@
+package com.example.myfirstapp;
+
+import java.io.IOException;
+
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.sage.services.LoginService;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;;
+
+public class LoginActivity extends Activity {
+
+	private CallbackManager callbackManager;
+
+	private EditText usernameEditText;
+	private EditText passwordEditText;
+	private boolean loginSuccess = false;
+	private String token;
+	private String userDisplayName;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		FacebookSdk.sdkInitialize(getApplicationContext());
+		callbackManager = CallbackManager.Factory.create();
+		setContentView(R.layout.activity_login);
+
+		usernameEditText = (EditText) findViewById(R.id.email);
+		passwordEditText = (EditText) findViewById(R.id.password);
+
+		initFacebookLoginButton();
+
+		initDirectAuthenticationLoginButton();
+
+		initRegisterLoginButton();
+
+		// openNewsfeedIfAlreadyLoggedInToFacebook();
+	}
+
+	private void initFacebookLoginButton() {
+		LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+		facebookLoginButton.setReadPermissions("user_friends");
+
+		facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+			@Override
+			public void onSuccess(LoginResult loginResult) {
+				startNewsfeedActivity();
+			}
+
+			@Override
+			public void onCancel() {
+				Toast.makeText(getApplicationContext(), "Login Canceled!", Toast.LENGTH_LONG).show();
+
+			}
+
+			@Override
+			public void onError(FacebookException exception) {
+				Toast.makeText(getApplicationContext(), "Login Failed with exception!", Toast.LENGTH_LONG).show();
+			}
+		});
+	}
+
+	private void openNewsfeedIfAlreadyLoggedInToFacebook() {
+		AccessToken fb_token = AccessToken.getCurrentAccessToken();
+		if (fb_token != null) {
+			startNewsfeedActivity();
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		callbackManager.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void initRegisterLoginButton() {
+		Button button = (Button) findViewById(R.id.register_now_button);
+		button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), RegisterNewUserActivity.class);
+				startActivity(intent);
+
+			}
+		});
+
+	}
+
+	private void initDirectAuthenticationLoginButton() {
+		Button button = (Button) findViewById(R.id.email_sign_in_button);
+		button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				LoginValidator validator = new LoginValidator(getApplicationContext(), usernameEditText,
+						passwordEditText);
+				boolean isValidLogin = validator.validateUserNamePassword();
+				if (isValidLogin) {
+					new DownloadWebpageTask().execute("http://10.0.2.2:1337/api//login");
+
+				}
+			}
+		});
+	}
+
+	private void startNewsfeedActivity() {
+		Intent intent = new Intent(getApplicationContext(), NewsfeedActivity.class);
+		startActivity(intent);
+	}
+
+	private class DownloadWebpageTask extends AsyncTask<String, Void, JsonElement> {
+		private static final String PASSWORD = "Password";
+		private static final String USER_NAME = "UserName";
+		private static final String USER_DISPLAY_NAME = "UserDisplayName";
+		private static final String AUTH_TOKEN = "authToken";
+
+		@Override
+		protected JsonElement doInBackground(String... urls) {
+
+			try {
+				LoginService service = new LoginService();
+				return service.login(urls[0], usernameEditText.getText().toString(),
+						passwordEditText.getText().toString());
+			} catch (IOException e) {
+				Log.d(CONNECTIVITY_SERVICE, "Unable to retrieve web page. URL may be invalid.");
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(JsonElement result) {
+			JsonObject resultJsonObject = result.getAsJsonObject();
+			loginSuccess = resultJsonObject.get("success").getAsBoolean();
+			token = resultJsonObject.get("token").getAsString();
+			userDisplayName = resultJsonObject.get("userDisplayName").getAsString();
+			if (loginSuccess) {
+
+				saveAuthDetails();
+
+				startNewsfeedActivity();
+			}
+		}
+
+		private void saveAuthDetails() {
+			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putString(AUTH_TOKEN, token);
+			editor.putString(USER_DISPLAY_NAME, userDisplayName);
+			editor.putString(USER_NAME, usernameEditText.getText().toString());
+			editor.putString(PASSWORD, passwordEditText.getText().toString());
+			editor.commit();
+		}
+
+	}
+
+}

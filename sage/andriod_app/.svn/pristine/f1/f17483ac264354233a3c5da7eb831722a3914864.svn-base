@@ -1,0 +1,29 @@
+package com.sage.entities;
+
+import java.util.List;
+
+public class RecipeSubCategory {
+	
+	private String name;
+	
+	private List<String> recipeNames;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String subCateogryName) {
+		this.name = subCateogryName;
+	}
+
+	public List<String> getRecipeNames() {
+		return recipeNames;
+	}
+
+	public void setRecipeNames(List<String> recipeNames) {
+		this.recipeNames = recipeNames;
+	}
+	
+	
+
+}

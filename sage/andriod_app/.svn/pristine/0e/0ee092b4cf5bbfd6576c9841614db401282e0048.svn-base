@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Sage</string>
+    <string name="description">description</string>
+    <string name="done">done</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_personal_page">PersonalPageActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="new_receipt">New Receipe</string>
+    <string name="receipt_box">Receipe Box</string>
+    <string name="home">Home</string>
+    <string name="settings">Setting</string>
+    <string name="title_activity_login">LoginActivity</string>
+     <string name="app_id">Sage</string>
+     <string name="facebook_app_id">405758049632877</string>
+
+</resources>

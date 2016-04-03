@@ -1,0 +1,39 @@
+package com.example.myfirstapp;
+
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeDetails;
+import com.sage.entities.RecipeSubCategory;
+
+import android.app.ListActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class ActivitySubCategoryPage extends ListActivity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_sub_category_page);
+
+		Intent i = getIntent();
+
+		RecipeSubCategory subCategory = (RecipeSubCategory) i
+				.getSerializableExtra(EntityDataTransferConstants.SUB_CATEGORY_DATA_TRANSFER);
+
+		Button homeButton = (Button) findViewById(R.id.add_new_recipe);
+
+		homeButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), NewRecipeActivity.class);
+				startActivity(intent);
+
+			}
+		});
+
+	}
+}

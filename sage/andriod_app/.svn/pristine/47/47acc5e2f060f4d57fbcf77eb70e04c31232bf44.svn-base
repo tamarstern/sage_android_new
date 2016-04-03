@@ -1,0 +1,54 @@
+package com.sage.listeners;
+
+import com.example.myfirstapp.LinkRecipePageActivity;
+import com.example.myfirstapp.PictureRecipePageActivity;
+import com.example.myfirstapp.TextReciptPageActivity;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeBasicData;
+import com.sage.entities.RecipeDetails;
+import com.sage.entities.RecipeDetailsFactory;
+
+import android.content.Context;
+import android.content.Intent;
+import android.view.View;
+import android.view.View.OnClickListener;
+
+public class RecipeDetailsClickListener implements OnClickListener {
+
+	/**
+	 * 
+	 */
+	private final Context context;
+	private RecipeBasicData recipeBasicData;
+
+	public RecipeDetailsClickListener(Context context, RecipeBasicData recipeBasicData) {
+		this.context = context;
+		this.recipeBasicData = recipeBasicData;
+	}
+
+	@Override
+	public void onClick(View v) {
+		RecipeDetailsFactory factory = new RecipeDetailsFactory();
+		RecipeDetails receiptDetails = factory.createReceiptDetails(recipeBasicData);
+
+		switch (recipeBasicData.getType()) {
+		case PICTURE:
+			Intent pictureIntent = new Intent(context, PictureRecipePageActivity.class)
+					.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, receiptDetails);
+			context.startActivity(pictureIntent);
+			break;
+		case LINK:
+			Intent linkIntent = new Intent(context, LinkRecipePageActivity.class)
+					.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, receiptDetails);
+			context.startActivity(linkIntent);
+			break;
+		default:
+			Intent textIntent = new Intent(context, TextReciptPageActivity.class)
+					.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, receiptDetails);
+			context.startActivity(textIntent);
+			break;
+		}
+
+	}
+
+}

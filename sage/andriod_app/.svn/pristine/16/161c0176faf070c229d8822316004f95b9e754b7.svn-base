@@ -1,0 +1,16 @@
+package com.sage.entities;
+
+public class RecipeCategoryBase {
+	
+	private String name;
+	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String categoryName) {
+		this.name = categoryName;
+	}
+
+}

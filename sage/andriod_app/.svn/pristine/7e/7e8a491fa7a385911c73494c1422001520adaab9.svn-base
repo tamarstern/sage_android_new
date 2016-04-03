@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sage_leaf_background"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:fadeScrollbars="false"
+        android:scrollX="0px"
+        android:scrollY="0px"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarSize="20dip"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical" >
+    </ListView>
+
+    <Button
+        android:id="@+id/add_new_category"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_above="@+id/buttom_toolbar_fragment"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/application_button_style"
+        android:text="@string/add_new_category"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+
+    <fragment
+        android:id="@+id/buttom_toolbar_fragment"
+        android:name="com.sage.fragments.ToolbarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

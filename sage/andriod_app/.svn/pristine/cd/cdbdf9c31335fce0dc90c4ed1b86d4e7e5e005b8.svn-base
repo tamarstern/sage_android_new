@@ -1,0 +1,29 @@
+package com.sage.entities;
+
+public class RecipeLinkDetails extends RecipeDetails {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5922272952878287635L;
+	private String url;
+	
+	public RecipeLinkDetails() {
+		super();
+	}
+	
+	public RecipeLinkDetails(String title, String url, String comments) {
+		super(title, comments);
+		this.url = url;
+	}
+
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+}

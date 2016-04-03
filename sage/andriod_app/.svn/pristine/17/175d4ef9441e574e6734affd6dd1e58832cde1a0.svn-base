@@ -1,0 +1,9 @@
+package com.example.myfirstapp;
+
+import com.sage.entities.RecipeCategoryBase;
+
+public interface ICategoryEditListener {
+
+	void onSaveCategory(RecipeCategoryBase category);
+
+}

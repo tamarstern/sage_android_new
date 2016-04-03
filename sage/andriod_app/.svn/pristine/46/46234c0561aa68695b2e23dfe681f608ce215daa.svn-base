@@ -1,0 +1,25 @@
+package com.sage.entities;
+
+public class RecipePublished {
+	
+	private String name;
+	
+	private boolean published;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String recipeName) {
+		this.name = recipeName;
+	}
+
+	public boolean isPublished() {
+		return published;
+	}
+
+	public void setPublished(boolean published) {
+		this.published = published;
+	}
+
+}

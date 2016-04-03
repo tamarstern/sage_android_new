@@ -1,0 +1,91 @@
+package com.sage.entities;
+
+import java.io.Serializable;
+import java.util.Random;
+
+public class RecipeDetails implements Serializable {
+
+	private static final long serialVersionUID = 672748343523798530L;
+
+	private String title;
+
+	private String comments;
+
+	private int rating;
+
+	private int numberOfLikes;
+
+	private int numberOfComments;
+
+	private RecipeType type;
+	
+	private boolean published;
+
+	public RecipeDetails() {
+
+	}
+
+	public RecipeDetails(String title, String comments) {
+		this.title = title;
+		this.comments = comments;
+		Random random = new Random();
+		rating = random.nextInt(5 - 0) + 0;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
+	public int getNumberOfLikes() {
+		return numberOfLikes;
+	}
+
+	public void setNumberOfLikes(int numberOfLikes) {
+		this.numberOfLikes = numberOfLikes;
+	}
+
+	public int getNumberOfComments() {
+		return numberOfComments;
+	}
+
+	public void setNumberOfComments(int numberOfComments) {
+		this.numberOfComments = numberOfComments;
+	}
+
+	public RecipeType getType() {
+		return type;
+	}
+
+	public void setType(RecipeType type) {
+		this.type = type;
+	}
+
+	public boolean isPublished() {
+		return published;
+	}
+
+	public void setPublished(boolean published) {
+		this.published = published;
+	}
+
+}

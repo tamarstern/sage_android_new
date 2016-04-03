@@ -1,0 +1,11 @@
+package com.sage.entities;
+
+public class EntityDataTransferConstants {
+	
+	public static final String SUB_CATEGORY_DATA_TRANSFER = "subCategory";
+	
+	public static final String RECIPE_DETAILS_DATA_TRANSFER = "receiptDeatils";
+	
+	
+
+}

@@ -1,0 +1,123 @@
+package com.example.myfirstapp;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.sage.entities.ReceiptDetails;
+
+public class ReceiptPageActivity extends Activity {
+	
+	private ReceiptDetails receiptDetails;
+	
+	private TextView title;
+	
+	private TextView ingredients;
+	
+	private TextView prepartion;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_personal_page);
+		
+		 Intent i = getIntent();
+		 receiptDetails = (ReceiptDetails)i.getSerializableExtra("receiptDeatils");
+		 
+		 this.title = (TextView)findViewById(R.id.receipt_name);
+		 title.setText(receiptDetails.getTitle());
+		 title.bringToFront();
+		 
+		 ImageView mainPicture = (ImageView) findViewById(R.id.receipt_main_pic);
+		 mainPicture.setImageResource(receiptDetails.getImageId());
+		 
+		 ImageView rating = (ImageView) findViewById(R.id.receipt_rating);
+		 setRatingImage(rating);
+		 
+		 
+		 this.ingredients = (TextView)findViewById(R.id.receipt_ingredients);
+		 ingredients.setText(receiptDetails.getIngredients());
+		 ingredients.setSingleLine(false);
+		 ingredients.bringToFront();
+		 
+		 this.prepartion = (TextView)findViewById(R.id.receipt_preparation);
+		 prepartion.setText(receiptDetails.getPreparation());
+		 prepartion.setSingleLine(false);
+		 prepartion.bringToFront();
+		 
+		 initHomeButtonListener();
+
+		    
+	}
+
+	private void initHomeButtonListener() {
+		Button button= (Button) findViewById(R.id.home);
+			
+			
+			button.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getApplicationContext(), NewsfeedActivity.class);
+					startActivity(intent);
+					
+				}
+			});
+	}
+
+	private void setRatingImage(ImageView rating) {
+		Integer ratingValue = receiptDetails.getRating();
+		switch (ratingValue) {
+		case 0:
+			rating.setImageResource(R.drawable.stars0);
+			break;
+		case 1:
+			rating.setImageResource(R.drawable.stars1);
+			break;
+		case 2:
+			rating.setImageResource(R.drawable.stars2);
+			break;
+		case 3:
+			rating.setImageResource(R.drawable.stars3);
+			break;
+		case 4:
+			rating.setImageResource(R.drawable.stars4);
+			break;
+		case 5:
+			rating.setImageResource(R.drawable.stars5);
+			break;
+			
+		}
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.personal_page, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+}

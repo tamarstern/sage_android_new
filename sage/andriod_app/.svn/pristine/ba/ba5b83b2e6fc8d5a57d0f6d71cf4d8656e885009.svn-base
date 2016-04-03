@@ -1,0 +1,83 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+ 
+         <ListView
+             android:id="@android:id/list"
+              android:layout_height="0dp"
+              android:layout_width="fill_parent"
+              android:scrollbars="vertical"
+			  android:scrollbarAlwaysDrawVerticalTrack="true"
+			  android:scrollX="0px"
+			  android:scrollY="0px"
+			  android:background="#FFFFFF"
+			  android:layout_weight="1"
+			  android:scrollbarStyle="outsideOverlay"
+			  android:divider="#FFF"
+		      android:fadeScrollbars="false"
+			  android:scrollbarSize="20dip">
+         </ListView>
+         
+   <LinearLayout android:layout_width="match_parent"
+       android:layout_height="50dp"
+       android:weightSum="4"
+       android:orientation="horizontal"
+       android:id="@+id/menu_bar_main">
+    
+    <Button
+	    android:layout_width="0dp"
+	    android:layout_weight="1"
+	    android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+	    android:text="@string/new_receipt"
+	    android:id="@+id/new_receipt_main"
+	    android:textSize="12sp"
+	    android:textColor="#000000"
+	    android:background="@drawable/button_style"/>
+    
+    <Button
+	    android:layout_width="0dp"
+	    android:layout_weight="1"
+	    android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+	    android:text="@string/receipt_box"
+	    android:id="@+id/receipt_box_main"
+	    android:textSize="12sp"
+	    android:textColor="#000000"
+	    android:background="@drawable/button_style"/>
+    
+   <Button
+	    android:layout_width="0dp"
+	    android:layout_weight="1"
+	    android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+	    android:text="@string/my_page"
+	    android:id="@+id/my_page_main"
+	    android:textSize="12sp"
+	    android:textColor="#000000"
+	    android:background="@drawable/button_style"/>
+   
+   <Button
+	    android:layout_width="0dp"
+	    android:layout_weight="1"
+	    android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+	    android:text="@string/settings"
+	    android:id="@+id/settings_main"
+	    android:textSize="12sp"
+	    android:textColor="#000000"
+	    android:background="@drawable/button_style"/>
+   
+   </LinearLayout>
+         
+
+    
+ 
+</LinearLayout>
+
+

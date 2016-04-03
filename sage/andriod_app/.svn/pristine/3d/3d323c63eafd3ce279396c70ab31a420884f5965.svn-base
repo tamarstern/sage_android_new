@@ -1,0 +1,51 @@
+package com.sage.listeners;
+
+import com.example.myfirstapp.R;
+import com.example.myfirstapp.R.id;
+import com.example.myfirstapp.R.layout;
+
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.PopupWindow;
+
+public class DeletePopupClickListener implements OnClickListener {
+
+	private LayoutInflater inflater;
+	private ViewGroup container;
+	private View savePublishRecipe;
+
+	public DeletePopupClickListener(LayoutInflater inflater, ViewGroup container, View savePublishRecipe) {
+		this.inflater = inflater;
+		this.container = container;
+		this.savePublishRecipe = savePublishRecipe;
+	}
+
+	@Override
+	public void onClick(View v) {
+		View popupView = inflater.inflate(R.layout.delete_recipe_popup, container, false);
+		final PopupWindow popupWindow = new PopupWindow(popupView, 400, 600, true);
+		popupWindow.showAtLocation(savePublishRecipe, Gravity.CENTER, 0, 0);
+
+		Button confirmDelete = (Button) popupView.findViewById(R.id.confirm_delete_recipe);
+		confirmDelete.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View popupView) {
+				popupWindow.dismiss();
+			}
+		});
+
+		Button cancelDelete = (Button) popupView.findViewById(R.id.cancel_delete_recipe);
+		cancelDelete.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View popupView) {
+				popupWindow.dismiss();
+			}
+		});
+
+	}
+
+}

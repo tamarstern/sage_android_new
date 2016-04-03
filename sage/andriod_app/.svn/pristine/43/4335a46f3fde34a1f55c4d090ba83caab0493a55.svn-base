@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sage_leaf_background"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <Button
+        android:id="@+id/save_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/application_button_style"
+        android:text="@string/save_link"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+
+    <WebView
+        android:id="@+id/recipe_link_search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/save_link"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/appliction_panel_style" />
+
+    <fragment
+        android:id="@+id/buttom_toolbar_fragment"
+        android:name="com.sage.fragments.ToolbarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_below="@+id/recipe_link_search" />
+
+</RelativeLayout>

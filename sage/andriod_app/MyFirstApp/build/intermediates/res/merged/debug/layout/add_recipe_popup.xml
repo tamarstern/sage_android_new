@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_category_panel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/appliction_panel_style"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/add_receipe_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/add_receipe_title"
+        android:textColor="#a6a6a6"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/add_link_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:background="#a6a6a6"
+        android:drawableLeft="@drawable/add_link_recipe_icon"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/add_link_recipe_icon"
+        android:orientation="horizontal"
+        android:text="@string/add_link"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/add_picture_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:background="#a6a6a6"
+        android:drawableLeft="@drawable/add_picture_recipe_icon"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/add_picture_recipe_icon"
+        android:orientation="horizontal"
+        android:text="@string/add_picture"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/add_text_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:background="#a6a6a6"
+        android:drawableLeft="@drawable/add_text_recipe_icon"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/add_text_recipe_icon"
+        android:orientation="horizontal"
+        android:text="@string/add_text"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+
+</LinearLayout>

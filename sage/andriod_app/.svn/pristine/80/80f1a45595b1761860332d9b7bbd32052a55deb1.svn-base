@@ -1,0 +1,61 @@
+package com.sage.fragments;
+
+import com.example.myfirstapp.R;
+import com.example.myfirstapp.R.drawable;
+import com.example.myfirstapp.R.id;
+import com.example.myfirstapp.R.layout;
+import com.sage.entities.RecipeDetails;
+
+import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class LikesCommentsFragment extends Fragment {
+
+	private static final int EMPTY_COMMENTS = 0;
+	private static final int EMPTY_LIKES = 0;
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		View likesCommentsPanel = inflater.inflate(R.layout.likes_comments_fragment, container, false);
+
+		Intent i = getActivity().getIntent();
+
+		RecipeDetails receiptDetails = (RecipeDetails) i.getSerializableExtra("receiptDeatils");
+
+		initCommentsLikesPanel(likesCommentsPanel, receiptDetails);
+
+		return likesCommentsPanel;
+	}
+
+	private void initCommentsLikesPanel(View likesComments, RecipeDetails receiptDetails) {
+		TextView likeNumber = (TextView) likesComments.findViewById(R.id.likes_number_text);
+		int numberOfLikes = receiptDetails == null ? EMPTY_LIKES : receiptDetails.getNumberOfLikes();
+		likeNumber.setText(Integer.toString(numberOfLikes));
+
+		ImageView likesIcon = (ImageView) likesComments.findViewById(R.id.likes_icon_fragment);
+		if (numberOfLikes == EMPTY_LIKES) {
+			likesIcon.setImageResource(R.drawable.empty_heart);
+		} else {
+			likesIcon.setImageResource(R.drawable.full_heart);
+		}
+
+		TextView commentsNumber = (TextView) likesComments.findViewById(R.id.comments_number_text);
+		int numberOfComments = receiptDetails == null ? EMPTY_COMMENTS : receiptDetails.getNumberOfComments();
+		commentsNumber.setText(Integer.toString(numberOfComments));
+
+		ImageView commentsIcon = (ImageView) likesComments.findViewById(R.id.comments_icon_fragment);
+		if (numberOfLikes == EMPTY_COMMENTS) {
+			commentsIcon.setImageResource(R.drawable.empty_comment);
+		} else {
+			commentsIcon.setImageResource(R.drawable.full_comment);
+		}
+	}
+
+}

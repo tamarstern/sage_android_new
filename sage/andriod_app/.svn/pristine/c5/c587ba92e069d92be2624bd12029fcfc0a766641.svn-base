@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Sage</string>
+    <string name="description">description</string>
+    <string name="done">done</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_personal_page">PersonalPageActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="new_receipt">New Receipt</string>
+    <string name="receipt_box">Receipt Box</string>
+    <string name="my_page">My Page</string>
+    <string name="settings">Setting</string>
+
+</resources>

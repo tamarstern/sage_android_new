@@ -1,0 +1,146 @@
+package com.example.myfirstapp;
+
+import java.util.ArrayList;
+
+import com.sage.adapters.ProfilePageArrayAdapter;
+import com.sage.entities.RecipeBasicData;
+import com.sage.entities.RecipeDetails;
+import com.sage.entities.RecipeType;
+import com.sage.entities.RecipeUserBasicData;
+
+import android.app.Activity;
+import android.app.ListActivity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+
+public class ProfilePageActivity extends ListActivity {
+
+	private static final String USER_DISPLAY_NAME = "UserDisplayName";
+	
+	private ListView listView;
+
+	private ArrayList<RecipeBasicData> details;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_profile_page);
+
+		Intent i = getIntent();
+		String userDisplayName = (String) i.getSerializableExtra("userName");
+		
+		if(TextUtils.isEmpty(userDisplayName)) {
+			SharedPreferences sharedPref =PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			userDisplayName = sharedPref.getString(USER_DISPLAY_NAME, null);
+		}
+
+		TextView recipeHeader = (TextView) findViewById(R.id.current_user_name);
+		recipeHeader.setText(userDisplayName);
+
+		getAllRelevantRecipies();
+
+	}
+
+	private void getAllRelevantRecipies() {
+		this.details = createNewsfeedDetails();
+
+		initializeRecipePanelsImageIds(details);
+
+		String[] headers = initializeRecipePanelHeaders(details);
+
+		initializeRecipePanelLikesNumber(details);
+
+		initializeRecipePanelCommentsNumber(details);
+		
+		initializeRecipeTypes(details);
+
+		ProfilePageArrayAdapter adapter = new ProfilePageArrayAdapter(this, details, headers);
+		setListAdapter(adapter);
+	}
+
+	private ArrayList<RecipeBasicData> createNewsfeedDetails() {
+		ArrayList<RecipeBasicData> details = new ArrayList<RecipeBasicData>();
+
+		for (int i = 0; i < 10; i++) {
+			RecipeBasicData panelDetails = new RecipeBasicData();
+			details.add(panelDetails);
+		}
+		return details;
+	}
+
+	private void initializeRecipePanelCommentsNumber(ArrayList<RecipeBasicData> details2) {
+		Integer[] numberOfComments = { 10, 0, 10, 0, 10, 0, 10, 0, 10, 0 };
+		for (int i = 0; i < 10; i++) {
+			details.get(i).setComments(numberOfComments[i]);
+		}
+	}
+
+	private void initializeRecipePanelLikesNumber(ArrayList<RecipeBasicData> details2) {
+		Integer[] numberOfLikes = { 10, 0, 10, 0, 10, 0, 10, 0, 10, 0 };
+		for (int i = 0; i < 10; i++) {
+			details.get(i).setLikes(numberOfLikes[i]);
+		}
+
+	}
+
+	private void initializeRecipePanelsImageIds(ArrayList<RecipeBasicData> details) {
+		Integer[] imageIds = { R.drawable.picture1, R.drawable.picture2, R.drawable.picture3, R.drawable.picture4,
+				R.drawable.picture5, R.drawable.picture6, R.drawable.picture7, R.drawable.picture8, R.drawable.picture9,
+				R.drawable.picture10 };
+		for (int i = 0; i < 10; i++) {
+			details.get(i).setImageId(imageIds[i]);
+		}
+	}
+
+	private RecipeType[] initializeRecipeTypes(ArrayList<RecipeBasicData> details) {
+
+		RecipeType[] types = new RecipeType[] { RecipeType.TEXT, RecipeType.LINK, RecipeType.PICTURE, RecipeType.TEXT,
+				RecipeType.LINK, RecipeType.PICTURE, RecipeType.LINK, RecipeType.TEXT, RecipeType.PICTURE,
+				RecipeType.TEXT };
+
+		for (int i = 0; i < 10; i++) {
+			details.get(i).setType(types[i]);
+		}
+
+		return types;
+
+	}
+
+	private String[] initializeRecipePanelHeaders(ArrayList<RecipeBasicData> details) {
+
+		String[] headers = new String[] { "Dried Tomatoes", "Dried Tomatoes", "Dried Tomatoes", "Dried Tomatoes",
+				"Dried Tomatoes", "Dried Tomatoes", "Dried Tomatoes", "Dried Tomatoes", "Dried Tomatoes",
+				"Dried Tomatoes" };
+
+		for (int i = 0; i < 10; i++) {
+			details.get(i).setHeader(headers[i]);
+		}
+
+		return headers;
+
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		// RecipeDetailsFactory factory = new RecipeDetailsFactory();
+		// RecipeDetails receiptDetails =
+		// factory.createReceiptDetails(details.get(position).getImageId());
+
+		// Intent intent = new Intent(this,
+		// ReceiptPageActivity.class).putExtra("receiptDeatils",
+		// receiptDetails);
+		// startActivity(intent);
+
+	}
+
+}

@@ -1,0 +1,47 @@
+package com.example.myfirstapp;
+
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.PopupWindow;
+
+public class DeletePopupClickListener implements OnClickListener {
+
+	LayoutInflater inflater;
+	ViewGroup container;
+	View savePublishRecipe;
+
+	public DeletePopupClickListener(LayoutInflater inflater, ViewGroup container, View savePublishRecipe) {
+		this.inflater = inflater;
+		this.container = container;
+		this.savePublishRecipe = savePublishRecipe;
+	}
+
+	@Override
+	public void onClick(View v) {
+		View popupView = inflater.inflate(R.layout.delete_recipe_popup, container, false);
+		final PopupWindow popupWindow = new PopupWindow(popupView, 350, 500, true);
+		popupWindow.showAtLocation(savePublishRecipe, Gravity.CENTER, 0, 0);
+
+		Button confirmDelete = (Button) popupView.findViewById(R.id.confirm_delete_recipe);
+		confirmDelete.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View popupView) {
+				popupWindow.dismiss();
+			}
+		});
+
+		Button cancelDelete = (Button) popupView.findViewById(R.id.cancel_delete_recipe);
+		cancelDelete.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View popupView) {
+				popupWindow.dismiss();
+			}
+		});
+
+	}
+
+}

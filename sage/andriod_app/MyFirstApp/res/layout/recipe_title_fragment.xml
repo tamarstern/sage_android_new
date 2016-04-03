@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/receipt_title_panel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/appliction_panel_style"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/recipe_title_edit_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:textSize="18sp"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:hint="@string/add_recipe_title"
+        android:textColor="#355723" 
+        android:textColorHint="#b3b3b3" />
+
+</LinearLayout>

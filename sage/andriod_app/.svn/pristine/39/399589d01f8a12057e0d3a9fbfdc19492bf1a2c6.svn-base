@@ -1,0 +1,120 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sage_leaf_background"
+    android:orientation="vertical"
+    android:paddingBottom="0dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:weightSum="4"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <RelativeLayout
+        android:id="@+id/receipt_picture_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3.5" >
+
+        <EditText
+            android:id="@+id/receipt_picture_name"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/header_text_border"
+            android:gravity="center"
+            android:hint="@string/add_recipe_title"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <fragment
+            android:id="@+id/save_publish_recipe_picture_fragment"
+            android:name="com.example.myfirstapp.SavePublishRecipeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/receipt_picture_name" />
+
+        <ScrollView
+            android:id="@+id/receipt_picture_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/save_publish_recipe_picture_fragment" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" >
+
+                <LinearLayout
+                    android:id="@+id/recipe_as_picture_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/recipe_as_picture_receipt_image"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/main_picture_border"
+                        android:contentDescription="@string/description"
+                        android:padding="9dp"
+                        android:paddingBottom="10dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/picture1" />
+
+                    <Button
+                        android:id="@+id/add_recipe_as_picture"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/text_border"
+                        android:text="@string/add_recipe_as_picture_label"
+                        android:textAllCaps="false"
+                        android:textColor="#355723"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <fragment
+                    android:id="@+id/recipe_picture_details_panel"
+                    android:name="com.example.myfirstapp.RecipeDetailsFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/recipe_as_picture_panel" />
+
+                <fragment
+                    android:id="@+id/picture_comments_likes_panel"
+                    android:name="com.example.myfirstapp.LikesCommentsFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/recipe_picture_details_panel" />
+
+                <fragment
+                    android:id="@+id/delete_move_picture_panel"
+                    android:name="com.example.myfirstapp.DeleteMoveRecipeFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/picture_comments_likes_panel" />
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/buttom_toolbar_fragment"
+        android:name="com.example.myfirstapp.ToolbarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_weight="0.5" />
+
+</LinearLayout>

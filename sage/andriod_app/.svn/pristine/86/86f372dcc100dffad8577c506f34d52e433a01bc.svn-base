@@ -1,0 +1,91 @@
+package com.example.myfirstapp;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.sage.adapters.SubCategoriesArrayAdapter;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipePublished;
+import com.sage.entities.RecipeSubCategory;
+import com.sage.listeners.AddRecipePopupClickListener;
+
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class ActivitySubCategoryPage extends ListActivity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_sub_category_page);
+
+		Intent i = getIntent();
+
+		RecipeSubCategory subCategory = (RecipeSubCategory) i
+				.getSerializableExtra(EntityDataTransferConstants.SUB_CATEGORY_DATA_TRANSFER);
+
+		Button addNewRecipe = (Button) findViewById(R.id.add_new_recipe);
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
+		addNewRecipe.setOnClickListener(new AddRecipePopupClickListener(inflater,viewGroup, viewGroup, this));
+
+		TextView addNewRecipeTitle = (TextView) findViewById(R.id.sub_category_name);
+
+		addNewRecipeTitle.setText(subCategory.getName());
+
+		initRecipeNames(subCategory);
+
+		List<RecipePublished> recipes = subCategory.getRecipes();
+
+		String[] recipeHeaders = initializeRecipeHeaders(recipes);
+
+		SubCategoriesArrayAdapter adapter = new SubCategoriesArrayAdapter(this, recipes, recipeHeaders);
+		setListAdapter(adapter);
+
+	}
+
+	
+	private void initRecipeNames(RecipeSubCategory subCategory) {
+		List<RecipePublished> recipes = new ArrayList<RecipePublished>();
+
+		RecipePublished ricotaCake = new RecipePublished();
+		ricotaCake.setName("Ricota Cake");
+		ricotaCake.setPublished(true);
+		recipes.add(ricotaCake);
+
+		RecipePublished nyCheeseCake = new RecipePublished();
+		nyCheeseCake.setName("NY Cheese cake");
+		nyCheeseCake.setPublished(true);
+		recipes.add(nyCheeseCake);
+
+		RecipePublished cheesePie = new RecipePublished();
+		cheesePie.setName("Cheese Pie");
+		cheesePie.setPublished(false);
+		recipes.add(cheesePie);
+
+		subCategory.setRecipes(recipes);
+
+	}
+
+	private String[] initializeRecipeHeaders(List<RecipePublished> recipes) {
+
+		int size = recipes.size();
+
+		String[] headers = new String[size];
+
+		for (int i = 0; i < size; i++) {
+			headers[i] = recipes.get(i).getName();
+		}
+
+		return headers;
+
+	}
+}

@@ -1,0 +1,47 @@
+package com.sage.entities;
+
+public class RecipeTextDetails extends RecipeDetails {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private String ingredients;
+
+	private String preparation;
+
+	private Integer imageId;
+
+	public RecipeTextDetails(String title, String ingredients, String preparation, String comments, Integer imageId) {
+		super(title, comments);
+		this.ingredients = ingredients;
+		this.preparation = preparation;
+		this.setImageId(imageId);
+	}
+
+	public String getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(String ingredients) {
+		this.ingredients = ingredients;
+	}
+
+	public String getPreparation() {
+		return preparation;
+	}
+
+	public void setPreparation(String preparation) {
+		this.preparation = preparation;
+	}
+
+	public Integer getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(Integer imageId) {
+		this.imageId = imageId;
+	}
+
+}

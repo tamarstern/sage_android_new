@@ -1,0 +1,49 @@
+package com.example.myfirstapp;
+
+import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+
+public class ToolbarFragment extends Fragment{
+	
+	@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+         View toolbar = inflater.inflate(R.layout.buttom_toolbar_fragment, container, false);
+         
+         Button homeButton = (Button) toolbar.findViewById(R.id.home_buttom_toolbar);
+
+ 		homeButton.setOnClickListener(new OnClickListener() {
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				Intent intent = new Intent(getActivity().getApplicationContext(), NewsfeedActivity.class);
+ 				startActivity(intent);
+
+ 			}
+ 		});
+
+ 		Button newReceipeButton = (Button) toolbar.findViewById(R.id.new_receipt_buttom_toolbar);
+
+ 		newReceipeButton.setOnClickListener(new OnClickListener() {
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				Intent intent = new Intent(getActivity().getApplicationContext(), NewRecipeActivity.class);
+ 				startActivity(intent);
+
+ 			}
+ 		});
+
+         
+         return toolbar;
+    }
+
+}

@@ -1,0 +1,92 @@
+package com.example.myfirstapp;
+
+import java.util.ArrayList;
+
+import com.sage.entities.RecipeBasicData;
+import com.sage.entities.RecipeUserBasicData;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class NewsfeedArrayAdapter extends ArrayAdapter<String> {
+	private final Context context;
+	ArrayList<RecipeUserBasicData> details;
+
+	public NewsfeedArrayAdapter(Context context, ArrayList<RecipeUserBasicData> details, String[] headers) {
+		super(context, -1, headers);
+		this.context = context;
+		this.details = details;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
+
+		
+		TextView recipeHeader = (TextView) rowView.findViewById(R.id.label);
+		String recipeHeaderValue = details.get(position).getHeader();
+		recipeHeader.setText(recipeHeaderValue);
+		recipeHeader.setOnClickListener(new RecipeDetailsClickListener(this.getContext(), details.get(position)));
+
+		
+		TextView recipeUser = (TextView) rowView.findViewById(R.id.user_name);
+		String recipeUserValue = details.get(position).getUserName();
+		recipeUser.setText(recipeUserValue);
+		recipeUser.setOnClickListener(new ProfilePageClickListener(this, details.get(position)));
+
+		ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+		imageView.setImageResource(details.get(position).getImageId());
+		imageView.setOnClickListener(new RecipeDetailsClickListener(this.getContext(), details.get(position)));
+
+		initLikes(position, rowView);
+
+		initComments(position, rowView);
+
+		TextView saveRecipe = (TextView) rowView.findViewById(R.id.save_recipe);
+		saveRecipe.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getContext(), "save recipe selected", Toast.LENGTH_LONG).show();
+
+			}
+		});
+
+		return rowView;
+	}
+
+	private void initComments(int position, View rowView) {
+		TextView likes_number = (TextView) rowView.findViewById(R.id.comments_number);
+		Integer numberOfLikes = details.get(position).getLikes();
+		likes_number.setText(Integer.toString(numberOfLikes));
+
+		ImageView likes_icon = (ImageView) rowView.findViewById(R.id.comments_icon);
+		if (numberOfLikes == 0) {
+			likes_icon.setImageResource(R.drawable.empty_comment);
+		} else {
+			likes_icon.setImageResource(R.drawable.full_comment);
+		}
+
+	}
+
+	private void initLikes(int position, View rowView) {
+		TextView likes_number = (TextView) rowView.findViewById(R.id.likes_number);
+		Integer numberOfLikes = details.get(position).getLikes();
+		likes_number.setText(Integer.toString(numberOfLikes));
+
+		ImageView likes_icon = (ImageView) rowView.findViewById(R.id.likes_icon);
+		if (numberOfLikes == 0) {
+			likes_icon.setImageResource(R.drawable.empty_heart);
+		} else {
+			likes_icon.setImageResource(R.drawable.full_heart);
+		}
+	}
+}

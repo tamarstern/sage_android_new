@@ -1,0 +1,28 @@
+package com.sage.entities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RecipeCategory {
+	
+	private String name;
+	
+	private  List<RecipeSubCategory> subCategories = new ArrayList<RecipeSubCategory>();
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String categoryName) {
+		this.name = categoryName;
+	}
+
+	public List<RecipeSubCategory> getSubCategories() {
+		return subCategories;
+	}
+
+	public void setSubCategories(List<RecipeSubCategory> subCategories) {
+		this.subCategories = subCategories;
+	}
+
+}

@@ -1,0 +1,13 @@
+1433707993500	Rename resource 'text_border.xml'
+1433708020441	Rename resource 'image_border.xml'
+1433708045796	Copy file
+1433880003203	Rename resource 'add_file.png'
+1433968651129	Copy file
+1434217798479	Rename resource 'Picture1.png'
+1434226307332	Encapsulate field 'title'
+1434226320732	Encapsulate field 'ingredients'
+1434226338627	Encapsulate field 'preparation'
+1434226346853	Encapsulate field 'comments'
+1434227991452	Extract method 'initializeReceiptDetails'
+1434228091731	Extract method 'initializeReceiptPanels'
+1434228826026	Extract method 'initializeReceiptDetails'

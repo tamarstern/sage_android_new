@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\libs\gson-2.3.1.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\2\gson-2.3.1_52b02c0303ca8a54bcf75a3229235eed215828f0\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\tamar.twena\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.3.0\8a62fd16fcc1c06f284fc98e6cbded2a5af1dd4c\bolts-tasks-1.3.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="8a62fd16fcc1c06f284fc98e6cbded2a5af1dd4c">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\bolts-tasks-1.3.0_0bd54cb711a269a75a030a8d1d24314e001ded89\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="bc599eb9531da9d18bc58ec4eb0b1a1d895f6839">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-cardview-v7-23.2.0_262df4e4e4972e081c9349b41ad1f0141d0977c2\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.10.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="53df71a373e68311fc2c587aa814db7f366ace95">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\com.facebook.android-facebook-android-sdk-4.10.1_e6fb7c18051990a770762b1d235f25d12d6db0f3\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="292a9fa091757208efa65e77eef63088247e51f3">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.2.0_07c87fb385cdd79495c496363859044636d16242\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.0\jars\libs\internal_impl-23.2.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="6e239441500605809818997dd63b62a947195f8c">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.2.0_a024c53bf2593e0ca1a4829f972df432ebbcc2de\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\exploded-aar\com.android.support\multidex\1.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="78ea232052df889856dcb7b7b542707c89bb3bfb">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-multidex-1.0.1_e01f9d24a9438365913a61e640d3c66ca69d9c60\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\libs\android-support-v4.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="605c447c20ca216b5556af9f215af5d4bba1b117">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\2\android-support-v4_1f3e63409537d5e411c5ca60a620fb64a76eb11a\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-8.4.0_44ab6c99a9eaa5a89e6ab21c8d592f8fd0e5441a\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\tamar.twena\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-applinks\1.3.0\bc535105332645408ef5f1380215cc954b842178\bolts-applinks-1.3.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="bc535105332645408ef5f1380215cc954b842178">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\bolts-applinks-1.3.0_e711d6c78c130f18b02bbc135dc2d484fb9b91f9\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="e5f32fa48a3eb2de0c987025c11b6e3864b634d9">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.2.0_f9ddfce7c7757497b365b0df04c166a82fe4054a\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\8.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="1c9f35e952b212c843f7bd2c7eec8e82ad95602e">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-analytics-8.4.0_e128cb519a71be6fabc37e9956fec4b7eb424f4f\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\tamar.twena\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.2.0\support-annotations-23.2.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="c5bf571bb10462bd90e5419ade67793f71acbc87">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.2.0_68032ed6dcc59c0825cc5056c62c8d8a6e021d81\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\libs\httpmime-4.3.6.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="cf8bacbf0d476c7f2221f861269365b66447f7ec">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\2\httpmime-4.3.6_c223b8175b54f2e17e78547e0a5b9d12e644ae4a\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\libs\picasso-2.5.2.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\2\picasso-2.5.2_24f814f95e7f4fe28abed8d230ed7f61b65ae952\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\libs\okio-1.6.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\2\okio-1.6.0_e1205cc62ee6b215bf3f91d62e8c6eede7afa93d\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="8c108c22c99e794eff255bb34d2a461200c4cbb0">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.2.0_9156d839092cb7bde2867eb8b8b71aebbd8c3643\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\libs\commons-io-2.4.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="b1b6ea3b7e4aa4f492509a4952029cd8e48019ad">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\2\commons-io-2.4_1b10eeff328e2aa073fc2c620faa01cb4be9aa56\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="6e3578f92f7462d1a935a1d36173e3bdd1234976">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.2.0_cfed92f7f1c97e232fd8080cd0193d28b4e32f0a\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\libs\httpclient-4.5.1.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="7e3cecc566df91338c6c67883b89ddd05a17db43">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\2\httpclient-4.5.1_415bbe957f5a669da1a5f7ec5460d1326335e2fe\classes.dex" />
+    </item>
+    <item
+        jar="D:\sage_android\sage\andriod_app\MyFirstApp\libs\httpcore-4.3.2.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
+        <dex dex="D:\sage_android\sage\andriod_app\MyFirstApp\build\intermediates\transforms\dex\debug\folders\1000\2\httpcore-4.3.2_364272da94f33b2eb34e4e75ba34b68ea34ff16a\classes.dex" />
+    </item>
+
+</items>

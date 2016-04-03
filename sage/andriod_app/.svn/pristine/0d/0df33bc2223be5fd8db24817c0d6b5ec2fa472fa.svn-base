@@ -1,0 +1,44 @@
+package com.example.myfirstapp;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.SlidingDrawer;
+
+
+public class MySimpleArrayAdapter extends ArrayAdapter<String> {
+	  private final Context context;
+	  private final String[] headers;
+	  private Integer[] imageIds;
+
+	  public MySimpleArrayAdapter(Context context, String[] headers,Integer[] imageIds) {
+	    super(context, -1, headers);
+	    this.context = context;
+	    this.headers = headers;
+	    this.imageIds = imageIds;
+	  }
+
+	  @Override
+	  public View getView(int position, View convertView, ViewGroup parent) {
+	    LayoutInflater inflater = (LayoutInflater) context
+	        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
+	 
+
+	    TextView textView = (TextView) rowView.findViewById(R.id.label);
+	    ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+	    String textValue = headers[position];
+	    textView.setText(textValue);
+	    
+	    imageView.setImageResource(imageIds[position]);
+	
+	    imageView.bringToFront();
+	    
+	   // textView.bringToFront();
+	    return rowView;
+	  }
+	} 

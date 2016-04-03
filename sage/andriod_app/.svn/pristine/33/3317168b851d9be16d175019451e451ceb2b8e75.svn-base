@@ -1,0 +1,91 @@
+package com.sage.adapters;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.myfirstapp.R;
+import com.example.myfirstapp.R.id;
+import com.example.myfirstapp.R.layout;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeSubCategory;
+import com.sage.listeners.EditCategoryPopupClickListener;
+
+import android.app.ActionBar.LayoutParams;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+public class CategoriesArrayAdapter extends ArrayAdapter<String> {
+
+	private final Context context;
+	List<RecipeCategory> categories;
+	ListView listView;
+
+	public CategoriesArrayAdapter(Context context, List<RecipeCategory> details, String[] headers) {
+		super(context, -1, headers);
+		this.context = context;
+		this.categories = details;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = inflater.inflate(R.layout.row_layout_categories, parent, false);
+
+		RecipeCategory recipeCategory = categories.get(position);
+
+		String categoryNameValue = recipeCategory.getName();
+
+		TextView categoryName = (TextView) rowView.findViewById(R.id.recipe_category_name);
+		categoryName.setText(categoryNameValue);
+
+		ImageView editIcon = (ImageView) rowView.findViewById(R.id.edit_category_icon);
+		editIcon.setOnClickListener(new EditCategoryPopupClickListener(inflater, parent, recipeCategory));
+
+		LinearLayout categoriesPanel = (LinearLayout) rowView.findViewById(R.id.category_panel);
+
+		LinearLayout subCategoriesPanel = new LinearLayout(context);
+		subCategoriesPanel.setOrientation(LinearLayout.VERTICAL);
+		LinearLayout.LayoutParams subCategoriesPanelParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
+		subCategoriesPanelParams.setMargins(40, 10, 40, 10);
+		subCategoriesPanel.setLayoutParams(subCategoriesPanelParams);
+
+		categoriesPanel.addView(subCategoriesPanel);
+		List<RecipeSubCategory> subCategories = recipeCategory.getSubCategories();
+
+		for (RecipeSubCategory subCategory : subCategories) {
+			createTextViewForSubCategory(subCategoriesPanel, subCategory);
+
+		}
+
+		return rowView;
+
+	}
+
+	private void createTextViewForSubCategory(LinearLayout subCategoriesPanel, RecipeSubCategory subCategory) {
+		TextView textView = new TextView(context);
+		subCategoriesPanel.addView(textView);
+		textView.setText(subCategory.getName());
+		textView.setBackground(context.getDrawable(R.drawable.sub_category_style));
+		textView.setTextColor(Color.parseColor("#FFFFFF"));
+	//	textView.setHeight(30);
+	//	textView.setWidth(LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(300,
+				60);
+		textParams.setMargins(10, 10, 10, 10);
+		textView.setLayoutParams(textParams);
+	}
+
+}

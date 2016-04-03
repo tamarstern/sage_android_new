@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\debug\\raw\\gtm_analytics",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-analytics\\8.4.0\\res\\raw\\gtm_analytics"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\debug\\raw\\newkeystore",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\raw\\newkeystore"
+    }
+]

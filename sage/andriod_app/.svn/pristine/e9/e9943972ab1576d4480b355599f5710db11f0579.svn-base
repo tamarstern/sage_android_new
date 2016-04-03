@@ -1,0 +1,177 @@
+package com.sage.adapters;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import com.example.myfirstapp.ActivityCategoriesPage;
+import com.example.myfirstapp.ActivitySubCategoryPage;
+import com.example.myfirstapp.ICategoryEditListener;
+import com.example.myfirstapp.NewsfeedActivity;
+import com.example.myfirstapp.R;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeCategoryBase;
+import com.sage.entities.RecipeSubCategory;
+import com.sage.listeners.EditCategoryPopupClickListener;
+
+import android.app.ActionBar.LayoutParams;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+public class CategoriesArrayAdapter extends ArrayAdapter<String> {
+
+	private final Context context;
+	private List<RecipeCategory> categories;
+	private LayoutInflater inflater;
+
+	public CategoriesArrayAdapter(ActivityCategoriesPage context, Collection<RecipeCategory> categories,
+			String[] headers) {
+		super(context, -1, headers);
+		this.context = context;
+		this.categories = new ArrayList<RecipeCategory>(categories);
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = inflater.inflate(R.layout.row_layout_categories, parent, false);
+
+		RecipeCategory recipeCategory = categories.get(position);
+
+		String categoryNameValue = recipeCategory.getName();
+
+		TextView categoryName = (TextView) rowView.findViewById(R.id.recipe_category_name);
+		categoryName.setText(categoryNameValue);
+
+		ImageView editIcon = (ImageView) rowView.findViewById(R.id.edit_category_icon);
+		EditCategoryPopupClickListener editClickListener = new EditCategoryPopupClickListener(inflater, parent,
+				recipeCategory);
+		editClickListener.registerListener((ICategoryEditListener) context);
+		editIcon.setOnClickListener(editClickListener);
+
+		LinearLayout categoriesPanel = (LinearLayout) rowView.findViewById(R.id.category_panel);
+
+		LinearLayout subCategoriesPanel = createSubCategoriesPanel();
+
+		categoriesPanel.addView(subCategoriesPanel);
+		List<RecipeSubCategory> subCategories = recipeCategory.getSubCategories();
+
+		for (RecipeSubCategory subCategory : subCategories) {
+			createSubCategoryLayout(subCategoriesPanel, subCategory, parent);
+
+		}
+
+		createAddNewSubCategoryButton(subCategoriesPanel, parent,recipeCategory);
+
+		return rowView;
+
+	}
+
+	private void createAddNewSubCategoryButton(LinearLayout subCategoriesPanel, ViewGroup parent, final RecipeCategory currentCategory) {
+		Button addNewSubCategoryButton = new Button(context);
+		addNewSubCategoryButton.setText(R.string.add_new_sub_category);
+		addNewSubCategoryButton.setBackground(context.getDrawable(R.drawable.sub_category_style));
+		addNewSubCategoryButton.setTextColor(Color.parseColor("#FFFFFF"));
+		addNewSubCategoryButton.setLayoutParams(new LinearLayout.LayoutParams(200, 50));
+		addNewSubCategoryButton.setGravity(Gravity.START);
+		addNewSubCategoryButton.setTransformationMethod(null);
+		EditCategoryPopupClickListener editClickListener = new EditCategoryPopupClickListener(inflater, parent,
+				new RecipeSubCategory());
+		editClickListener.registerListener(new ICategoryEditListener() {
+			
+			@Override
+			public void onSaveCategory(RecipeCategoryBase category) {
+				if(category instanceof RecipeSubCategory) {
+					currentCategory.getSubCategories().add((RecipeSubCategory)category);
+				}
+				
+			}
+		});
+		editClickListener.registerListener((ICategoryEditListener) context);
+		addNewSubCategoryButton.setOnClickListener(editClickListener);
+		
+		subCategoriesPanel.addView(addNewSubCategoryButton);
+	}
+
+	private void createSubCategoryLayout(LinearLayout subCategoriesPanel, RecipeSubCategory subCategory,
+			ViewGroup parent) {
+
+		LinearLayout singleSubCategoryPanel = createSingleCategoryPanel(subCategoriesPanel);
+		createEditIcon(subCategory, singleSubCategoryPanel, parent);
+		createTextForSubCategory(subCategory, singleSubCategoryPanel);
+	}
+
+	private LinearLayout createSubCategoriesPanel() {
+		LinearLayout subCategoriesPanel = new LinearLayout(context);
+		subCategoriesPanel.setOrientation(LinearLayout.VERTICAL);
+		LinearLayout.LayoutParams subCategoriesPanelParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT);
+		subCategoriesPanelParams.setMargins(40, 10, 40, 0);
+		subCategoriesPanel.setLayoutParams(subCategoriesPanelParams);
+
+		return subCategoriesPanel;
+	}
+
+	private void createTextForSubCategory(final RecipeSubCategory subCategory, LinearLayout singleSubCategoryPanel) {
+		TextView textView = new TextView(context);
+		singleSubCategoryPanel.addView(textView);
+		textView.setText(subCategory.getName());
+
+		textView.setTextColor(Color.parseColor("#FFFFFF"));
+		LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 60);
+		textParams.setMargins(10, 10, 10, 10);
+		textView.setLayoutParams(textParams);
+		
+		textView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, ActivitySubCategoryPage.class).putExtra(EntityDataTransferConstants.SUB_CATEGORY_DATA_TRANSFER, subCategory);
+				context.startActivity(intent);
+
+			}
+		});
+	}
+
+	private void createEditIcon(RecipeSubCategory subCategory, LinearLayout singleSubCategoryPanel, ViewGroup parent) {
+		ImageView imageView = new ImageView(context);
+		singleSubCategoryPanel.addView(imageView);
+		imageView.setImageResource(R.drawable.edit_category);
+		imageView.setAdjustViewBounds(true);
+		imageView.setScaleType(ScaleType.FIT_XY);
+		imageView.setBackground(context.getDrawable(R.drawable.sub_category_style));
+
+		EditCategoryPopupClickListener editClickListener = new EditCategoryPopupClickListener(inflater, parent,
+				subCategory);
+		editClickListener.registerListener((ICategoryEditListener) context);
+		imageView.setOnClickListener(editClickListener);
+	}
+
+	private LinearLayout createSingleCategoryPanel(LinearLayout subCategoriesPanel) {
+		LinearLayout singleSubCategoryPanel = new LinearLayout(context);
+		singleSubCategoryPanel.setOrientation(LinearLayout.HORIZONTAL);
+		LinearLayout.LayoutParams subCategoriesPanelParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+				60);
+		subCategoriesPanelParams.setMargins(0, 5, 0, 5);
+		singleSubCategoryPanel.setLayoutParams(subCategoriesPanelParams);
+		singleSubCategoryPanel.setBackground(context.getDrawable(R.drawable.sub_category_style));
+
+		subCategoriesPanel.addView(singleSubCategoryPanel);
+
+		return singleSubCategoryPanel;
+	}
+
+}

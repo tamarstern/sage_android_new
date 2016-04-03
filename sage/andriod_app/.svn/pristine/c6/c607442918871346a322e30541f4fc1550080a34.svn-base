@@ -1,0 +1,22 @@
+package com.sage.entities;
+
+import java.io.Serializable;
+
+public class RecipeCategoryBase implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4099435042944360226L;
+	private String name;
+	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String categoryName) {
+		this.name = categoryName;
+	}
+
+}

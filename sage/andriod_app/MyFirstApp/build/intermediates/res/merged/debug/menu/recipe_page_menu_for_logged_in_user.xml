@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_publish"
+        android:title="@string/publish_recipe"
+        app:showAsAction="always|withText"
+        android:icon="@drawable/publish_white"/>
+    <item
+        android:id="@+id/action_unpublish"
+        android:title="@string/unpublish_recipe"
+        app:showAsAction="always|withText"
+        android:icon="@drawable/publish_black"/>
+    <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/save_white"
+        android:title="@string/action_save"
+        app:showAsAction="ifRoom"/>
+    
+  
+</menu>

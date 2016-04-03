@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="150dp"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
+    android:gravity="center"> 
+    <!--android:orientation="vertical" --> 
+    
+    <!--SlidingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/drawer"
+     android:layout_width="100dp"
+     android:layout_height="150dp"
+
+     android:handle="@+id/handle"
+     android:content="@+id/content">-->
+    
+    
+     <TextView 
+		    android:layout_width="200dp"
+		    android:layout_height="25dp"
+		    android:id="@+id/label"
+		    android:text="@+id/label"
+		    android:textSize="20sp" 
+		    android:textColor="#FFFFFF"
+		    android:gravity="center"
+		    android:background="@drawable/panel_header"/>
+    
+
+ 
+     <ImageView
+        android:id="@+id/icon"
+        android:layout_width="200dp"
+        android:layout_height="125dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_launcher"
+        android:contentDescription="@string/description"
+        android:adjustViewBounds="true" 
+        android:background="@drawable/panel_border"
+        android:layout_below="@id/label"/>
+     
+ <!--/SlidingDrawer>-->
+</RelativeLayout>

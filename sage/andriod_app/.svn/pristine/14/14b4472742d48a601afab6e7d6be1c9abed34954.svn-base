@@ -1,0 +1,31 @@
+package com.example.myfirstapp;
+
+import com.sage.entities.RecipeUserBasicData;
+
+import android.content.Intent;
+import android.view.View;
+import android.view.View.OnClickListener;
+
+public class ProfilePageClickListener implements OnClickListener {
+
+	/**
+	 * 
+	 */
+	private final NewsfeedArrayAdapter basicDataArrayAdapter;
+	private RecipeUserBasicData recipeBasicData;
+
+	public ProfilePageClickListener(NewsfeedArrayAdapter newsfeedArrayAdapter, RecipeUserBasicData recipeBasicData) {
+		this.basicDataArrayAdapter = newsfeedArrayAdapter;
+		this.recipeBasicData = recipeBasicData;
+	}
+
+	@Override
+	public void onClick(View v) {
+		Intent intent = new Intent(this.basicDataArrayAdapter.getContext(), ProfilePageActivity.class)
+				.putExtra("userName", recipeBasicData.getUserName());
+		
+		this.basicDataArrayAdapter.getContext().startActivity(intent);
+
+	}
+
+}

@@ -1,0 +1,83 @@
+package com.sage.adapters;
+
+import java.util.ArrayList;
+
+import com.example.myfirstapp.R;
+import com.example.myfirstapp.R.drawable;
+import com.example.myfirstapp.R.id;
+import com.example.myfirstapp.R.layout;
+import com.sage.entities.RecipeBasicData;
+import com.sage.listeners.RecipeDetailsClickListener;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class ProfilePageArrayAdapter extends ArrayAdapter<String> {
+	private final Context context;
+	ArrayList<RecipeBasicData> details;
+
+	public ProfilePageArrayAdapter(Context context, ArrayList<RecipeBasicData> details, String[] headers) {
+		super(context, -1, headers);
+		this.context = context;
+		this.details = details;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = inflater.inflate(R.layout.row_layout_profile_page, parent, false);
+
+		
+		TextView recipeHeader = (TextView) rowView.findViewById(R.id.recipe_header);
+		String recipeHeaderValue = details.get(position).getHeader();
+		recipeHeader.setText(recipeHeaderValue);
+		recipeHeader.setOnClickListener(new RecipeDetailsClickListener(this.getContext(), details.get(position)));
+
+		
+		
+
+		ImageView imageView = (ImageView) rowView.findViewById(R.id.recipe_main_image);
+		imageView.setImageResource(details.get(position).getImageId());
+		imageView.setOnClickListener(new RecipeDetailsClickListener(this.getContext(), details.get(position)));
+
+		initLikes(position, rowView);
+
+		initComments(position, rowView);
+
+		return rowView;
+	}
+
+	private void initComments(int position, View rowView) {
+		TextView likes_number = (TextView) rowView.findViewById(R.id.comments_number_profile_page);
+		Integer numberOfLikes = details.get(position).getLikes();
+		likes_number.setText(Integer.toString(numberOfLikes));
+
+		ImageView likes_icon = (ImageView) rowView.findViewById(R.id.comments_icon_profile_page);
+		if (numberOfLikes == 0) {
+			likes_icon.setImageResource(R.drawable.empty_comment);
+		} else {
+			likes_icon.setImageResource(R.drawable.full_comment);
+		}
+
+	}
+
+	private void initLikes(int position, View rowView) {
+		TextView likes_number = (TextView) rowView.findViewById(R.id.likes_number_profile_page);
+		Integer numberOfLikes = details.get(position).getLikes();
+		likes_number.setText(Integer.toString(numberOfLikes));
+
+		ImageView likes_icon = (ImageView) rowView.findViewById(R.id.likes_icon_profile_page);
+		if (numberOfLikes == 0) {
+			likes_icon.setImageResource(R.drawable.empty_heart);
+		} else {
+			likes_icon.setImageResource(R.drawable.full_heart);
+		}
+	}
+}

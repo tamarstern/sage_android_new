@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Encapsulate field &apos;com.sage.entities.ReceiptDetails.imageId&apos; in &apos;com.sage.entities.ReceiptDetails&apos;&#x0D;&#x0A;- Original project: &apos;MyFirstApp&apos;&#x0D;&#x0A;- Original element: &apos;com.sage.entities.ReceiptDetails.imageId&apos;&#x0D;&#x0A;- Getter method name: &apos;getImageId&apos;&#x0D;&#x0A;- Setter method name: &apos;setImageId&apos;&#x0D;&#x0A;- Field visibility: &apos;private&apos;&#x0D;&#x0A;- Use getter and setter methods in declaring type" comments="false" declaring="true" description="Encapsulate field &apos;imageId&apos;" flags="589830" getter="getImageId" id="org.eclipse.jdt.ui.self.encapsulate" input="/src&lt;com.sage.entities{ReceiptDetails.java[ReceiptDetails^imageId" insertion="9" setter="setImageId" stamp="1435432241136" version="1.0" visibility="2"/>
+</session>

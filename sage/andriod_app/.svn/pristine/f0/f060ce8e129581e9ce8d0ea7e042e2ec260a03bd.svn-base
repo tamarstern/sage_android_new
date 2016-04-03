@@ -1,0 +1,85 @@
+package com.sage.listeners;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import com.example.myfirstapp.ICategoryEditListener;
+import com.example.myfirstapp.R;
+import com.sage.entities.RecipeCategory;
+
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+
+public class EditCategoryPopupClickListener implements OnClickListener {
+
+	private LayoutInflater inflater;
+	private ViewGroup container;
+
+	private RecipeCategory category;
+
+	private EditText categoryName;
+
+	private Set<ICategoryEditListener> listeners = new HashSet<ICategoryEditListener>();
+
+	public EditCategoryPopupClickListener(LayoutInflater inflater, ViewGroup container, RecipeCategory category) {
+		this.inflater = inflater;
+		this.container = container;
+		this.category = category;
+	}
+
+	@Override
+	public void onClick(View v) {
+		View popupView = inflater.inflate(R.layout.edit_category_popup, container, false);
+		final PopupWindow popupWindow = new PopupWindow(popupView, 400, 400, true);
+		popupWindow.showAtLocation(container, Gravity.CENTER, 0, 0);
+		this.categoryName = (EditText) popupView.findViewById(R.id.category_name_editable);
+
+		if (category != null) {
+			categoryName.setText(category.getName());
+		} else {
+			category = new RecipeCategory();
+		}
+
+		Button confirmDelete = (Button) popupView.findViewById(R.id.save_category);
+		confirmDelete.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View popupView) {
+				category.setName(categoryName.getText().toString());
+				notifySaveCategory();
+				popupWindow.dismiss();
+			}
+		});
+
+		Button cancelDelete = (Button) popupView.findViewById(R.id.cancel_save_category);
+		cancelDelete.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View popupView) {
+				popupWindow.dismiss();
+			}
+		});
+
+	}
+
+	public void notifySaveCategory() {
+		for (ICategoryEditListener listener : listeners) {
+			listener.onSaveCategory(this.category);
+		}
+	}
+
+	public void registerListener(ICategoryEditListener listener) {
+		listeners.add(listener);
+
+	}
+
+	public void unRegisterListener(ICategoryEditListener listener) {
+		listeners.remove(listener);
+
+	}
+
+}

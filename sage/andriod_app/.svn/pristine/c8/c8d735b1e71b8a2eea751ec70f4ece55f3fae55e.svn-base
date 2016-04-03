@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/main_picture_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/receipt_main_pic"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/appliction_panel_style"
+            android:contentDescription="@string/description"
+            android:padding="9dp"
+            android:paddingBottom="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/picture1" />
+
+        <Button
+            android:id="@+id/add_picture"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/appliction_panel_style"
+            android:text="@string/add_picture_label"
+            android:textAllCaps="false"
+            android:textColor="#355723"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/receipt_ingredients_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_picture_panel"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/appliction_panel_style"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/receipt_ingredients_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/add_ingredients_header"
+            android:textColor="#355723"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/receipt_ingredients_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:hint="@string/add_ingredients_content"
+            android:textColor="#355723" 
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/receipt_preparation_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/receipt_ingredients_panel"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/appliction_panel_style"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/receipt_preparation_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/add_preparation_header"
+            android:textColor="#355723"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/receipt_preparation_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:hint="@string/add_preparation_content"
+            android:textColor="#355723" 
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/receipt_comments_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/receipt_preparation_panel"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/appliction_panel_style"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/receipt_comments_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/add_comments_header"
+            android:textColor="#355723"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/receipt_comments_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:hint="@string/add_comments_content"
+            android:textColor="#355723" />
+    </LinearLayout>
+
+</RelativeLayout>

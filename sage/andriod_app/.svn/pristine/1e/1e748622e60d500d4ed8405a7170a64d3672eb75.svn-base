@@ -1,0 +1,30 @@
+package com.sage.entities;
+
+public class RecipeDetailsFactory {
+
+	private static final String SAMPLE_RECIPE_URL = "http://www.epicurious.com/recipes/food/views/chocolate-mousse-107437";
+
+	private static final String title = "Dried Tomatoes";
+
+	private static final String ingredients = "Cherry tomatoes \nOlive oil \nKosher salt \nthyme";
+
+	private static final String preparation = "Wash and cut cherry tomatoes in half \nIn a bowl mix tomatoes with olive oil and salt \nSpread tomatoes evenly in a baking pan \nspread \nSet oven to 1000C \nBake for 5-6 hours until tomatoes are dry enough to your liking";
+
+	private static final String comments = "Can add rosemary branches to/instead thyme";
+
+	public RecipeDetails createReceiptDetails(RecipeBasicData basicData) {
+		RecipeDetails recipeDetails = null;
+
+		if (basicData.getType() == RecipeType.TEXT || basicData.getType() == RecipeType.PICTURE) {
+			recipeDetails = new RecipeTextDetails(title, ingredients, preparation, comments, basicData.getImageId());
+		} else {
+			recipeDetails = new RecipeLinkDetails(title,
+					SAMPLE_RECIPE_URL, comments);
+		}
+		recipeDetails.setNumberOfLikes(basicData.getLikes());
+		recipeDetails.setNumberOfComments(basicData.getComments());
+		recipeDetails.setType(basicData.getType());
+		return recipeDetails;
+	}
+
+}

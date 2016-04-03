@@ -1,0 +1,62 @@
+package com.sage.fragments;
+
+import com.example.myfirstapp.R;
+import com.example.myfirstapp.R.drawable;
+import com.example.myfirstapp.R.id;
+import com.example.myfirstapp.R.layout;
+import com.sage.entities.RecipeDetails;
+
+import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+public class SavePublishRecipeFragment extends Fragment {
+
+	private static final int ZERO_RATING = 0;
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		View savePublishRecipe = inflater.inflate(R.layout.save_and_publish_recipe_fragment, container, false);
+
+		Intent i = getActivity().getIntent();
+
+		RecipeDetails receiptDetails = (RecipeDetails) i.getSerializableExtra("receiptDeatils");
+		
+
+		setRatingImage(receiptDetails, savePublishRecipe);
+
+		return savePublishRecipe;
+	}
+
+	private void setRatingImage(RecipeDetails receiptDetails, View savePublishRecipe) {
+		ImageView rating = (ImageView) savePublishRecipe.findViewById(R.id.receipt_rating);
+		Integer ratingValue = receiptDetails == null ? ZERO_RATING : receiptDetails.getRating();
+		switch (ratingValue) {
+		case 0:
+			rating.setImageResource(R.drawable.stars0);
+			break;
+		case 1:
+			rating.setImageResource(R.drawable.stars1);
+			break;
+		case 2:
+			rating.setImageResource(R.drawable.stars2);
+			break;
+		case 3:
+			rating.setImageResource(R.drawable.stars3);
+			break;
+		case 4:
+			rating.setImageResource(R.drawable.stars4);
+			break;
+		case 5:
+			rating.setImageResource(R.drawable.stars5);
+			break;
+
+		}
+	}
+
+}

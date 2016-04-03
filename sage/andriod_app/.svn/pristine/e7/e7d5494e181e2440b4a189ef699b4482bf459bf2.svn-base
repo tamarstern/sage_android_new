@@ -1,0 +1,58 @@
+package com.sage.services;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.apache.commons.io.IOUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+
+import android.util.Base64;
+
+public class LoginService {
+	
+	public JsonElement login( String username, String password) throws IOException {
+		InputStream is = null;
+		String myurl = "http://10.0.2.2:1337/api//login";
+		try {
+			int len = 1000;
+			URL url = new URL(myurl);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+			String userpass = username + ":" + password;
+			String basicAuth = "Basic " + new String(Base64.encodeToString(userpass.getBytes(), Base64.DEFAULT));
+
+			conn.setRequestProperty("Authorization", basicAuth);
+
+			conn.setReadTimeout(100000);
+			conn.setConnectTimeout(150000);
+			conn.setRequestMethod("POST");
+			conn.setDoInput(true);
+
+			conn.connect();
+			is = conn.getInputStream();
+
+			String contentAsString = readIt(is, len);
+			contentAsString.replaceAll("\\\\", "");
+			JsonElement loginResponse = new Gson().fromJson(contentAsString, JsonElement.class);
+			return loginResponse;
+
+		} finally {
+			if (is != null) {
+				is.close();
+			}
+		}
+	}
+
+	private String readIt(InputStream inputStream, int len) throws IOException {
+		StringWriter writer = new StringWriter();
+		IOUtils.copy(inputStream, writer, "UTF-8");
+		String response = writer.toString();
+		return response;
+	}
+
+}

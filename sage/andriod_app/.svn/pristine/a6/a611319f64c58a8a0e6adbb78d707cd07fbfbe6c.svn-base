@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_bar_main"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:weightSum="4" >
+
+    <Button
+        android:id="@+id/home_buttom_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/button_style"
+        android:drawablePadding="0dp"
+        android:drawableTop="@drawable/house"
+        android:text="@string/home"
+        android:textColor="#000000"
+        android:textSize="10sp" />
+
+    <Button
+        android:id="@+id/receipt_box_buttom_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/button_style"
+        android:drawablePadding="0dp"
+        android:drawableTop="@drawable/book_open"
+        android:text="@string/receipt_box"
+        android:textColor="#000000"
+        android:textSize="10sp" />
+
+    <Button
+        android:id="@+id/new_receipt_buttom_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/button_style"
+        android:drawablePadding="0dp"
+        android:drawableTop="@drawable/document_add"
+        android:text="@string/new_receipt"
+        android:textColor="#000000"
+        android:textSize="10sp" />
+
+    <Button
+        android:id="@+id/settings_buttom_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/button_style"
+        android:drawablePadding="0dp"
+        android:drawableTop="@drawable/settings"
+        android:text="@string/settings"
+        android:textColor="#000000"
+        android:textSize="10sp" />
+
+</LinearLayout>

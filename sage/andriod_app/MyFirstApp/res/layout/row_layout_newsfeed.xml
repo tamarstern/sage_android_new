@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/appliction_panel_style" >
+
+    <RelativeLayout
+        android:id="@+id/user_recipe_container_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="9dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginStart="20dp" >
+
+        <RelativeLayout
+            android:id="@+id/user_recipe_panel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/user_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@android:color/transparent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif"
+                    android:singleLine="false"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/shared_lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="4dp"
+                    android:singleLine="true"
+                    android:text="@string/shared_lbl"
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/owner_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="4dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/recipe_lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif"
+                    android:padding="4dp"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="4dp"
+                    android:singleLine="true"
+                    android:text="@string/recipe_lbl"
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/featured_recipe"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/save_recipe"
+                android:focusable="false"
+                android:src="@drawable/featured_recipe"
+                android:textAllCaps="false" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/user_recipe_panel"
+            android:background="@android:color/transparent"
+            android:text="@+id/label"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/main_picture_container_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_recipe_container_panel"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/recipe_main_picture"
+            android:layout_width="match_parent"
+            android:layout_height="275dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/description"
+            android:paddingBottom="9dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="9dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/default_recipe_image" />
+
+        <LinearLayout
+            android:id="@+id/main_link_recipe_container_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:orientation="vertical" >
+
+            <ProgressBar
+                android:id="@+id/get_recipe_link_details_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="275dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/progress_listview" />
+
+            <ImageView
+                android:id="@+id/recipe_link_main_picture"
+                android:layout_width="fill_parent"
+                android:layout_height="275dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/description"
+                android:paddingBottom="9dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="9dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/default_recipe_image" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/comments_likes_save_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_picture_container_panel"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/like_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="20dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/like_recipe"
+            android:focusable="false"
+            android:src="@drawable/empty_heart"
+            android:textAllCaps="false" />
+
+        <ImageButton
+            android:id="@+id/unlike_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="20dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/unlike_recipe"
+            android:focusable="false"
+            android:src="@drawable/full_heart"
+            android:textAllCaps="false" />
+
+        <ImageButton
+            android:id="@+id/comments_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/comment_recipe"
+            android:focusable="false"
+            android:src="@drawable/empty_comment"
+            android:textAllCaps="false" />
+
+        <ImageButton
+            android:id="@+id/save_recipe"
+            style="?android:textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="250dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="250dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/save_recipe"
+            android:focusable="false"
+            android:gravity="end"
+            android:src="@drawable/save_icon_small"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/comments_likes_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/comments_likes_save_panel"
+        android:layout_marginEnd="9dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginStart="20dp"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/comments_likes_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_link_description"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</RelativeLayout>

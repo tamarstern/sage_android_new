@@ -1,0 +1,61 @@
+package com.sage.fragments;
+
+import com.example.myfirstapp.ActivityCategoriesPage;
+import com.example.myfirstapp.R;
+import com.example.myfirstapp.R.id;
+import com.example.myfirstapp.R.layout;
+import com.sage.entities.RecipeDetails;
+import com.sage.listeners.DeletePopupClickListener;
+
+import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+
+public class DeleteMoveRecipeFragment extends Fragment {
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		View savePublishRecipe = inflater.inflate(R.layout.delete_move_recipe_fragment, container, false);
+
+		Intent i = getActivity().getIntent();
+
+		RecipeDetails receiptDetails = (RecipeDetails) i.getSerializableExtra("receiptDeatils");
+
+		if (receiptDetails == null) {
+
+			View deleteButton = savePublishRecipe.findViewById(R.id.delete_recipe);
+			deleteButton.setVisibility(View.GONE);
+
+			View moveButton = savePublishRecipe.findViewById(R.id.move_recipe);
+			moveButton.setVisibility(View.GONE);
+
+		} else {
+
+			Button deleteButton = (Button) savePublishRecipe.findViewById(R.id.delete_recipe);
+			deleteButton.setOnClickListener(new DeletePopupClickListener(inflater, container, savePublishRecipe));
+
+			Button moveButton = (Button) savePublishRecipe.findViewById(R.id.move_recipe);
+			moveButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity().getApplicationContext(), ActivityCategoriesPage.class);
+					startActivity(intent);
+
+				}
+			});
+
+		}
+		return savePublishRecipe;
+	}
+
+}
