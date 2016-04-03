@@ -1,7 +1,19 @@
 package com.sage.adapters;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
+import android.app.Activity;
+import android.content.Context;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myfirstapp.R;
 import com.google.gson.Gson;
@@ -27,20 +39,8 @@ import com.sage.utils.EntityUtils;
 import com.sage.utils.ImagesInitializer;
 import com.sage.utils.RecipeOwnerContext;
 
-import android.app.Activity;
-import android.content.Context;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 
 public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> implements IClosePopupCommentListener {
 	private final Activity context;
@@ -221,7 +221,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		recipeUser.setText(recipeUserName);
 		boolean openUserProfile = EntityUtils.isLoggedInUserRecipe(recipeUserBasicData.getUserId(), context);
 		recipeUser.setOnClickListener(
-				new ProfilePageClickListener(this.getContext(), recipeUserBasicData.getUserDisplayName(),
+				new ProfilePageClickListener(context, recipeUserBasicData.getUserDisplayName(),
 						recipeUserBasicData.getUserId(), recipeUserBasicData.getUserObjectId(), openUserProfile));
 	}
 
@@ -280,7 +280,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 			String ownerDislayNameText = MessageFormat.format("{0}'\'s", recipeUserBasicData.getOwnerDisplayName());
 			ownerTextView.setText(ownerDislayNameText);
 			ownerTextView.setOnClickListener(
-					new ProfilePageClickListener(this.getContext(), recipeUserBasicData.getOwnerDisplayName(),
+					new ProfilePageClickListener(context, recipeUserBasicData.getOwnerDisplayName(),
 							recipeUserBasicData.getOwnerUserName(), recipeUserBasicData.getOwnerObjectId(), false));
 		}
 	}

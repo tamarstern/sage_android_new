@@ -1,17 +1,5 @@
 package com.sage.fragments;
 
-import com.example.myfirstapp.ActivityCategoriesPage;
-import com.example.myfirstapp.NewsfeedActivity;
-import com.example.myfirstapp.ProfilePageActivity;
-import com.example.myfirstapp.R;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeDetails;
-import com.sage.listeners.AddRecipePopupHandler;
-import com.sage.listeners.SettingsPopupHandler;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.AnalyticsUtils;
-import com.sage.utils.EntityUtils;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -22,6 +10,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+
+import com.example.myfirstapp.ActivityCategoriesPage;
+import com.example.myfirstapp.NewsfeedActivity;
+import com.example.myfirstapp.R;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeDetails;
+import com.sage.listeners.AddRecipePopupHandler;
+import com.sage.listeners.ProfilePageHandler;
+import com.sage.listeners.SettingsPopupHandler;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.EntityUtils;
 
 public class ToolbarFragment extends Fragment {
 
@@ -131,10 +131,9 @@ public class ToolbarFragment extends Fragment {
 		startActivity(intent);
 	}
 
-	private void openProfilePage(final Context applicationContext) {
-		Intent intent = new Intent(applicationContext, ProfilePageActivity.class)
-				.putExtra(EntityDataTransferConstants.OPEN_USER_PROFILE, true);
-		startActivity(intent);
+	private void openProfilePage(final Activity applicationContext) {
+		ProfilePageHandler handler = new ProfilePageHandler(applicationContext,null, null, null, true );
+		handler.HandleOpenProfilePage();
 	}
 
 	private void openNewsfeed(final Context applicationContext) {

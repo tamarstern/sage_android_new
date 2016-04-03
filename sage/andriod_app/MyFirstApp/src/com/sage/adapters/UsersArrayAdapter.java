@@ -1,33 +1,28 @@
 package com.sage.adapters;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import com.example.myfirstapp.R;
-import com.sage.entities.RecipeBasicData;
-import com.sage.entities.RecipeComment;
-import com.sage.entities.RecipePublished;
-import com.sage.entities.User;
-import com.sage.listeners.ProfilePageClickListener;
-import com.sage.listeners.RecipeDetailsClickListener;
-import com.sage.utils.EntityUtils;
-
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.myfirstapp.R;
+import com.sage.entities.User;
+import com.sage.listeners.ProfilePageClickListener;
+import com.sage.utils.EntityUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersArrayAdapter extends ArrayAdapter<User> {
 
-	private final Context context;
+	private final Activity context;
 	private List<User> users;
 	private LayoutInflater inflater;
 
-	public UsersArrayAdapter(Context context, List<User> recipes) {
+	public UsersArrayAdapter(Activity context, List<User> recipes) {
 		super(context, 0, recipes);
 		this.context = context;
 		this.users = new ArrayList<User>(recipes);
@@ -43,7 +38,7 @@ public class UsersArrayAdapter extends ArrayAdapter<User> {
 		TextView recipeCommentOwner = (TextView) rowView.findViewById(R.id.user_display_name);
 		recipeCommentOwner.setText(user.getUserDisplayName());
 
-		recipeCommentOwner.setOnClickListener(new ProfilePageClickListener(this.getContext(), user.getUserDisplayName(),
+		recipeCommentOwner.setOnClickListener(new ProfilePageClickListener(context, user.getUserDisplayName(),
 				 user.getUsername(),user.get_id(), EntityUtils.isLoggedInUserRecipe(user.getUsername(), context)));
 
 		return rowView;
