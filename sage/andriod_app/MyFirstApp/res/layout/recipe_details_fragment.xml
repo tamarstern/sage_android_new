@@ -69,6 +69,7 @@
             android:background="@android:color/transparent"
             android:gravity="start"
             android:hint="@string/add_ingredients_content"
+            android:inputType="textCapSentences"
             android:imeOptions="actionDone"
             android:textColor="#355723"
             android:textColorHint="#b3b3b3" />
@@ -102,6 +103,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="5dp"
             android:layout_marginStart="15dp"
+            android:inputType="textCapSentences"
             android:background="@android:color/transparent"
             android:gravity="start"
             android:hint="@string/add_preparation_content"
@@ -140,6 +142,7 @@
             android:layout_marginStart="15dp"
             android:background="@android:color/transparent"
             android:gravity="start"
+            android:inputType="textCapSentences"
             android:hint="@string/add_comments_content"
             android:imeOptions="actionDone"
             android:textColor="#355723"

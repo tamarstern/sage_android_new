@@ -1,12 +1,13 @@
 package com.sage.utils;
 
-import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipeTextDetails;
-
 import android.app.Activity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
+
+import com.sage.entities.RecipeDetails;
+import com.sage.entities.RecipeTextDetails;
 
 public class RecipeDetailsBinder {
 
@@ -25,9 +26,13 @@ public class RecipeDetailsBinder {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				deatils.setHeader(s.toString());
-				deatils.setRecipeChanges(true);
-				AnalyticsUtils.sendAnalyticsTrackingEvent(activity, AnalyticsUtils.CLICK_ADD_PICTURE_RECIPE);
+				String recipeTitle = s.toString();
+				if(!TextUtils.isEmpty(recipeTitle)) {
+					deatils.setHeader(recipeTitle);
+					deatils.setRecipeChanges(true);
+					AnalyticsUtils.sendAnalyticsTrackingEvent(activity, AnalyticsUtils.CLICK_ADD_PICTURE_RECIPE);
+
+				}
 
 			}
 		});

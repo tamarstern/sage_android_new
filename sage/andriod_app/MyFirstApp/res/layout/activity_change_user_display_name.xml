@@ -42,6 +42,7 @@
         android:layout_below="@+id/enter_name_lbl"
         android:layout_marginBottom="20dp"
         android:hint="@string/first_and_last_name"
+        android:inputType="textCapWords"
         android:maxLines="1"
         android:singleLine="true"
         android:theme="@style/EditTextLogin" />
