@@ -144,7 +144,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginStart="15dp"
-                        android:inputType="textCapSentences"
+                        android:inputType="textCapSentences|textMultiLine"
                         android:background="@android:color/transparent"
                         android:gravity="start"
                         android:hint="@string/add_comments_content"

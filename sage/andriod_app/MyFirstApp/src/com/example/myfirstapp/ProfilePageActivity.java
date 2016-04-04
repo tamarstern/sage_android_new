@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,8 +26,6 @@ import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeBasicData;
 import com.sage.entities.RecipeUserBasicData;
 import com.sage.services.FollowUserService;
-import com.sage.services.GetMyProfile;
-import com.sage.services.GetProfileById;
 import com.sage.services.GetPublishedRecipesForUser;
 import com.sage.services.UnfollowUserService;
 import com.sage.tasks.GetRecipiesActivity;
@@ -37,10 +34,8 @@ import com.sage.utils.AnalyticsUtils;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Locale;
 
 public class ProfilePageActivity extends AppCompatActivity {
 
@@ -229,18 +224,22 @@ public class ProfilePageActivity extends AppCompatActivity {
 		Serializable transferedUserDisplayName = i
 				.getSerializableExtra(EntityDataTransferConstants.USER_DISPLAY_NAME_DATA_TRANSFER);
 		iniActionBarWithUserName(sharedPref, transferedUserDisplayName);
-		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
+		//String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 
-		String userObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+		//String userObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 		if (!currentUserProfile) {
-			String userToFolloId = (String) i
-					.getSerializableExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER);
-			new GetUserProfile(this).execute(token, userObjectId, userToFolloId);
+		//	String userToFolloId = (String) i
+		//			.getSerializableExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER);
+			boolean isFollowing = (boolean)i.getSerializableExtra(EntityDataTransferConstants.IS_FOLLOWING);
+			initFollowButtonsVisibility(isFollowing);
 		}
 
 		else {
 
-			new GetMyProfileTask().execute(token, userObjectId);
+			Serializable countTransfered = getIntent().getSerializableExtra(EntityDataTransferConstants.FOLLOW_BY_COUNT);
+			String count = (countTransfered == null ? "" :countTransfered.toString()) ;
+
+			initSupportActionBarTitleWithFollowersNumber(count);
 		}
 
 	}
@@ -266,13 +265,13 @@ public class ProfilePageActivity extends AppCompatActivity {
 		}
 	}
 
-	private void initVisibilityForServerError() {
-		initFollowButtonsVisibility(false);
-	}
+	private void initSupportActionBarTitleWithFollowersNumber(String followedByCount) {
+		if (TextUtils.isEmpty(followedByCount)) {
+			return;
+		}
 
-	private void initSupportActionBarTitleWithFollowersNumber(String follwedByCount) {
 		String currentText = getResources().getString(R.string.user_followed_by);
-		String followedByText = MessageFormat.format("{0}: {1}", currentText, follwedByCount);
+		String followedByText = MessageFormat.format("{0}: {1}", currentText, followedByCount);
 		String currentTitle = getSupportActionBar().getTitle().toString();
 		currentTitle = MessageFormat.format("{0}   ({1})", currentTitle, followedByText);
 		getSupportActionBar().setTitle(currentTitle);
@@ -356,91 +355,6 @@ public class ProfilePageActivity extends AppCompatActivity {
 
 	}
 
-	private class GetUserProfile extends AsyncTask<String, Void, JsonElement> {
-
-		private Activity activity;
-
-		public GetUserProfile(Activity activity) {
-			this.activity = activity;
-		}
-
-		@Override
-		protected JsonElement doInBackground(String... params) {
-
-			try {
-				String currentToken = params[0];
-				String userName = params[1];
-				String userToFollow = params[2];
-				GetProfileById service = new GetProfileById(currentToken, userName, userToFollow);
-
-				return service.getProfile();
-			} catch (Exception e) {
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(JsonElement result) {
-
-			if (result == null) {
-				initVisibilityForServerError();
-				return;
-			}
-
-			JsonObject resultJsonObject = result.getAsJsonObject();
-
-			boolean requestSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
-
-			if (requestSuccess) {
-				boolean isFollowing = resultJsonObject.get(ActivityConstants.IS_FOLLOWING).getAsBoolean();
-
-				initFollowButtonsVisibility(isFollowing);
-			}
-		}
-
-	}
-
-	private class GetMyProfileTask extends AsyncTask<String, Void, JsonElement> {
-
-		@Override
-		protected JsonElement doInBackground(String... params) {
-			try {
-				String currentToken = params[0];
-				String userName = params[1];
-				GetMyProfile service = new GetMyProfile(currentToken, userName);
-
-				return service.getMyProfile();
-			} catch (Exception e) {
-				Log.d(CONNECTIVITY_SERVICE, "Unable to retrieve web page. URL may be invalid.");
-				return null;
-			}
-
-		}
-
-		@Override
-		protected void onPostExecute(JsonElement result) {
-			if (result == null) {
-				String follwedByCount = NumberFormat.getNumberInstance(Locale.US)
-						.format(ActivityConstants.EMPTY_FOLLOW_BY_COUNT);
-				initSupportActionBarTitleWithFollowersNumber(follwedByCount);
-				return;
-			}
-
-			JsonObject resultJsonObject = result.getAsJsonObject();
-
-			boolean requestSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
-
-			if (requestSuccess) {
-				String follwedByCount = NumberFormat.getNumberInstance(Locale.US)
-						.format(resultJsonObject.get(ActivityConstants.FOLLOEWD_BY_COUNT).getAsInt());
-
-				initSupportActionBarTitleWithFollowersNumber(follwedByCount);
-			}
-
-		}
-
-	}
 
 	private class FollowUser extends AsyncTask<String, Void, JsonElement> {
 

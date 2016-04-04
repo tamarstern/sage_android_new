@@ -2,6 +2,7 @@ package com.sage.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -279,6 +280,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		} else {
 			String ownerDislayNameText = MessageFormat.format("{0}'\'s", recipeUserBasicData.getOwnerDisplayName());
 			ownerTextView.setText(ownerDislayNameText);
+			ownerTextView.setTypeface(null, Typeface.BOLD);
 			ownerTextView.setOnClickListener(
 					new ProfilePageClickListener(context, recipeUserBasicData.getOwnerDisplayName(),
 							recipeUserBasicData.getOwnerUserName(), recipeUserBasicData.getOwnerObjectId(), false));
@@ -299,6 +301,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 							EntityUtils.isLoggedInUserRecipe(recipeUserBasicData.getUserId(), context));
 				}
 			});
+			ownerTextView.setTypeface(null, Typeface.BOLD);
 		} else {
 			String ownUserLbl = MessageFormat.format("{0}", context.getResources().getString(R.string.a_lbl));
 			ownerTextView.setText(ownUserLbl);
@@ -333,7 +336,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 			}
 
 		});
-
+		ownerTextView.setTypeface(null, Typeface.BOLD);
 		linkImage.setVisibility(View.VISIBLE);
 	}
 

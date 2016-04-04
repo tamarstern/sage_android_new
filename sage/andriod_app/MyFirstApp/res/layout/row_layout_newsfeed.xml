@@ -69,7 +69,7 @@
                     android:singleLine="true"
                     android:textColor="#000000"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    />
 
                 <TextView
                     android:id="@+id/recipe_lbl"

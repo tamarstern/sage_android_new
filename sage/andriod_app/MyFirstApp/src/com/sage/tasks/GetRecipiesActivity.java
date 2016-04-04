@@ -1,7 +1,7 @@
 package com.sage.tasks;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import android.app.Activity;
+import android.os.AsyncTask;
 
 import com.example.myfirstapp.ProgressDialogContainer;
 import com.google.gson.Gson;
@@ -13,8 +13,8 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeBasicData;
 import com.sage.utils.ActivityUtils;
 
-import android.app.Activity;
-import android.os.AsyncTask;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public abstract class GetRecipiesActivity<T extends RecipeBasicData> extends AsyncTask<Object, Void, JsonElement> {
 
@@ -50,7 +50,6 @@ public abstract class GetRecipiesActivity<T extends RecipeBasicData> extends Asy
 			return CreateAndExecuteService(currentToken, userName, pageNumber);
 		} catch (Exception e) {
 			performCustomActionsOnException();
-			performCustomActionsOnPostExecute();
 			ActivityUtils.HandleConnectionUnsuccessfullToServer(context);
 			return null;
 		}
