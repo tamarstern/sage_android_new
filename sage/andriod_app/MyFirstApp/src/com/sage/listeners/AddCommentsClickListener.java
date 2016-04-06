@@ -1,28 +1,5 @@
 package com.sage.listeners;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.example.myfirstapp.ProgressDialogContainer;
-import com.example.myfirstapp.R;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-import com.sage.activity.interfaces.IClosePopupCommentListener;
-import com.sage.adapters.CommentsArrayAdapter;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.RecipeComment;
-import com.sage.services.GetCommentsForRecipeService;
-import com.sage.services.SaveNewCommentService;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.AnalyticsUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -41,7 +18,28 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
+
+import com.example.myfirstapp.ProgressDialogContainer;
+import com.example.myfirstapp.R;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.sage.activity.interfaces.IClosePopupCommentListener;
+import com.sage.adapters.CommentsArrayAdapter;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.RecipeComment;
+import com.sage.services.GetCommentsForRecipeService;
+import com.sage.services.SaveNewCommentService;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.AnalyticsUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class AddCommentsClickListener implements OnClickListener {
 
@@ -109,7 +107,7 @@ public class AddCommentsClickListener implements OnClickListener {
 
 					Object[] params = new Object[] { token, userName, recipeId, commentText };
 
-					new AddCommentTask().execute(params);
+					new AddCommentTask(popupWindowContext).execute(params);
 				}
 
 			}
@@ -222,6 +220,17 @@ public class AddCommentsClickListener implements OnClickListener {
 
 	private class AddCommentTask extends AsyncTask<Object, Void, JsonElement> {
 
+		private ProgressDialogContainer container;
+
+		public AddCommentTask(Context context) {
+			container = new ProgressDialogContainer(context);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			container.showProgress();
+		}
+
 		@Override
 		protected JsonElement doInBackground(Object... params) {
 
@@ -236,6 +245,7 @@ public class AddCommentsClickListener implements OnClickListener {
 				return service.saveComment();
 
 			} catch (Exception e) {
+				container.dismissProgress();
 				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
 				return null;
 			}
@@ -243,6 +253,7 @@ public class AddCommentsClickListener implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(JsonElement result) {
+			container.dismissProgress();
 			if (result == null) {
 				return;
 			}
