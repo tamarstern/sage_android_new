@@ -15,14 +15,14 @@
     <string name="shared_lbl">shared</string>
     <string name="recipe_lbl">recipe</string>
     <string name="settings">Setting</string>
-    <string name="title_activity_login">Sage</string>
+    <string name="title_activity_login">Sage Recipe Box</string>
     <string name="app_id">Sage</string>
     <string name="facebook_app_id">405758049632877</string>
     <string name="title_activity_new_receipe">NewReceipeActivity</string>
     <string name="no_internet_connection">Please check your internet connection</string>
     <string name="link">Link</string>
     <string name="add_link">Link</string>
-    <string name="owner_recipe_by_lbl">A Recipe By:</string>    
+    <string name="owner_recipe_by_lbl">A Recipe By:</string>
     <string name="add_link_description">Add a recipe from any website</string>
     <string name="add_picture">Picture</string>
     <string name="add_picture_description">Add a recipe as a picture</string>
@@ -63,8 +63,8 @@
     <string name="follow_user">Follow</string>
     <string name="unfollow_user">Unfollow</string>
     <string name="user_followed_by">followed by </string>
-    <string name="publish_recipe">Publish Recipe</string>
-    <string name="unpublish_recipe">Unpublish Recipe</string>
+    <string name="publish_recipe">Recipe will be published</string>
+    <string name="unpublish_recipe">Recipe will be unpublished</string>
     <string name="delete_recipe">Delete</string>
     <string name="save_in_sub_category">Save In Category</string>
     <string name="move_recipe">Move</string>

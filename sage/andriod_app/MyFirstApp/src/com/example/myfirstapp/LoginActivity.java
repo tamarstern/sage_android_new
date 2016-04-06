@@ -64,7 +64,7 @@ public class LoginActivity extends Activity {
 
 		initForgotPasswordLink();
 
-		//openNewsfeedIfAlreadyLoggedWithDirectAuthentication();
+		openNewsfeedIfAlreadyLoggedWithDirectAuthentication();
 
 		//openNewsfeedIfAlreadyLoggedInToFacebook();
 	}
