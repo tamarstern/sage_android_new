@@ -28,7 +28,8 @@ build/Release
 node_modules
 
 # Facebook directory
-facebook-android-sdk-4.4.1.*
+andriod_app/facebook-android-sdk-4.4.1.*
+andriod_app/MyFirstApp/build/
 
 bin/
 /.classpath

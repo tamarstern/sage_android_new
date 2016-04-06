@@ -5,28 +5,60 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+    compile fileTree(include: '*.jar', dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:support-v4:23.2.0'
     compile 'com.android.support:multidex:1.0.1'
-
     // [START gms_compile]
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     // [END gms_compile]
-
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-
 }
 
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'selfsigned'
+            keyPassword 'Wdcc6666'
+            storeFile file('D:/keystore.jks')
+            storePassword 'Wdcc6666'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
-
     defaultConfig {
         multiDexEnabled true
     }
-
+    buildTypes {
+        release {
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    project.ext { appName = 'SageRecipeBox' }
+                    def formattedDate = new Date().format('yyyyMMddHHmmss')
+                    def newName = output.outputFile.name
+                    newName = newName.replace("MyFirstApp-", "$project.ext.appName-")
+                    //newName = newName.replace("-release", "-" + formattedDate)
+                    //noinspection GroovyAssignabilityCheck
+                    output.outputFile = new File(output.outputFile.parent, newName)
+                }
+            }
+            signingConfig signingConfigs.config
+        }
+        debug {
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    project.ext { appName = 'SageRecipeBox' }
+                    def formattedDate = new Date().format('yyyyMMddHHmmss')
+                    def newName = output.outputFile.name
+                    newName = newName.replace("MyFirstApp-", "$project.ext.appName-")
+                    //newName = newName.replace("-debug", "-" + formattedDate)
+                    //noinspection GroovyAssignabilityCheck
+                    output.outputFile = new File(output.outputFile.parent, newName)
+                }
+            }
+        }
+    }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
@@ -34,13 +66,10 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
-
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'

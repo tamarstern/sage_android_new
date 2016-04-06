@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comments_likes_panel_profile_page"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/appliction_panel_style"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/save_no_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/save_receipt_without_name_message"
+        android:textColor="#6e6e6e"
+        android:singleLine="false"
+        android:textSize="15sp" />
+    
+    
+    <TextView
+        android:id="@+id/are_you_sure_delete_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="start"
+        android:text="@string/a_recipe_must_have_a_name_message"
+        android:textColor="#858585"
+        android:textSize="12sp" />
+    
+
+    <RelativeLayout
+        android:id="@+id/save_recipe_no_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/transparent" >
+
+        <Button
+            android:id="@+id/go_back_to_recipe"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_toLeftOf="@+id/exit_recipe_without_saving"
+            android:layout_toStartOf="@+id/exit_recipe_without_saving"
+            android:background="@drawable/application_button_style"
+            android:text="@string/go_back_to_recipe_label"
+            android:textAllCaps="false"
+            android:textColor="#548235"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/exit_recipe_without_saving"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/application_button_style"
+            android:text="@string/exit_recipe_without_saving_label"
+            android:textAllCaps="false"
+            android:textColor="#548235"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,62 @@
+[
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\newsfeed_activity_menu.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\newsfeed_activity_menu.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\search_recipe_activity_menu.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\search_recipe_activity_menu.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\my.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\my.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\recipe_page_menu_for_not_logged_in_user.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\recipe_page_menu_for_not_logged_in_user.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\display_link_activity_menu.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\display_link_activity_menu.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\search_link_activity_menu.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\search_link_activity_menu.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\options_menu.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\options_menu.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\recipe_page_menu_for_logged_in_user.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\recipe_page_menu_for_logged_in_user.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\display_who_i_follow_menu.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\display_who_i_follow_menu.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\display_my_recipe_link_activity_menu.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\display_my_recipe_link_activity_menu.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\user_profile_activity_menu.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\user_profile_activity_menu.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\menu_my_profile.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\menu_my_profile.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\categories_activity_menu.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\categories_activity_menu.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\login.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\login.xml"
+    },
+    {
+        "merged": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\build\\intermediates\\res\\merged\\release\\menu\\sub_categories_activity_menu.xml",
+        "source": "D:\\sage_android\\sage\\andriod_app\\MyFirstApp\\res\\menu\\sub_categories_activity_menu.xml"
+    }
+]

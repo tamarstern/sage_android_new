@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_bar_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:weightSum="5" >
+
+    <ImageButton
+        android:id="@+id/home_buttom_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="@drawable/button_style"
+        android:contentDescription="@string/home"
+        android:drawablePadding="0dp"
+        android:src="@drawable/home_variant"
+        android:gravity="center_horizontal" />
+
+    <ImageButton
+        android:id="@+id/receipt_box_buttom_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="@drawable/button_style"
+        android:contentDescription="@string/receipt_box"
+        android:drawablePadding="0dp"
+        android:src="@drawable/book_open_variant"
+        android:gravity="center_horizontal" />
+
+    <ImageButton
+        android:id="@+id/new_receipt_buttom_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="@drawable/button_style"
+        android:contentDescription="@string/new_receipt"
+        android:drawablePadding="0dp"
+        android:src="@drawable/plus"
+        android:gravity="center_horizontal" />
+
+    <ImageButton
+        android:id="@+id/my_profile_buttom_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="@drawable/button_style"
+        android:contentDescription="@string/my_profile"
+        android:drawablePadding="0dp"
+        android:src="@drawable/account"
+        android:gravity="center_horizontal" />
+
+    <ImageButton
+        android:id="@+id/settings_buttom_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="@drawable/button_style"
+        android:contentDescription="@string/settings"
+        android:drawablePadding="0dp"
+        android:src="@drawable/settings"
+        android:gravity="center_horizontal" />
+
+</LinearLayout>

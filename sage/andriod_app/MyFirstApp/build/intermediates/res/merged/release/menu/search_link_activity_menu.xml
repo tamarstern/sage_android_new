@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" 
+     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  
+    <item
+        android:id="@+id/action_save_link"
+        android:icon="@drawable/save_white"
+        android:title="@string/action_save"
+        app:showAsAction="ifRoom"/>
+    
+       <item
+        android:id="@+id/action_cancel_save"
+        android:icon="@drawable/cancel_white"
+        android:title="@string/action_cancel"
+        app:showAsAction="ifRoom"/>
+    
+
+</menu>
