@@ -18,6 +18,7 @@ public class RecipeTextDetails extends RecipeDetails {
 	
 	
 	public RecipeTextDetails() {
+		super();
 		this.setRecipeType(RecipeType.TEXT);
 	}
 

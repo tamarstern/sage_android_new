@@ -1,33 +1,5 @@
 package com.sage.listeners;
 
-import java.io.File;
-
-import com.example.myfirstapp.ActivityRecipiesInCategoryPage;
-import com.example.myfirstapp.ProgressDialogContainer;
-import com.example.myfirstapp.R;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.sage.constants.ActivityConstants;
-import com.sage.constants.ImageType;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipePictureDetails;
-import com.sage.entities.RecipeSubCategory;
-import com.sage.entities.RecipeType;
-import com.sage.services.BaseSaveRecipeService;
-import com.sage.services.PostRecipeImage;
-import com.sage.services.SaveNewRecipeService;
-import com.sage.services.UpdateExistingRecipeService;
-import com.sage.tasks.AddRecipeToCategoryTask;
-import com.sage.tasks.CopyRecipeTask;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.AnalyticsUtils;
-import com.sage.utils.EntityUtils;
-import com.sage.utils.NavigationUtils;
-import com.sage.utils.ServicesUtils;
-
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Context;
@@ -44,6 +16,32 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
+
+import com.example.myfirstapp.ActivityRecipiesInCategoryPage;
+import com.example.myfirstapp.ProgressDialogContainer;
+import com.example.myfirstapp.R;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.sage.constants.ActivityConstants;
+import com.sage.constants.ImageType;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeDetails;
+import com.sage.entities.RecipePictureDetails;
+import com.sage.services.BaseSaveRecipeService;
+import com.sage.services.PostRecipeImage;
+import com.sage.services.SaveNewRecipeService;
+import com.sage.services.UpdateExistingRecipeService;
+import com.sage.tasks.AddRecipeToCategoryTask;
+import com.sage.tasks.CopyRecipeTask;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.EntityUtils;
+import com.sage.utils.NavigationUtils;
+import com.sage.utils.ServicesUtils;
+
+import java.io.File;
 
 public class SaveRecipeHandler {
 
@@ -168,36 +166,16 @@ public class SaveRecipeHandler {
 			JsonObject resultJsonObject = result.getAsJsonObject();
 			boolean saveSucceed = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
 			if (saveSucceed) {
-
 				Gson gson = new Gson();
-
 				JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
-
 				RecipeDetails recipeDetails = ServicesUtils.createRecipeDetailsFromResponse(gson, dataElement);
 				String recipeId = recipeDetails.get_id();
-				Object[] params = new Object[] { this.recipeDetails.getImage(), token, recipeId,
-						context.getFilesDir().getPath().toString() + File.separator + recipeId,
-						ImageType.RECIPE_PICTURE };
-				if (this.recipeDetails.getImage() != null) {
-					params[4] = ImageType.RECIPE_PICTURE;
-					new SetRecipeImageTask().execute(params);
-				}
-
-				if (this.recipeDetails.getRecipeType().equals(RecipeType.PICTURE)
-						&& ((RecipePictureDetails) this.recipeDetails).getRecipeAsPictureImage() != null) {
-					params[0] = ((RecipePictureDetails) this.recipeDetails).getRecipeAsPictureImage();
-					params[4] = ImageType.IMAGE_RECIPE_PICTURE;
-					new SetRecipeImageTask().execute(params);
-				}
+				saveRecipeImage(recipeId);
 				if (isNewRecipe) {
 					if (category == null) {
 						ActivityUtils.openCategoriesPage(recipeDetails, context);
 					} else {
-
-						SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-						String userObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
-						params = new Object[] { category, token, userObjectId, recipeDetails };
-						new AddToSubCategoryTask(category).execute(params);
+						attachRecipeToCategory(recipeDetails);
 					}
 				} else {
 					NavigationUtils.openNewsfeed(context);
@@ -208,13 +186,40 @@ public class SaveRecipeHandler {
 
 		}
 
+		private void attachRecipeToCategory(RecipeDetails recipeDetails) {
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+			String userObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+			Object params = new Object[] { category, token, userObjectId, recipeDetails };
+			new AddToCategoryTask(category).execute(params);
+		}
+
+		private void saveRecipeImage(String recipeId) {
+			Bitmap recipeMainImage = this.recipeDetails.getImage();
+			if (recipeMainImage != null) {
+                Object[] mainImageParams = new Object[] {recipeMainImage, token, recipeId,
+                        context.getFilesDir().getPath().toString() + File.separator + recipeId,
+                        ImageType.RECIPE_PICTURE };
+                new SetRecipeImageTask().execute(mainImageParams);
+            }
+			if(!(this.recipeDetails instanceof RecipePictureDetails)) {
+				return;
+			}
+			Bitmap recipeAsPictureImage = ((RecipePictureDetails) this.recipeDetails).getRecipeAsPictureImage();
+			if (recipeAsPictureImage != null) {
+                Object[] recipePictureParams = new Object[] { recipeAsPictureImage, token, recipeId,
+                        context.getFilesDir().getPath().toString() + File.separator + recipeId,
+                        ImageType.IMAGE_RECIPE_PICTURE };
+                new SetRecipeImageTask().execute(recipePictureParams);
+            }
+		}
+
 	}
 
-	private class AddToSubCategoryTask extends AddRecipeToCategoryTask {
+	private class AddToCategoryTask extends AddRecipeToCategoryTask {
 
 		private RecipeCategory categoryToSave;
 
-		public AddToSubCategoryTask(RecipeCategory categoryToSave) {
+		public AddToCategoryTask(RecipeCategory categoryToSave) {
 			super(context);
 			this.categoryToSave = categoryToSave;
 		}

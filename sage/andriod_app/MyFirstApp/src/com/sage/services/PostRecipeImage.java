@@ -1,37 +1,34 @@
 package com.sage.services;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.MessageFormat;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
-import org.apache.http.entity.FileEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.SingleClientConnManager;
-import org.apache.http.util.EntityUtils;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.sage.constants.ImageType;
 import com.sage.constants.ServicesConstants;
 
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.util.Log;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.SingleClientConnManager;
+import org.apache.http.util.EntityUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.MessageFormat;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 
 public class PostRecipeImage {
 
@@ -52,9 +49,10 @@ public class PostRecipeImage {
 	}
 
 	public JsonElement sendImage() {
+		FileOutputStream fos = null;
+		File f = null;
+		ByteArrayOutputStream bos = null;
 		try {
-			
-			
 			HostnameVerifier hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
 
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -68,23 +66,20 @@ public class PostRecipeImage {
 			HttpClient httpClient = new DefaultHttpClient(mgr, client.getParams());
 			// Set verifier     
 			HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
-			
-			
-			
+
 			HttpPost httpPost = new HttpPost(MessageFormat.format(url, recipeId, imageType.getValue(), token));
-			File f = new File(path);
+			f = new File(path);
 			f.createNewFile();
 
 			// Convert bitmap to byte array
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			 bos = new ByteArrayOutputStream();
 			image.compress(CompressFormat.PNG, 0 /* ignored for PNG */, bos);
 			byte[] bitmapdata = bos.toByteArray();
 
 			// write the bytes in file
-			FileOutputStream fos = new FileOutputStream(f);
+			fos = new FileOutputStream(f);
 			fos.write(bitmapdata);
 			fos.flush();
-			fos.close();
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			builder.addBinaryBody("file", f);
 			HttpEntity entity = builder.build();
@@ -97,10 +92,28 @@ public class PostRecipeImage {
 				String content = EntityUtils.toString(respEntity);
 				return new Gson().fromJson(content, JsonElement.class);
 			}
-		} catch (IOException e) {
-			Log.e("error saving recipe picture", "error getting recipe picture", e);
+		} catch (Exception ex) {
+			Log.e("error saving picture", "error saving picture", ex);
+		} finally {
+			cleanResources(fos, f, bos);
 		}
 		return null;
 
+	}
+
+	private void cleanResources(FileOutputStream fos, File f, ByteArrayOutputStream bos) {
+		try {
+            if(fos != null) {
+                fos.close();
+            }
+            if(f != null && f.exists()) {
+                f.delete();
+            }
+			if(bos != null) {
+				bos.close();
+			}
+        } catch (Exception ex) {
+            Log.e("finally failed ", "finally failed", ex);
+        }
 	}
 }

@@ -1,15 +1,5 @@
 package com.sage.utils;
 
-import java.text.MessageFormat;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.example.myfirstapp.R;
-import com.sage.constants.ActivityConstants;
-import com.sage.constants.ImageType;
-import com.sage.constants.ServicesConstants;
-import com.squareup.picasso.Picasso;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -18,6 +8,14 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.example.myfirstapp.R;
+import com.sage.constants.ActivityConstants;
+import com.sage.constants.ImageType;
+import com.sage.constants.ServicesConstants;
+import com.squareup.picasso.Picasso;
+
+import java.text.MessageFormat;
 
 public class ImagesInitializer {
 
@@ -65,7 +63,6 @@ public class ImagesInitializer {
 
 			@Override
 			public void onError() {
-
 				Log.e("failed to load image", "failed to load image");
 			}
 		});

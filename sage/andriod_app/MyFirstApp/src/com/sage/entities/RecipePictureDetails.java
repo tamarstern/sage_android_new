@@ -14,6 +14,8 @@ public class RecipePictureDetails extends RecipeTextDetails {
 	private transient Bitmap recipeAsPictureImage;
 
 	public RecipePictureDetails() {
+
+		super();
 		this.setRecipeType(RecipeType.PICTURE);
 	}
 
