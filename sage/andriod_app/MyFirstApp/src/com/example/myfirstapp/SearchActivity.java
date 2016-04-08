@@ -76,8 +76,7 @@ public class SearchActivity extends AppCompatActivity {
 	private void initListView() {
 		if (listView.getAdapter() == null) {
 
-			adapter = new NewsfeedArrayAdapter(this, new ArrayList<RecipeUserBasicData>());
-			listView.setAdapter(adapter);
+			initListAdaptor();
 		}
 
 		listView.setOnScrollListener(new OnScrollListener() {
@@ -112,6 +111,12 @@ public class SearchActivity extends AppCompatActivity {
 		});
 	}
 
+	private void initListAdaptor() {
+		adapter = new NewsfeedArrayAdapter(this, new ArrayList<RecipeUserBasicData>());
+		listView.setAdapter(adapter);
+	}
+
+
 	private void initializeActionBar() {
 
 		final Activity activity = this;
@@ -136,7 +141,7 @@ public class SearchActivity extends AppCompatActivity {
 
 			@Override
 			public void onClick(View v) {
-
+				pageNumber = 0;
 				getSearchRecipies();
 			}
 		});
@@ -178,7 +183,7 @@ public class SearchActivity extends AppCompatActivity {
 
 	private class GetRecipiesForSearch<T extends RecipeUserBasicData> extends GetRecipiesActivity {
 	
-
+		private Activity activity;
 		public GetRecipiesForSearch(Activity activity) {
 			super(new TypeToken<ArrayList<RecipeUserBasicData>>() {
 			}.getType(), activity);
@@ -188,7 +193,9 @@ public class SearchActivity extends AppCompatActivity {
 		@Override
 		protected void performCustomActionsOnPreExecute() {
 			shouldIncreasePage = true;
-			if (listView.getAdapter().getCount()-1 > 0) {
+			if(pageNumber == 0) {
+				super.performCustomActionsOnPostExecute();
+			}else if (listView.getAdapter().getCount()-1 > 0) {
 				progressBar.setVisibility(View.VISIBLE);
 			} else {
 				super.performCustomActionsOnPreExecute();
@@ -201,7 +208,9 @@ public class SearchActivity extends AppCompatActivity {
 
 			loadingMore = false;
 			shouldIncreasePage = false;
-			if (listView.getAdapter().getCount()-1 > 0) {
+			if(pageNumber == 0) {
+				super.performCustomActionsOnPostExecute();
+			}else if (listView.getAdapter().getCount()-1 > 0) {
 				progressBar.setVisibility(View.GONE);
 			} else {
 				super.performCustomActionsOnException();
@@ -211,9 +220,11 @@ public class SearchActivity extends AppCompatActivity {
 		@Override
 		protected void performCustomActionsOnPostExecute() {
 			loadingMore = false;
-			if (listView.getAdapter().getCount()-1 > 0) {
+			if(pageNumber == 0) {
+				super.performCustomActionsOnPostExecute();
+			}else if (listView.getAdapter().getCount()-1 > 0) {
 				progressBar.setVisibility(View.GONE);
-			} else {
+			} else  {
 				super.performCustomActionsOnPostExecute();
 			}
 		}
@@ -228,6 +239,9 @@ public class SearchActivity extends AppCompatActivity {
 		protected void onPostExecute(JsonElement result) {
 			super.onPostExecute(result);
 			if (details != null) {
+				if(pageNumber == 0) {
+					initListAdaptor();
+				}
 				Iterator iterator = details.iterator();
 				while (iterator.hasNext()) {
 					adapter.add((RecipeUserBasicData) iterator.next());
