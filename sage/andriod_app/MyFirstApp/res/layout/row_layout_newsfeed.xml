@@ -122,7 +122,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/user_recipe_container_panel"
         android:background="@android:color/transparent"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ProgressBar
+            android:id="@+id/get_recipe_link_details_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="275dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress_listview" />
+
 
         <ImageView
             android:id="@+id/recipe_main_picture"
@@ -137,37 +150,6 @@
             android:scaleType="fitXY"
             android:src="@drawable/default_recipe_image" />
 
-        <LinearLayout
-            android:id="@+id/main_link_recipe_container_panel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:orientation="vertical" >
-
-            <ProgressBar
-                android:id="@+id/get_recipe_link_details_progress"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="275dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:indeterminate="true"
-                android:indeterminateDrawable="@drawable/progress_listview" />
-
-            <ImageView
-                android:id="@+id/recipe_link_main_picture"
-                android:layout_width="fill_parent"
-                android:layout_height="275dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/description"
-                android:paddingBottom="9dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="9dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/default_recipe_image" />
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

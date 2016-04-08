@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,12 +47,9 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 	private ArrayList<RecipeUserBasicData> details;
 	private View rowView;
 	private ImageButton addLike;
-	private ImageButton featuredRecipe;
 	private ImageButton unLike;
 	private ImageView recipeMainPicture;
-	private LinearLayout linkRecipePanel;
 	private ProgressBar getLinkDetailsProgress;
-	private ImageView linkImage;
 	private TextView ownerTextView;
 
 	public NewsfeedArrayAdapter(Activity context, ArrayList<RecipeUserBasicData> details) {
@@ -70,7 +66,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		final RecipeUserBasicData recipeUserBasicData = details.get(position);
 
 		TextView recipeHeader = (TextView) rowView.findViewById(R.id.label);
-		initHeaderTextBox(recipeUserBasicData, position, recipeHeader);
+		initHeaderTextBox(recipeUserBasicData, recipeHeader);
 
 		TextView recipeUser = (TextView) rowView.findViewById(R.id.user_name);
 		initUserNameTextView(recipeUser, recipeUserBasicData);
@@ -117,14 +113,11 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 	}
 
 	private void initLinkAndMainPictureVisibility(final int position, final RecipeUserBasicData recipeUserBasicData) {
-		if (!recipeUserBasicData.getRecipeType().equals(RecipeType.LINK)) {
-			linkRecipePanel.setVisibility(View.GONE);
-			initRecipeMainPicture(recipeUserBasicData);
+		getLinkDetailsProgress.setVisibility(View.VISIBLE);
+		recipeMainPicture.setVisibility(View.GONE);
+			if (!recipeUserBasicData.getRecipeType().equals(RecipeType.LINK)) {
+				initRecipeMainPicture(recipeUserBasicData);
 		} else {
-			recipeMainPicture.setVisibility(View.GONE);
-			getLinkDetailsProgress.setVisibility(View.VISIBLE);
-			// linkHeader.setVisibility(View.GONE);
-			linkImage.setVisibility(View.GONE);
 			if (recipeUserBasicData.isLinkDataInitialized()) {
 				initLinkRecipeUi(recipeUserBasicData);
 			} else {
@@ -143,7 +136,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 	private void initFeaturedRecipeButton(final RecipeUserBasicData recipeUserBasicData) {
 
-		featuredRecipe = (ImageButton) rowView.findViewById(R.id.featured_recipe);
+		ImageButton featuredRecipe = (ImageButton) rowView.findViewById(R.id.featured_recipe);
 
 		featuredRecipe.setOnClickListener(new OnClickListener() {
 			@Override
@@ -161,10 +154,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 	private void initLinkAndPictureComponents(RecipeBasicData recipeUserBasicData) {
 		recipeMainPicture = (ImageView) rowView.findViewById(R.id.recipe_main_picture);
 		recipeMainPicture.setOnClickListener(new RecipeDetailsClickListener(context, recipeUserBasicData.get_id()));
-		linkRecipePanel = (LinearLayout) rowView.findViewById(R.id.main_link_recipe_container_panel);
-		linkRecipePanel.setOnClickListener(new RecipeDetailsClickListener(context, recipeUserBasicData.get_id()));
 		getLinkDetailsProgress = (ProgressBar) rowView.findViewById(R.id.get_recipe_link_details_progress);
-		linkImage = (ImageView) rowView.findViewById(R.id.recipe_link_main_picture);
 	}
 
 	private void InitLinkRecipeData(RecipeUserBasicData recipeUserBasicData, int position) {
@@ -204,10 +194,11 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 		ImagesInitializer.initialRecipeImage(getContext(), recipeUserBasicData.getPictureId(), recipeMainPicture,
 				ImageType.IMAGE_RECIPE_PICTURE);
+		getLinkDetailsProgress.setVisibility(View.GONE);
 
 	}
 
-	private void initHeaderTextBox(final RecipeUserBasicData recipeUserBasicData, int position, TextView recipeHeader) {
+	private void initHeaderTextBox(final RecipeUserBasicData recipeUserBasicData, TextView recipeHeader) {
 
 		String recipeHeaderValue = recipeUserBasicData.getHeader();
 		recipeHeader.setText(recipeHeaderValue);
@@ -311,13 +302,11 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 	private void initLinkRecipeUi(final RecipeUserBasicData recipeBasicData) {
 
-		linkImage.setOnClickListener(new RecipeDetailsClickListener(context, recipeBasicData.get_id()));
-
-		String linkTitle = recipeBasicData.getLinkTitle();
+		recipeMainPicture.setOnClickListener(new RecipeDetailsClickListener(context, recipeBasicData.get_id()));
 
 		String linkImageUrl = recipeBasicData.getLinkImageUrl();
-		if (!TextUtils.isEmpty(linkTitle)) {
-			ImagesInitializer.initImage(this.context, linkImage, linkImageUrl);
+		if (!TextUtils.isEmpty(linkImageUrl)) {
+			ImagesInitializer.initImage(this.context, recipeMainPicture, linkImageUrl);
 		}
 
 		getLinkDetailsProgress.setVisibility(View.GONE);
@@ -337,7 +326,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 		});
 		ownerTextView.setTypeface(null, Typeface.BOLD);
-		linkImage.setVisibility(View.VISIBLE);
+		recipeMainPicture.setVisibility(View.VISIBLE);
 	}
 
 	private RecipeLinkDetails createNewRecipeDetailsObject(final RecipeUserBasicData recipeBasicData) {
@@ -432,21 +421,21 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 		@Override
 		protected void handleSuccess(JsonObject resultJsonObject) {
-			String urlTitle = null;
+			String urlTitle;
 			JsonElement urlTitleJson = resultJsonObject.get(ActivityConstants.URL_TITLE_ELEMENT_NAME);
 			if (urlTitleJson != null) {
 				urlTitle = urlTitleJson.getAsString();
 				recipeBasicData.setLinkTitle(urlTitle);
 			}
 
-			String urlImage = null;
+			String urlImage;
 			JsonElement urlImageJson = resultJsonObject.get(ActivityConstants.URL_IMAGE_ELEMENT_NAME);
 			if (urlImageJson != null) {
 				urlImage = urlImageJson.getAsString();
 				recipeBasicData.setLinkImageUrl(urlImage);
 			}
 
-			String siteName = null;
+			String siteName;
 			JsonElement urlSiteJson = resultJsonObject.get(ActivityConstants.URL_SITE_ELEMENT_NAME);
 			if (urlSiteJson != null) {
 				siteName = urlSiteJson.getAsString();
