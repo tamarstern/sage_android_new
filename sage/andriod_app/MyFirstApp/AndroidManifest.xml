@@ -55,7 +55,8 @@
         <activity
             android:name=".TextReciptPageActivity"
             android:label="@string/title_activity_personal_page"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".NewsfeedActivity"
@@ -90,7 +91,8 @@
         <activity
             android:name=".PictureRecipePageActivity"
             android:label="@string/title_activity_picture_recipe_page"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".RegisterNewUserActivity"
@@ -100,15 +102,18 @@
         <activity
             android:name=".LinkRecipePageActivity"
             android:label="@string/title_activity_link_recipe_page"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".ActivityCategoriesPage"
-            android:label="@string/title_activity_activity_categories_page" >
+            android:label="@string/title_activity_activity_categories_page"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".ActivityRecipiesInCategoryPage"
-            android:label="@string/title_activity_activity_sub_category_page" >
+            android:label="@string/title_activity_activity_sub_category_page"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".AddRecipeAsLinkActivity"
@@ -137,17 +142,20 @@
         <activity
             android:name=".SearchMyRecipesActivity"
             android:label="@string/title_activity_search_my_recipes"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".DisplayFollowingActivity"
             android:label="@string/title_activity_display_who_ifollow"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".SearchUserActivity"
             android:label="@string/title_activity_search_user"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".ChangeUserDisplayNameActivity"
@@ -157,7 +165,8 @@
         <activity
             android:name=".SearchMyFollowActivity"
             android:label="@string/title_activity_search_my_follow"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize">
         </activity>
     </application>
 
