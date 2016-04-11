@@ -1,6 +1,19 @@
 package com.example.myfirstapp;
 
-import java.io.IOException;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -19,21 +32,7 @@ import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
 import com.sage.utils.LoginUtility;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;;
+;
 
 public class LoginActivity extends Activity {
 
@@ -53,31 +52,43 @@ public class LoginActivity extends Activity {
 		callbackManager = CallbackManager.Factory.create();
 		setContentView(R.layout.activity_login);
 
-		usernameEditText = (EditText) findViewById(R.id.email);
-		passwordEditText = (EditText) findViewById(R.id.password);
-
-		initFacebookLoginButton();
-
-		initDirectAuthenticationLoginButton();
-
-		initRegisterLoginButton();
-
-		initForgotPasswordLink();
-
-		openNewsfeedIfAlreadyLoggedWithDirectAuthentication();
-
 		//openNewsfeedIfAlreadyLoggedInToFacebook();
-	}
 
-	private void openNewsfeedIfAlreadyLoggedWithDirectAuthentication() {
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
+		String token = getDirectAuthenticationToken();
 		if (!TextUtils.isEmpty(token)) {
+			initLoginFormVisibility(View.GONE);
 			AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.ENTER_APP_WHEN_ALREADY_LOGGED_IN);
 			new AuthenticateWithTokenTask(this).execute(token);
 
+		} else {
+			initLoginFormVisibility(View.VISIBLE);
+
+			usernameEditText = (EditText) findViewById(R.id.email);
+			passwordEditText = (EditText) findViewById(R.id.password);
+
+			initFacebookLoginButton();
+
+			initDirectAuthenticationLoginButton();
+
+			initRegisterLoginButton();
+
+			initForgotPasswordLink();
+
 		}
 
+
+
+
+
+
+
+
+	}
+
+
+	private String getDirectAuthenticationToken() {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		return sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 	}
 
 	private void initFacebookLoginButton() {
@@ -170,7 +181,7 @@ public class LoginActivity extends Activity {
 				boolean isValidLogin = validator.validateUserNamePassword(usernameEditText, passwordEditText);
 				if (isValidLogin) {
 					AnalyticsUtils.sendAnalyticsTrackingEvent(activity, AnalyticsUtils.PRESS_LOGIN_BUTTON);
-					new LoginTask(activity).execute();
+					new LoginTask(activity, usernameEditText.getEditableText().toString(), passwordEditText.getEditableText().toString()).execute();
 
 				}
 			}
@@ -189,8 +200,13 @@ public class LoginActivity extends Activity {
 		
 		private ProgressDialogContainer container;
 
-		public LoginTask(Activity activity) {
+		private String username;
+		private String password;
+
+		public LoginTask(Activity activity, String username, String password) {
 			this.activity = activity;
+			this.username = username;
+			this.password = password;
 			container = new ProgressDialogContainer(activity);
 		}
 		
@@ -206,7 +222,7 @@ public class LoginActivity extends Activity {
 
 			try {
 				LoginService service = new LoginService(activity);
-				return service.login(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+				return service.login(username, password);
 			} catch (Exception e) {
 				container.dismissProgress();
 				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
@@ -249,8 +265,17 @@ public class LoginActivity extends Activity {
 
 		private Activity activity;
 
+		private ProgressDialogContainer container;
+
 		public AuthenticateWithTokenTask(Activity activity) {
+
 			this.activity = activity;
+			container = new ProgressDialogContainer(activity);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			container.showProgress();
 		}
 
 		@Override
@@ -261,14 +286,17 @@ public class LoginActivity extends Activity {
 				String currentToken = token[0];
 				return service.authenticateWithToke(currentToken);
 			} catch (Exception e) {
+				container.dismissProgress();
 				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+				initLoginFormVisibility(View.VISIBLE);
+
 				return null;
 			}
 		}
 
 		@Override
 		protected void onPostExecute(JsonElement result) {
-
+			container.dismissProgress();
 			if (result == null) {
 				return;
 			}
@@ -285,6 +313,11 @@ public class LoginActivity extends Activity {
 			}
 		}
 
+	}
+
+	private void initLoginFormVisibility(int visible) {
+		ScrollView loginView = (ScrollView) findViewById(R.id.login_form);
+		loginView.setVisibility(visible);
 	}
 
 }

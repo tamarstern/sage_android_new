@@ -2,29 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/comments_likes_panel_profile_page"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginBottom="20dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:background="@drawable/appliction_panel_style"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/add_comment_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="4" >
+        >
 
         <EditText
             android:id="@+id/add_comment"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="2.5"
+            android:layout_toLeftOf="@+id/add_comment_request"
+            android:layout_toStartOf="@+id/add_comment_request"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:gravity="start"
             android:hint="@string/add_comment"
             android:inputType="textCapSentences|textMultiLine"
@@ -37,11 +42,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1.5"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
             android:contentDescription="@string/add_comment"
             android:src="@drawable/add_comment" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <ListView
         android:id="@android:id/list"
