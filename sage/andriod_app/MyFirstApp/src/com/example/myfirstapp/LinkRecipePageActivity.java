@@ -54,10 +54,6 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 
 	final Activity activity = this;
 
-	private MenuItem publishMenuItem;
-
-	private MenuItem unpublishMenuItem;
-
 	private TextView linkHeader;
 
 	private ImageView linkImage;
@@ -71,12 +67,12 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_link_recipe_page);
 
-		Fragment fragment = (Fragment) getFragmentManager().findFragmentById(R.id.recipe_title_panel);
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.recipe_title_panel);
 		if (fragment instanceof IInitLinkDetailsListener) {
 			listeners.add((IInitLinkDetailsListener) fragment);
 		}
 
-		Fragment ownerfragment = (Fragment) getFragmentManager().findFragmentById(R.id.recipe_owner_panel);
+		Fragment ownerfragment =  getFragmentManager().findFragmentById(R.id.recipe_owner_panel);
 		if (ownerfragment instanceof IInitLinkDetailsListener) {
 			listeners.add((IInitLinkDetailsListener) ownerfragment);
 		}
@@ -108,11 +104,9 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 		if (!TextUtils.isEmpty(recipeUrl)) {
 			recipeLinkContent.setText(recipeUrl);
 			recipeLinkContent.setOnClickListener(new OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					openDisplayLinkActivity();
-
 				}
 			});
 			Object[] params = ActivityUtils.generateServiceParamObject(this, recipeDetails.getUrl());
@@ -281,11 +275,9 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 				linkDetails.setLinkImageUrl(urlImage);
 
 			}
-
-			String siteName = null;
 			JsonElement urlSiteJson = resultJsonObject.get(ActivityConstants.URL_SITE_ELEMENT_NAME);
 			if (urlSiteJson != null) {
-				siteName = urlSiteJson.getAsString();
+				String siteName = urlSiteJson.getAsString();
 				RecipeOwnerContext.setOwnerForUrl(linkDetails.getUrl(), siteName);
 				linkDetails.setLinkSiteName(siteName);
 			}

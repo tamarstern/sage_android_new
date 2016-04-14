@@ -75,21 +75,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
-                    android:orientation="vertical" >
-
-                    <ImageView
-                        android:id="@+id/recipe_as_picture_receipt_image"
-                        android:layout_width="fill_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/appliction_panel_style">
+                    <RelativeLayout
+                        android:id="@+id/recipe_picture_edit_panel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="0dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/appliction_panel_style"
-                        android:contentDescription="@string/description"
                         android:padding="9dp"
-                        android:paddingBottom="10dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/default_recipe_image" />
-
+                        android:paddingBottom="10dp">
+                        <ImageView
+                            android:id="@+id/recipe_as_picture_receipt_image"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="0dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/description"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/default_recipe_image" />
+                        <Button
+                            android:id="@+id/edit_recipe_picture_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/edit_picture"
+                            android:background="#80ffffff"
+                            android:layout_alignBottom="@+id/recipe_as_picture_receipt_image"
+                            android:layout_alignParentEnd="true" />
+                    </RelativeLayout>
                     <Button
                         android:id="@+id/add_recipe_as_picture"
                         android:layout_width="fill_parent"
@@ -97,7 +108,7 @@
                         android:layout_gravity="center"
                         android:layout_marginBottom="0dp"
                         android:layout_weight="1"
-                        android:background="@drawable/appliction_panel_style"
+                        android:background="#ffffff"
                         android:text="@string/add_recipe_as_picture_label"
                         android:textAllCaps="false"
                         android:textColor="#b3b3b3"

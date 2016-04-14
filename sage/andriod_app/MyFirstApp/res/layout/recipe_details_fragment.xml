@@ -37,9 +37,6 @@
                 android:background="#80ffffff"
                 android:layout_alignBottom="@+id/receipt_main_pic"
                 android:layout_alignParentEnd="true" />
-
-
-
         </RelativeLayout>
 
 

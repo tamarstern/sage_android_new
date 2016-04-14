@@ -45,13 +45,6 @@ public class RecipeDetailsFragment extends Fragment {
 	private boolean cameraOpened = false;
 	View recipeDetailsPanel;
 
-	static final int REQUEST_IMAGE_CAPTURE = 1;
-	static final int REQUEST_SELECT_FILE = 2;
-
-	private static final int REQUEST_CAMERA = 1;
-
-	private static final int SELECT_FILE = 2;
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

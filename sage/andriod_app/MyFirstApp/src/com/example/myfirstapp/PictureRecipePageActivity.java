@@ -1,19 +1,5 @@
 package com.example.myfirstapp;
 
-import com.sage.activity.interfaces.IExitWithoutSaveListener;
-import com.sage.constants.ImageType;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipePictureDetails;
-import com.sage.fragments.ToolbarFragment;
-import com.sage.listeners.SaveRecipeHandler;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.AnalyticsUtils;
-import com.sage.utils.EntityUtils;
-import com.sage.utils.ImageSelectorUtils;
-import com.sage.utils.ImagesInitializer;
-
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +17,20 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
+
+import com.sage.activity.interfaces.IExitWithoutSaveListener;
+import com.sage.constants.ImageType;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipePictureDetails;
+import com.sage.fragments.ToolbarFragment;
+import com.sage.listeners.SaveRecipeHandler;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.EntityUtils;
+import com.sage.utils.ImageSelectorUtils;
+import com.sage.utils.ImagesInitializer;
 
 public class PictureRecipePageActivity extends AppCompatActivity implements IExitWithoutSaveListener {
 
@@ -42,15 +41,9 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 
 	private ImageView recipeAsPicture;
 
-	static final int IMAGE_SELECTOR = 1;
+	private Button editRecipePictureButton;
 
 	private boolean cameraOpened;
-
-	private MenuItem publishMenuItem;
-
-	private MenuItem unpublishMenuItem;
-
-	static final int REQUEST_IMAGE_CAPTURE = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +59,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 
 		addImageButton = (Button) findViewById(R.id.add_recipe_as_picture);
 		recipeAsPicture = (ImageView) findViewById(R.id.recipe_as_picture_receipt_image);
+		editRecipePictureButton = (Button)findViewById(R.id.edit_recipe_picture_button);
 
 		initSupportActionBar();
 
@@ -135,6 +129,12 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 
 	}
 
+	private void makePictureEditPanleInvisible() {
+		RelativeLayout mainPictureEditPanel = (RelativeLayout)findViewById(R.id.recipe_picture_edit_panel);
+		mainPictureEditPanel.setVisibility(View.GONE);
+	}
+
+
 	private void initPictureAndPictureButton() {
 
 		if (!EntityUtils.isNewRecipe(recipeDetails)) {
@@ -143,38 +143,35 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 				if (!EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), this)) {
 					addImageButton.setVisibility(View.GONE);
 					recipeAsPicture.setVisibility(View.VISIBLE);
+					editRecipePictureButton.setVisibility(View.GONE);
 				} else {
 					addImageButton.setVisibility(View.VISIBLE);
-					recipeAsPicture.setVisibility(View.GONE);
+					makePictureEditPanleInvisible();
 				}
 			} else {
 				addImageButton.setVisibility(View.GONE);
 				recipeAsPicture.setVisibility(View.VISIBLE);
+				if(EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), this)) {
+					editRecipePictureButton.setVisibility(View.VISIBLE);
+				} else {
+					editRecipePictureButton.setVisibility(View.GONE);
+				}
 			}
 		} else {
-			recipeAsPicture.setVisibility(View.GONE);
+			makePictureEditPanleInvisible();
 		}
 
 		addImageButton.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				changePictureOnClick();
-
 			}
-
 		});
-		final Activity activity = this;
-		recipeAsPicture.setOnClickListener(new OnClickListener() {
-
+		editRecipePictureButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), activity)) {
-					changePictureOnClick();
-				}
-
+				changePictureOnClick();
 			}
-
 		});
 	}
 
@@ -210,6 +207,11 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 				this.addImageButton, this);
 		this.recipeDetails.setRecipeAsPictureImage(thumbnail);
 		cameraOpened = false;
+
+		RelativeLayout mainPictureEditPanel = (RelativeLayout) findViewById(R.id.recipe_picture_edit_panel);
+		mainPictureEditPanel.setVisibility(View.VISIBLE);
+
+		this.recipeDetails.setRecipeChanges(true);
 
 	}
 
