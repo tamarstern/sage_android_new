@@ -1,37 +1,9 @@
 package com.example.myfirstapp;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.sage.activity.interfaces.IExitWithoutSaveListener;
-import com.sage.activity.interfaces.IInitLinkDetailsListener;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeLinkDetails;
-import com.sage.entities.RecipeSubCategory;
-import com.sage.fragments.RecipeTitleFragment;
-import com.sage.fragments.ToolbarFragment;
-import com.sage.listeners.ExitRecipeWithoutSavingPopupHandler;
-import com.sage.listeners.SaveRecipeHandler;
-import com.sage.services.GetRecipeUrlDetailsService;
-import com.sage.tasks.GetRecipeUrlDetailsTask;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.EntityUtils;
-import com.sage.utils.ImagesInitializer;
-import com.sage.utils.RecipeDetailsBinder;
-import com.sage.utils.RecipeOwnerContext;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -49,7 +21,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.sage.activity.interfaces.IExitWithoutSaveListener;
+import com.sage.activity.interfaces.IInitLinkDetailsListener;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeLinkDetails;
+import com.sage.fragments.ToolbarFragment;
+import com.sage.listeners.SaveRecipeHandler;
+import com.sage.tasks.GetRecipeUrlDetailsTask;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.EntityUtils;
+import com.sage.utils.ImagesInitializer;
+import com.sage.utils.RecipeDetailsBinder;
+import com.sage.utils.RecipeOwnerContext;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class LinkRecipePageActivity extends AppCompatActivity implements IExitWithoutSaveListener {
 
@@ -192,7 +183,6 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), this)) {
 			getMenuInflater().inflate(R.menu.recipe_page_menu_for_logged_in_user, menu);
-			initPublishAndUnpublishMenuItems(menu);
 
 		} else {
 			getMenuInflater().inflate(R.menu.recipe_page_menu_for_not_logged_in_user, menu);
@@ -201,17 +191,6 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	private void initPublishAndUnpublishMenuItems(Menu menu) {
-		publishMenuItem = menu.findItem(R.id.action_publish);
-		unpublishMenuItem = menu.findItem(R.id.action_unpublish);
-		if (recipeDetails.isPublished()) {
-			publishMenuItem.setVisible(false);
-			unpublishMenuItem.setVisible(true);
-		} else {
-			publishMenuItem.setVisible(true);
-			unpublishMenuItem.setVisible(false);
-		}
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -221,22 +200,6 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 			SaveRecipeHandler handler = new SaveRecipeHandler(inflater, viewGroup, viewGroup, recipeDetails, this,
 					category);
 			handler.HandleSaveRecipe();
-			return true;
-		} else if (item.getItemId() == R.id.action_publish) {
-			Toast toast = Toast.makeText(this, R.string.publish_recipe, Toast.LENGTH_SHORT);
-			toast.show();
-			recipeDetails.setPublished(true);
-			recipeDetails.setRecipeChanges(true);
-			publishMenuItem.setVisible(false);
-			unpublishMenuItem.setVisible(true);
-			return true;
-		} else if (item.getItemId() == R.id.action_unpublish) {
-			Toast toast = Toast.makeText(this, R.string.unpublish_recipe, Toast.LENGTH_SHORT);
-			toast.show();
-			recipeDetails.setPublished(false);
-			recipeDetails.setRecipeChanges(true);
-			publishMenuItem.setVisible(true);
-			unpublishMenuItem.setVisible(false);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);

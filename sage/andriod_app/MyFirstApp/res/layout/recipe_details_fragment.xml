@@ -8,21 +8,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:id="@+id/receipt_main_pic"
-            android:layout_width="fill_parent"
-            android:layout_height="300dp"
-            android:layout_marginBottom="0dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/appliction_panel_style"
-            android:contentDescription="@string/description"
+        android:orientation="vertical"
+        android:background="@drawable/appliction_panel_style">
+        <RelativeLayout
+            android:id="@+id/main_picture_edit_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:padding="15dp"
             android:paddingBottom="9dp"
-            android:paddingTop="9dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/default_recipe_image" />
+            android:paddingTop="9dp">
+
+            <ImageView
+                android:id="@+id/receipt_main_pic"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:layout_marginBottom="0dp"
+                android:adjustViewBounds="true"
+
+                android:contentDescription="@string/description"
+                android:scaleType="fitXY"
+                android:src="@drawable/default_recipe_image" />
+
+            <Button
+                android:id="@+id/edit_main_picture_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_picture"
+                android:background="#80ffffff"
+                android:layout_alignBottom="@+id/receipt_main_pic"
+                android:layout_alignParentEnd="true" />
+
+
+
+        </RelativeLayout>
+
 
         <Button
             android:id="@+id/add_picture"
@@ -31,7 +50,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="0dp"
             android:layout_weight="1"
-            android:background="@drawable/appliction_panel_style"
+            android:background="#ffffff"
             android:text="@string/add_picture_label"
             android:textAllCaps="false"
             android:textColor="#b3b3b3"

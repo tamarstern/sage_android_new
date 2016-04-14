@@ -317,7 +317,10 @@ public class LoginActivity extends Activity {
 
 	private void initLoginFormVisibility(int visible) {
 		ScrollView loginView = (ScrollView) findViewById(R.id.login_form);
-		loginView.setVisibility(visible);
+		if(loginView != null) {
+			loginView.setVisibility(visible);
+		}
+
 	}
 
 }

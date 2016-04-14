@@ -50,6 +50,7 @@
     <string name="add_recipe_title">Add Title</string>
     <string name="add_recipe_title_toolbar">New Recipe</string>
     <string name="edit_category_name">Enter Name</string>
+    <string name="edit_picture">Edit</string>
     <string name="save_recipe">Save Recipe</string>
     <string name="like_recipe">Like</string>
     <string name="unlike_recipe">Unlike</string>
@@ -63,8 +64,8 @@
     <string name="follow_user">Follow</string>
     <string name="unfollow_user">Unfollow</string>
     <string name="user_followed_by">followed by </string>
-    <string name="publish_recipe">Recipe will be published</string>
-    <string name="unpublish_recipe">Recipe will be unpublished</string>
+    <string name="publish_recipe">Publish Recipe</string>
+    <string name="unpublish_recipe">Unpublished</string>
     <string name="delete_recipe">Delete</string>
     <string name="save_in_sub_category">Save In Category</string>
     <string name="move_recipe">Move</string>

@@ -41,6 +41,8 @@ public class RecipeBasicData implements Serializable {
 	
 	private String ownerUserName;
 
+	private boolean linkUiInitialized;
+
 	public String getHeader() {
 		return header;
 	}
@@ -190,4 +192,11 @@ public class RecipeBasicData implements Serializable {
 		this.linkSiteName = linkSiteName;
 	}
 
+	public boolean isLinkUiInitialized() {
+		return linkUiInitialized;
+	}
+
+	public void setLinkUiInitialized(boolean linkUiInitialized) {
+		this.linkUiInitialized = linkUiInitialized;
+	}
 }

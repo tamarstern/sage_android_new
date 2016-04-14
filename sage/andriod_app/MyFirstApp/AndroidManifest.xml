@@ -21,6 +21,11 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-permission
+        android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission
+        android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
+
     <uses-feature android:name="androia.hardware.camera.autofocus" />
 
     <application
@@ -104,6 +109,7 @@
         <activity
             android:name=".ActivityCategoriesPage"
             android:label="@string/title_activity_activity_categories_page"
+            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize">
         </activity>
         <activity

@@ -54,11 +54,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/recipe_owner_panel"
                 android:layout_marginBottom="0dp" />
+            <fragment
+                android:id="@+id/recipe_published_fragment"
+                android:name="com.sage.fragments.RecipePublishedFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/comments_likes_panel"
+                android:layout_marginBottom="0dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/comments_likes_panel" >
+                android:layout_below="@+id/recipe_published_fragment" >
 
                 <fragment
                     android:id="@+id/recipe_details_panel"

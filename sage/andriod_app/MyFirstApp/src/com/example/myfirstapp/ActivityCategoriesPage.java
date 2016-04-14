@@ -1,25 +1,5 @@
 package com.example.myfirstapp;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-import com.sage.activity.interfaces.ICategoryEditListener;
-import com.sage.adapters.CategoriesArrayAdapter;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeCategoryBase;
-import com.sage.entities.RecipeDetails;
-import com.sage.listeners.EditCategoryPopupHandler;
-import com.sage.services.GetCategoriesForUserService;
-import com.sage.utils.ActivityUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -37,11 +17,31 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+import com.sage.activity.interfaces.ICategoryEditListener;
+import com.sage.adapters.CategoriesArrayAdapter;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeCategoryBase;
+import com.sage.entities.RecipeDetails;
+import com.sage.listeners.EditCategoryPopupHandler;
+import com.sage.services.GetCategoriesForUserService;
+import com.sage.utils.ActivityUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ActivityCategoriesPage extends AppCompatActivity implements ICategoryEditListener {
 
+	public static final String CATEGORIES = "CATEGORIES";
 	private ListView listView;
 
-	private List<RecipeCategory> categories = new ArrayList<RecipeCategory>();
+	private ArrayList<RecipeCategory> categories = new ArrayList<RecipeCategory>();
 
 	private RecipeDetails recipeDetails;
 
@@ -64,9 +64,18 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 		initSupportActionBar();
 
 		initEditCategoryHandler();
+		initCategories(savedInstanceState);
 
-		fetchCategories();
 	}
+
+	private void initCategories(Bundle savedInstanceState) {
+		if(savedInstanceState != null && savedInstanceState.get(CATEGORIES) != null) {
+			this.categories = (ArrayList<RecipeCategory>)savedInstanceState.get(CATEGORIES);
+		} else {
+			fetchCategories();
+		}
+	}
+
 
 	private void initSupportActionBar() {
 		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -149,6 +158,7 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 			super.onBackPressed();
 		}	
 	}
+
 
 	@Override
 	public void onSaveCategory(RecipeCategoryBase category) {

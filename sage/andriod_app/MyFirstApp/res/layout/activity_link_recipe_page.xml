@@ -55,10 +55,19 @@
                 android:layout_below="@+id/recipe_owner_panel"
                 android:layout_marginBottom="0dp" />
 
+            <fragment
+                android:id="@+id/recipe_published_fragment"
+                android:name="com.sage.fragments.RecipePublishedFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/comments_likes_panel"
+                android:layout_marginBottom="0dp" />
+
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_below="@id/comments_likes_panel" >
+                android:layout_below="@id/recipe_published_fragment" >
 
                 <TextView
                     android:id="@+id/recipe_link_content"

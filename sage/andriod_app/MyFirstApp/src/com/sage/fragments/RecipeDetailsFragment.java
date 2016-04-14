@@ -1,14 +1,5 @@
 package com.sage.fragments;
 
-import com.example.myfirstapp.R;
-import com.sage.constants.ImageType;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeTextDetails;
-import com.sage.utils.EntityUtils;
-import com.sage.utils.ImageSelectorUtils;
-import com.sage.utils.ImagesInitializer;
-import com.sage.utils.RecipeDetailsBinder;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -24,6 +15,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.example.myfirstapp.R;
+import com.sage.constants.ImageType;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeTextDetails;
+import com.sage.utils.EntityUtils;
+import com.sage.utils.ImageSelectorUtils;
+import com.sage.utils.ImagesInitializer;
+import com.sage.utils.RecipeDetailsBinder;
 
 public class RecipeDetailsFragment extends Fragment {
 
@@ -37,9 +38,12 @@ public class RecipeDetailsFragment extends Fragment {
 
 	private Button addImageButton;
 
+	private Button editImageButton;
+
 	private ImageView mainPicture;
 
 	private boolean cameraOpened = false;
+	View recipeDetailsPanel;
 
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 	static final int REQUEST_SELECT_FILE = 2;
@@ -51,7 +55,7 @@ public class RecipeDetailsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View recipeDetailsPanel = inflater.inflate(R.layout.recipe_details_fragment, container, false);
+		recipeDetailsPanel = inflater.inflate(R.layout.recipe_details_fragment, container, false);
 
 		final Activity activity = getActivity();
 		Intent i = activity.getIntent();
@@ -60,12 +64,6 @@ public class RecipeDetailsFragment extends Fragment {
 				.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
 
 		addImageButton = (Button) recipeDetailsPanel.findViewById(R.id.add_picture);
-		mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
-
-		initWithRecipeDetails(recipeDetailsPanel);
-
-		initRecipeUi(recipeDetailsPanel, activity);
-
 		addImageButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -75,6 +73,23 @@ public class RecipeDetailsFragment extends Fragment {
 			}
 
 		});
+		mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
+		editImageButton = (Button) recipeDetailsPanel.findViewById(R.id.edit_main_picture_button);
+
+		editImageButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				changePictureAction();
+
+			}
+
+		});
+
+		initWithRecipeDetails();
+
+		initRecipeUi( activity);
+
 		mainPicture.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -90,34 +105,52 @@ public class RecipeDetailsFragment extends Fragment {
 		return recipeDetailsPanel;
 	}
 
-	private void initRecipeUi(View recipeDetailsPanel, final Activity activity) {
+	private void initRecipeUi( final Activity activity) {
 		if (!EntityUtils.isNewRecipe(recipeDetails)) {
-			initMainRecipePicture(recipeDetailsPanel);
-			initExistingRecipeIngredients();
-			initExistingRecipePreparation();
-			initExistingRecipeComments();
+			initMainRecipePicture();
+			initRecipeContentForNonNewRecipes();
 			if (TextUtils.isEmpty(recipeDetails.getPictureId())) {
 				if (!EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), activity)) {
 					addImageButton.setVisibility(View.GONE);
 					mainPicture.setVisibility(View.VISIBLE);
+					editImageButton.setVisibility(View.GONE);
 				} else {
 					addImageButton.setVisibility(View.VISIBLE);
-					mainPicture.setVisibility(View.GONE);
+					makePictureEditPanleInvisible();
 				}
 			} else {
 				addImageButton.setVisibility(View.GONE);
 				mainPicture.setVisibility(View.VISIBLE);
+				if(EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), activity)) {
+					editImageButton.setVisibility(View.VISIBLE);
+				} else {
+					editImageButton.setVisibility(View.GONE);
+				}
 			}
 		} else {
-			mainPicture.setVisibility(View.GONE);
+			makePictureEditPanleInvisible();
 		}
+		updateUIForNonLoggedInUserRecipe( activity);
+	}
 
-		LinearLayout commentsPanel = (LinearLayout) recipeDetailsPanel.findViewById(R.id.receipt_comments_panel);
+	private void initRecipeContentForNonNewRecipes() {
+		initExistingRecipeIngredients();
+		initExistingRecipePreparation();
+		initExistingRecipeComments();
+	}
+
+	private void makePictureEditPanleInvisible() {
+		RelativeLayout mainPictureEditPanel = (RelativeLayout)recipeDetailsPanel.findViewById(R.id.main_picture_edit_panel);
+		mainPictureEditPanel.setVisibility(View.GONE);
+	}
+
+	private void updateUIForNonLoggedInUserRecipe( Activity activity) {
 		if (!EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), activity)) {
 			ingredients.setEnabled(false);
 			ingredients.setHint("");
 			prepartion.setEnabled(false);
 			prepartion.setHint("");
+			LinearLayout commentsPanel = (LinearLayout) recipeDetailsPanel.findViewById(R.id.receipt_comments_panel);
 			commentsPanel.setVisibility(View.GONE);
 		}
 	}
@@ -138,9 +171,14 @@ public class RecipeDetailsFragment extends Fragment {
 		
 		this.recipeDetails.setImage(thumbnail);
 		cameraOpened = false;
+
+		RelativeLayout mainPictureEditPanel = (RelativeLayout)recipeDetailsPanel.findViewById(R.id.main_picture_edit_panel);
+		mainPictureEditPanel.setVisibility(View.VISIBLE);
+
+		this.recipeDetails.setRecipeChanges(true);
 	}
 
-	private void initMainRecipePicture(View recipeDetailsPanel) {
+	private void initMainRecipePicture() {
 		ImageView mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
 		String pictureID = recipeDetails.getPictureId();
 
@@ -148,7 +186,7 @@ public class RecipeDetailsFragment extends Fragment {
 
 	}
 
-	private void initWithRecipeDetails(View recipeDetailsPanel) {
+	private void initWithRecipeDetails() {
 
 		initIngredientsTextBox(recipeDetailsPanel);
 

@@ -91,23 +91,11 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		}
 	}
 
-	private void initPublishAndUnpublishMenuItems(Menu menu) {
-		publishMenuItem = menu.findItem(R.id.action_publish);
-		unpublishMenuItem = menu.findItem(R.id.action_unpublish);
-		if (recipeDetails.isPublished()) {
-			publishMenuItem.setVisible(false);
-			unpublishMenuItem.setVisible(true);
-		} else {
-			publishMenuItem.setVisible(true);
-			unpublishMenuItem.setVisible(false);
-		}
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), this)) {
 			getMenuInflater().inflate(R.menu.recipe_page_menu_for_logged_in_user, menu);
-			initPublishAndUnpublishMenuItems(menu);
 		} else {
 			getMenuInflater().inflate(R.menu.recipe_page_menu_for_not_logged_in_user, menu);
 		}
@@ -123,23 +111,6 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 			SaveRecipeHandler handler = new SaveRecipeHandler(inflater, viewGroup, viewGroup, recipeDetails, this,
 					category);
 			handler.HandleSaveRecipe();
-			return true;
-		} else if (item.getItemId() == R.id.action_publish) {
-			Toast toast = Toast.makeText(this, R.string.publish_recipe, Toast.LENGTH_SHORT);
-			toast.show();
-			recipeDetails.setPublished(true);
-			recipeDetails.setRecipeChanges(true);
-			publishMenuItem.setVisible(false);
-			unpublishMenuItem.setVisible(true);
-			AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.PUBLISH_RECIPE);
-			return true;
-		} else if (item.getItemId() == R.id.action_unpublish) {
-			Toast toast = Toast.makeText(this, R.string.unpublish_recipe, Toast.LENGTH_SHORT);
-			toast.show();
-			recipeDetails.setPublished(false);
-			recipeDetails.setRecipeChanges(true);
-			publishMenuItem.setVisible(true);
-			unpublishMenuItem.setVisible(false);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);

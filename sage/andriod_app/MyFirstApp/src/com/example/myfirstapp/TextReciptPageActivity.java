@@ -3,17 +3,6 @@ package com.example.myfirstapp;
 //import com.google.android.gms.analytics.GoogleAnalytics;
 //import com.google.android.gms.analytics.HitBuilders;
 //import com.google.android.gms.analytics.Tracker;
-import com.sage.activity.interfaces.IExitWithoutSaveListener;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipeSubCategory;
-import com.sage.fragments.ToolbarFragment;
-import com.sage.listeners.SaveRecipeHandler;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.AnalyticsUtils;
-import com.sage.utils.EntityUtils;
-
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +14,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Toast;
+
+import com.sage.activity.interfaces.IExitWithoutSaveListener;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeDetails;
+import com.sage.fragments.ToolbarFragment;
+import com.sage.listeners.SaveRecipeHandler;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.EntityUtils;
 
 public class TextReciptPageActivity extends AppCompatActivity implements IExitWithoutSaveListener {
 
@@ -91,25 +89,12 @@ public class TextReciptPageActivity extends AppCompatActivity implements IExitWi
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), this)) {
 			getMenuInflater().inflate(R.menu.recipe_page_menu_for_logged_in_user, menu);
-			initPublishAndUnpublishMenuItems(menu);
 
 		} else {
 			getMenuInflater().inflate(R.menu.recipe_page_menu_for_not_logged_in_user, menu);
 		}
 
 		return super.onCreateOptionsMenu(menu);
-	}
-
-	private void initPublishAndUnpublishMenuItems(Menu menu) {
-		publishMenuItem = menu.findItem(R.id.action_publish);
-		unpublishMenuItem = menu.findItem(R.id.action_unpublish);
-		if (recipeDetails.isPublished()) {
-			publishMenuItem.setVisible(false);
-			unpublishMenuItem.setVisible(true);
-		} else {
-			publishMenuItem.setVisible(true);
-			unpublishMenuItem.setVisible(false);
-		}
 	}
 
 	@Override
@@ -120,23 +105,6 @@ public class TextReciptPageActivity extends AppCompatActivity implements IExitWi
 			SaveRecipeHandler handler = new SaveRecipeHandler(inflater, viewGroup, viewGroup, recipeDetails, this,
 					subCategory);
 			handler.HandleSaveRecipe();
-			return true;
-		} else if (item.getItemId() == R.id.action_publish) {
-			Toast toast = Toast.makeText(this, R.string.publish_recipe, Toast.LENGTH_SHORT);
-			toast.show();
-			recipeDetails.setPublished(true);
-			recipeDetails.setRecipeChanges(true);
-			publishMenuItem.setVisible(false);
-			unpublishMenuItem.setVisible(true);
-			AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.PUBLISH_RECIPE);
-			return true;
-		} else if (item.getItemId() == R.id.action_unpublish) {
-			Toast toast = Toast.makeText(this, R.string.unpublish_recipe, Toast.LENGTH_SHORT);
-			toast.show();
-			recipeDetails.setPublished(false);
-			recipeDetails.setRecipeChanges(true);
-			publishMenuItem.setVisible(true);
-			unpublishMenuItem.setVisible(false);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
