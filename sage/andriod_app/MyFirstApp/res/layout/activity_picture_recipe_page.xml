@@ -86,7 +86,7 @@
                         <ImageView
                             android:id="@+id/recipe_as_picture_receipt_image"
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="300dp"
                             android:layout_marginBottom="0dp"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/description"

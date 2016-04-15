@@ -1,5 +1,6 @@
 package com.example.myfirstapp;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipePictureDetails;
+import com.sage.entities.RecipeType;
 import com.sage.fragments.ToolbarFragment;
 import com.sage.listeners.SaveRecipeHandler;
 import com.sage.utils.ActivityUtils;
@@ -60,6 +62,23 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		addImageButton = (Button) findViewById(R.id.add_recipe_as_picture);
 		recipeAsPicture = (ImageView) findViewById(R.id.recipe_as_picture_receipt_image);
 		editRecipePictureButton = (Button)findViewById(R.id.edit_recipe_picture_button);
+
+		final Activity activity = this;
+
+		recipeAsPicture.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(!TextUtils.isEmpty(recipeDetails.getImageRecipe_pictureId())) {
+
+					Intent intent = new Intent(activity, DisplayImageActivity.class).
+							putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER,recipeDetails).
+							putExtra(EntityDataTransferConstants.RECIPE_IMAGE_TYPE, RecipeType.PICTURE);
+					activity.startActivity(intent);
+
+				}
+			}
+		});
+
 
 		initSupportActionBar();
 
@@ -121,10 +140,21 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		}
 	}
 
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if(!EntityUtils.isNewRecipe(recipeDetails)) {
+			initMainRecipePicture(this.recipeAsPicture, ImageType.IMAGE_RECIPE_PICTURE);
+		}
+
+	}
+
+
+
 	private void initMainRecipePicture(ImageView imageView, ImageType imageType) {
 		String pictureID = this.recipeDetails.getImageRecipe_pictureId();
 		if (!TextUtils.isEmpty(pictureID)) {
-			ImagesInitializer.initialRecipeImage(this, pictureID, imageView, imageType);
+			ImagesInitializer.initialRecipeImage(this, pictureID, imageView, imageType, true, true);
 		}
 
 	}
@@ -138,7 +168,6 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 	private void initPictureAndPictureButton() {
 
 		if (!EntityUtils.isNewRecipe(recipeDetails)) {
-			initMainRecipePicture(this.recipeAsPicture, ImageType.IMAGE_RECIPE_PICTURE);
 			if (TextUtils.isEmpty(recipeDetails.getImageRecipe_pictureId())) {
 				if (!EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), this)) {
 					addImageButton.setVisibility(View.GONE);

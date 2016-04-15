@@ -14,14 +14,16 @@ import com.sage.constants.ActivityConstants;
 import com.sage.constants.ImageType;
 import com.sage.constants.ServicesConstants;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.text.MessageFormat;
 
 public class ImagesInitializer {
 
-	private static CachedMap<String, Drawable> drawablesMap = new CachedMap<String, Drawable>(30);
+	private static CachedMap<String, Drawable> drawablesMap = new CachedMap<String, Drawable>(35);
 
-	public static void initialRecipeImage(final Context context, String pictureID, ImageView imageView, ImageType imageType) {
+	public static void initialRecipeImage(final Context context, String pictureID, ImageView imageView, ImageType imageType,
+										  boolean useDrawableCache, boolean fitImage) {
 		if (pictureID == null) {
 			imageView.setImageResource(R.drawable.default_recipe_image);
 			imageView.setVisibility(View.VISIBLE);
@@ -30,22 +32,26 @@ public class ImagesInitializer {
 			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 			String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 			String url = MessageFormat.format(ServicesConstants.PICTURE_URL, pictureID,imageType, token);
-			initImage(context, imageView, url);
+			initImage(context, imageView, url, useDrawableCache, fitImage);
 			imageView.setVisibility(View.VISIBLE);
 
 		}
 
 	}
 
-	public static void initImage(final Context context, final ImageView imageView, final String url) {
-		if (drawablesMap.containsKey(url)) {
+	public static void initImage(final Context context, final ImageView imageView, final String url,
+								 boolean useDrawableCache, boolean fitImage) {
+		if (useDrawableCache && drawablesMap.containsKey(url)) {
 			Drawable drawable = drawablesMap.get(url);
 			if (drawable != null) {
 				imageView.setImageDrawable(drawable);
 				return;
 			}
 		}
+
+
 		Picasso.Builder builder = new Picasso.Builder(context);
+
 		builder.listener(new Picasso.Listener() {
 			@Override
 			public void onImageLoadFailed(Picasso arg0, Uri arg1, Exception arg2) {
@@ -54,19 +60,24 @@ public class ImagesInitializer {
 			}
 
 		});
-		builder.build().load(url).into(imageView, new com.squareup.picasso.Callback() {
-			@Override
-			public void onSuccess() {
-				Drawable drawable = imageView.getDrawable();
-				drawablesMap.put(url, drawable);
-			}
+		RequestCreator load = builder.build().with(context).load(url).error(R.drawable.default_recipe_image);
+		if(fitImage) {
+			int measuredWidth = imageView.getWidth();
+			int measuredHeight = imageView.getHeight();
+			load.resize(measuredWidth, measuredHeight);
+		}
+		load.into(imageView, new com.squareup.picasso.Callback() {
+					@Override
+					public void onSuccess() {
+						Drawable drawable = imageView.getDrawable();
+						drawablesMap.put(url, drawable);
+					}
 
-			@Override
-			public void onError() {
-				Log.e("failed to load image", "failed to load image");
-			}
-		});
-
+					@Override
+					public void onError() {
+						Log.e("failed to load image", "failed to load image");
+					}
+				});
 	}
 
 	

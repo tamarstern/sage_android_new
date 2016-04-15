@@ -25,6 +25,7 @@ public class EntityDataTransferConstants {
 	public static final String IS_FOLLOWING = "isFollowing";
 
 	public static final String FOLLOW_BY_COUNT = "followByCount";
-	
+
+	public static final String RECIPE_IMAGE_TYPE = "imageType";
 
 }

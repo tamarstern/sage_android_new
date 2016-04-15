@@ -214,7 +214,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 	private void initRecipeMainPicture(final RecipeUserBasicData recipeUserBasicData) {
 
 		ImagesInitializer.initialRecipeImage(getContext(), recipeUserBasicData.getPictureId(), recipeMainPicture,
-				ImageType.IMAGE_RECIPE_PICTURE);
+				ImageType.IMAGE_RECIPE_PICTURE, true, false);
 		getLinkDetailsProgress.setVisibility(View.GONE);
 
 	}
@@ -327,7 +327,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 		String linkImageUrl = recipeBasicData.getLinkImageUrl();
 		if (!TextUtils.isEmpty(linkImageUrl)) {
-			ImagesInitializer.initImage(this.context, recipeMainPicture, linkImageUrl);
+			ImagesInitializer.initImage(this.context, recipeMainPicture, linkImageUrl, true, false);
 		}
 
 		getLinkDetailsProgress.setVisibility(View.GONE);

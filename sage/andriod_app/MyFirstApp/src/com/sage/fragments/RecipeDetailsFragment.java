@@ -17,10 +17,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.example.myfirstapp.DisplayImageActivity;
 import com.example.myfirstapp.R;
 import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeTextDetails;
+import com.sage.entities.RecipeType;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ImageSelectorUtils;
 import com.sage.utils.ImagesInitializer;
@@ -43,7 +45,9 @@ public class RecipeDetailsFragment extends Fragment {
 	private ImageView mainPicture;
 
 	private boolean cameraOpened = false;
-	View recipeDetailsPanel;
+	private View recipeDetailsPanel;
+
+	private boolean isImageFitToScreen = false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +71,20 @@ public class RecipeDetailsFragment extends Fragment {
 
 		});
 		mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
+		mainPicture.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(!TextUtils.isEmpty(recipeDetails.getPictureId())) {
+
+					Intent intent = new Intent(activity, DisplayImageActivity.class).
+							putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER,recipeDetails).
+							putExtra(EntityDataTransferConstants.RECIPE_IMAGE_TYPE, RecipeType.TEXT);
+					activity.startActivity(intent);
+
+				}
+			}
+		});
+		
 		editImageButton = (Button) recipeDetailsPanel.findViewById(R.id.edit_main_picture_button);
 
 		editImageButton.setOnClickListener(new OnClickListener() {
@@ -81,20 +99,7 @@ public class RecipeDetailsFragment extends Fragment {
 
 		initWithRecipeDetails();
 
-		initRecipeUi( activity);
-
-		mainPicture.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), activity)) {
-					changePictureAction();
-				}
-
-			}
-
-		});
-
+		initRecipeUi(activity);
 		return recipeDetailsPanel;
 	}
 
@@ -175,7 +180,7 @@ public class RecipeDetailsFragment extends Fragment {
 		ImageView mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
 		String pictureID = recipeDetails.getPictureId();
 
-		ImagesInitializer.initialRecipeImage(this.getActivity(), pictureID, mainPicture,ImageType.RECIPE_PICTURE);
+		ImagesInitializer.initialRecipeImage(this.getActivity(), pictureID, mainPicture,ImageType.RECIPE_PICTURE, true, false);
 
 	}
 
