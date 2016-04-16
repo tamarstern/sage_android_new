@@ -60,6 +60,7 @@ public class LoginActivity extends Activity {
 			AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.ENTER_APP_WHEN_ALREADY_LOGGED_IN);
 			new AuthenticateWithTokenTask(this).execute(token);
 
+
 		} else {
 			initLoginFormVisibility(View.VISIBLE);
 

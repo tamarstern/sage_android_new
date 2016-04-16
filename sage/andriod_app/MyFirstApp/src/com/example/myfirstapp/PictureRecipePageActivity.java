@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
+import com.sage.activity.interfaces.IOnWindowFocusChanged;
 import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
@@ -87,6 +89,19 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		initMainRecipePicture(this.recipeAsPicture, ImageType.IMAGE_RECIPE_PICTURE);
+
+	}
+
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+		super.onRestoreInstanceState(savedInstanceState, persistentState);
+	}
+
 	private void disableLockScreenAndTimeout() {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -140,21 +155,30 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		}
 	}
 
+
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		if(!EntityUtils.isNewRecipe(recipeDetails)) {
-			initMainRecipePicture(this.recipeAsPicture, ImageType.IMAGE_RECIPE_PICTURE);
+
+		initMainRecipePicture(this.recipeAsPicture, ImageType.IMAGE_RECIPE_PICTURE);
+
+
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.recipe_picture_details_panel);
+
+		if(fragment instanceof IOnWindowFocusChanged) {
+			IOnWindowFocusChanged windowFocusChanged = (IOnWindowFocusChanged)fragment;
+			windowFocusChanged.onFocusChanged();
 		}
 
 	}
 
-
-
 	private void initMainRecipePicture(ImageView imageView, ImageType imageType) {
+		if(EntityUtils.isNewRecipe(recipeDetails)) {
+			return;
+		}
 		String pictureID = this.recipeDetails.getImageRecipe_pictureId();
 		if (!TextUtils.isEmpty(pictureID)) {
-			ImagesInitializer.initialRecipeImage(this, pictureID, imageView, imageType, true, true);
+			ImagesInitializer.initialRecipeImage(this, pictureID, imageView, imageType);
 		}
 
 	}

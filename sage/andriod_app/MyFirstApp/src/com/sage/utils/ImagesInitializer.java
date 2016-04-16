@@ -22,8 +22,7 @@ public class ImagesInitializer {
 
 	private static CachedMap<String, Drawable> drawablesMap = new CachedMap<String, Drawable>(35);
 
-	public static void initialRecipeImage(final Context context, String pictureID, ImageView imageView, ImageType imageType,
-										  boolean useDrawableCache, boolean fitImage) {
+	public static void initialRecipeImage(final Context context, String pictureID, ImageView imageView, ImageType imageType) {
 		if (pictureID == null) {
 			imageView.setImageResource(R.drawable.default_recipe_image);
 			imageView.setVisibility(View.VISIBLE);
@@ -32,19 +31,19 @@ public class ImagesInitializer {
 			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 			String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 			String url = MessageFormat.format(ServicesConstants.PICTURE_URL, pictureID,imageType, token);
-			initImage(context, imageView, url, useDrawableCache, fitImage);
+			initImage(context, imageView, url);
 			imageView.setVisibility(View.VISIBLE);
 
 		}
 
 	}
 
-	public static void initImage(final Context context, final ImageView imageView, final String url,
-								 boolean useDrawableCache, boolean fitImage) {
-		if (useDrawableCache && drawablesMap.containsKey(url)) {
+	public static void initImage(final Context context, final ImageView imageView, final String url) {
+		if (drawablesMap.containsKey(url)) {
 			Drawable drawable = drawablesMap.get(url);
 			if (drawable != null) {
-				imageView.setImageDrawable(drawable);
+				Drawable clone = drawable.getConstantState().newDrawable();
+				imageView.setImageDrawable(clone);
 				return;
 			}
 		}
@@ -61,11 +60,6 @@ public class ImagesInitializer {
 
 		});
 		RequestCreator load = builder.build().with(context).load(url).error(R.drawable.default_recipe_image);
-		if(fitImage) {
-			int measuredWidth = imageView.getWidth();
-			int measuredHeight = imageView.getHeight();
-			load.resize(measuredWidth, measuredHeight);
-		}
 		load.into(imageView, new com.squareup.picasso.Callback() {
 					@Override
 					public void onSuccess() {

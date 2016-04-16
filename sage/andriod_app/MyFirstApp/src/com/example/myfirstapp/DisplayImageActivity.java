@@ -45,11 +45,6 @@ public class DisplayImageActivity extends Activity implements View.OnTouchListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_image);
 
-        Intent intent = getIntent();
-        ImageView image = (ImageView) findViewById(R.id.imageView);
-        RecipeType type = (RecipeType)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_IMAGE_TYPE);
-
-
     }
 
 
@@ -61,18 +56,19 @@ public class DisplayImageActivity extends Activity implements View.OnTouchListen
         RecipeType type = (RecipeType)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_IMAGE_TYPE);
 
 
-        if(type.equals(RecipeType.PICTURE)) {
-            RecipePictureDetails details = (RecipePictureDetails)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
-            ImagesInitializer.initialRecipeImage(this, details.getImageRecipe_pictureId(), image, ImageType.IMAGE_RECIPE_PICTURE, false, true);
-        } else {
-            RecipeTextDetails details = (RecipeTextDetails)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
-            ImagesInitializer.initialRecipeImage(this,details.getPictureId(), image, ImageType.RECIPE_PICTURE , false, true);
-        }
+        initImage(intent, image, type);
 
     }
 
-
-
+    private void initImage(Intent intent, ImageView image, RecipeType type) {
+        if(type.equals(RecipeType.PICTURE)) {
+            RecipePictureDetails details = (RecipePictureDetails)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
+            ImagesInitializer.initialRecipeImage(this, details.getImageRecipe_pictureId(), image, ImageType.IMAGE_RECIPE_PICTURE);
+        } else {
+            RecipeTextDetails details = (RecipeTextDetails)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
+            ImagesInitializer.initialRecipeImage(this,details.getPictureId(), image, ImageType.RECIPE_PICTURE);
+        }
+    }
 
 
     @Override

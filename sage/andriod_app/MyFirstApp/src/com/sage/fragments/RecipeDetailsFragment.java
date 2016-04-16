@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.example.myfirstapp.DisplayImageActivity;
 import com.example.myfirstapp.R;
+import com.sage.activity.interfaces.IOnWindowFocusChanged;
 import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeTextDetails;
@@ -28,7 +29,7 @@ import com.sage.utils.ImageSelectorUtils;
 import com.sage.utils.ImagesInitializer;
 import com.sage.utils.RecipeDetailsBinder;
 
-public class RecipeDetailsFragment extends Fragment {
+public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusChanged {
 
 	private RecipeTextDetails recipeDetails;
 
@@ -84,7 +85,7 @@ public class RecipeDetailsFragment extends Fragment {
 				}
 			}
 		});
-		
+
 		editImageButton = (Button) recipeDetailsPanel.findViewById(R.id.edit_main_picture_button);
 
 		editImageButton.setOnClickListener(new OnClickListener() {
@@ -105,7 +106,6 @@ public class RecipeDetailsFragment extends Fragment {
 
 	private void initRecipeUi( final Activity activity) {
 		if (!EntityUtils.isNewRecipe(recipeDetails)) {
-			initMainRecipePicture();
 			initRecipeContentForNonNewRecipes();
 			if (TextUtils.isEmpty(recipeDetails.getPictureId())) {
 				if (!EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), activity)) {
@@ -128,7 +128,7 @@ public class RecipeDetailsFragment extends Fragment {
 		} else {
 			makePictureEditPanleInvisible();
 		}
-		updateUIForNonLoggedInUserRecipe( activity);
+		updateUIForNonLoggedInUserRecipe(activity);
 	}
 
 	private void initRecipeContentForNonNewRecipes() {
@@ -177,10 +177,12 @@ public class RecipeDetailsFragment extends Fragment {
 	}
 
 	private void initMainRecipePicture() {
-		ImageView mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
-		String pictureID = recipeDetails.getPictureId();
+		if(!EntityUtils.isNewRecipe(recipeDetails)) {
+			ImageView mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
+			String pictureID = recipeDetails.getPictureId();
 
-		ImagesInitializer.initialRecipeImage(this.getActivity(), pictureID, mainPicture,ImageType.RECIPE_PICTURE, true, false);
+			ImagesInitializer.initialRecipeImage(this.getActivity(), pictureID, mainPicture, ImageType.RECIPE_PICTURE);
+		}
 
 	}
 
@@ -243,4 +245,8 @@ public class RecipeDetailsFragment extends Fragment {
 
 	}
 
+	@Override
+	public void onFocusChanged() {
+		initMainRecipePicture();
+	}
 }

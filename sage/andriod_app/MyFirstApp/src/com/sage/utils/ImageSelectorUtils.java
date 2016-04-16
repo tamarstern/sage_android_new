@@ -7,13 +7,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -81,34 +78,11 @@ public class ImageSelectorUtils {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inScaled = false;
 		Bitmap bm = BitmapFactory.decodeFile(selectedImagePath, options);
-		Bitmap rotated = rotateBitmap(selectedImagePath, bm);
+		Bitmap rotated = ImageResizeUtils.rotateBitmap(selectedImagePath, bm);
 		mainPicture.setImageBitmap(rotated);
 		return rotated;
 	}
 
-	private static int exifToDegrees(int exifOrientation) {
-		if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
-		else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
-		else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
-		return 0;
-	}
 
-	private static Bitmap rotateBitmap(String imgFilePath, Bitmap myBitmap) {
-		try {
-
-			ExifInterface exif = new ExifInterface(imgFilePath);
-			int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-			int orientation = exifToDegrees(rotation);
-			Log.d("EXIF", "Exif: " + orientation);
-			Matrix matrix = new Matrix();
-			matrix.postRotate(orientation);
-			Bitmap newBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
-			return newBitmap;
-		}
-		catch (Exception e) {
-			Log.e("failed roateting image", "failed rotating image", e);
-			return myBitmap;
-		}
-	}
 
 }

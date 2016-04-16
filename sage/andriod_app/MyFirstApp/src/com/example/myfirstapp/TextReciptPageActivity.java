@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
+import com.sage.activity.interfaces.IOnWindowFocusChanged;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
@@ -60,7 +61,19 @@ public class TextReciptPageActivity extends AppCompatActivity implements IExitWi
 
 	protected void onStop() {
 		super.onStop();
-		//GoogleAnalytics.getInstance(TextReciptPageActivity.this).reportActivityStop(this);
+	}
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.recipe_details_panel);
+
+		if(fragment instanceof IOnWindowFocusChanged) {
+			IOnWindowFocusChanged windowFocusChanged = (IOnWindowFocusChanged)fragment;
+			windowFocusChanged.onFocusChanged();
+		}
+
 
 	}
 
