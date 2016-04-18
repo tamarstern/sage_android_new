@@ -1,6 +1,9 @@
 package com.example.myfirstapp;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -24,6 +27,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sage.backgroundServices.CategoriesReceiver;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.services.AuthenticateWithTokenService;
@@ -52,6 +56,9 @@ public class LoginActivity extends Activity {
 		callbackManager = CallbackManager.Factory.create();
 		setContentView(R.layout.activity_login);
 
+		//Intent intent = new Intent(this, CategoriesBackgroundService.class);
+		//startService(intent);
+		scheduleAlarm();
 		//openNewsfeedIfAlreadyLoggedInToFacebook();
 
 		String token = getDirectAuthenticationToken();
@@ -76,14 +83,18 @@ public class LoginActivity extends Activity {
 			initForgotPasswordLink();
 
 		}
+	}
 
 
-
-
-
-
-
-
+	// Setup a recurring alarm every half hour
+	public void scheduleAlarm() {
+		Intent intent = new Intent(getApplicationContext(), CategoriesReceiver.class);
+		final PendingIntent pIntent = PendingIntent.getBroadcast(this, CategoriesReceiver.REQUEST_CODE,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		long firstMillis = System.currentTimeMillis();
+		AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				1000, pIntent);
 	}
 
 

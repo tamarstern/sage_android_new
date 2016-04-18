@@ -1,11 +1,11 @@
 package com.sage.activity.interfaces;
 
-import com.sage.entities.RecipeCategoryBase;
+import com.sage.entities.RecipeCategory;
 
 public interface ICategoryEditListener {
 
-	void onSaveCategory(RecipeCategoryBase category);
+	void onSaveCategory(RecipeCategory category);
 	
-	void onDeleteCategory(RecipeCategoryBase category);
+	void onDeleteCategory(RecipeCategory category);
 
 }

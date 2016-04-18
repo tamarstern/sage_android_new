@@ -1,6 +1,8 @@
 package com.sage.services;
 
-import java.net.HttpURLConnection;
+import android.app.Activity;
+import android.net.Uri.Builder;
+import android.text.TextUtils;
 
 import com.google.gson.JsonElement;
 import com.sage.constants.ServicesConstants;
@@ -9,9 +11,7 @@ import com.sage.entities.RecipeLinkDetails;
 import com.sage.entities.RecipeTextDetails;
 import com.sage.entities.RecipeType;
 
-import android.app.Activity;
-import android.net.Uri.Builder;
-import android.text.TextUtils;
+import java.net.HttpURLConnection;
 
 public abstract class BaseSaveRecipeService extends BaseService {
 
@@ -85,7 +85,6 @@ public abstract class BaseSaveRecipeService extends BaseService {
 			builder.appendQueryParameter("preparationComments", preparationComments);
 		}		
 		builder.appendQueryParameter("published", Boolean.toString(recipeDetails.isPublished()));
-		builder.appendQueryParameter("rating", Integer.toString(recipeDetails.getRating()));
 	}
 
 	@Override

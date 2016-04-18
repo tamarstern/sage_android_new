@@ -1,14 +1,13 @@
 package com.sage.listeners;
 
-import com.sage.activity.interfaces.ICategoryEditListener;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeCategoryBase;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+
+import com.sage.activity.interfaces.ICategoryEditListener;
+import com.sage.entities.RecipeCategory;
 
 public class EditCategoryPopupClickListener implements OnClickListener {
 
@@ -25,7 +24,7 @@ public class EditCategoryPopupClickListener implements OnClickListener {
 		popupHandler.handleEditCategory();
 	}
 
-	public void notifySaveCategory(RecipeCategoryBase category) {
+	public void notifySaveCategory(RecipeCategory category) {
 		this.popupHandler.notifySaveCategory(category);
 	}
 

@@ -36,6 +36,8 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name="com.sage.application.GoogleAnalyticsApplication"
         android:allowBackup="true"
@@ -43,6 +45,14 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <receiver
+            android:name="com.sage.backgroundServices.CategoriesReceiver"
+            android:process=":remote">
+        </receiver>
+        <service
+            android:name="com.sage.backgroundServices.CategoriesBackgroundService"
+            android:exported="false"/>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

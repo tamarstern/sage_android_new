@@ -6,13 +6,6 @@ repositories {
 
 dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
-    // [START gms_compile]
-    // [END gms_compile]
-    
-    //  compile ('com.vincentbrison.openlibraries.android:dualcache:2.2.2@jar') {
-   //     transitive = true
-
-    //}
 
 compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:support-v4:23.2.1'
@@ -46,8 +39,6 @@ android {
                     def formattedDate = new Date().format('yyyyMMddHHmmss')
                     def newName = output.outputFile.name
                     newName = newName.replace("MyFirstApp-", "$project.ext.appName-")
-                    //newName = newName.replace("-release", "-" + formattedDate)
-                    //noinspection GroovyAssignabilityCheck
                     output.outputFile = new File(output.outputFile.parent, newName)
                 }
             }
@@ -60,8 +51,6 @@ android {
                     def formattedDate = new Date().format('yyyyMMddHHmmss')
                     def newName = output.outputFile.name
                     newName = newName.replace("MyFirstApp-", "$project.ext.appName-")
-                    //newName = newName.replace("-debug", "-" + formattedDate)
-                    //noinspection GroovyAssignabilityCheck
                     output.outputFile = new File(output.outputFile.parent, newName)
                 }
             }

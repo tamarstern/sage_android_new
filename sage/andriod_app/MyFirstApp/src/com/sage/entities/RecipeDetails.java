@@ -1,9 +1,8 @@
 package com.sage.entities;
 
-import java.io.Serializable;
-import java.util.Random;
-
 import android.graphics.Bitmap;
+
+import java.io.Serializable;
 
 public class RecipeDetails implements Serializable {
 
@@ -14,8 +13,6 @@ public class RecipeDetails implements Serializable {
 	private String header;
 
 	private String preparationComments;
-
-	private int rating;
 
 	private int likes_count;
 
@@ -48,8 +45,6 @@ public class RecipeDetails implements Serializable {
 	public RecipeDetails(String title, String comments) {
 		this.header = title;
 		this.preparationComments = comments;
-		Random random = new Random();
-		rating = random.nextInt(5 - 0) + 0;
 	}
 
 	public String getHeader() {
@@ -68,13 +63,6 @@ public class RecipeDetails implements Serializable {
 		this.preparationComments = comments;
 	}
 
-	public int getRating() {
-		return rating;
-	}
-
-	public void setRating(int rating) {
-		this.rating = rating;
-	}
 
 	public RecipeType getRecipeType() {
 		return recipeType;

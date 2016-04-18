@@ -1,16 +1,5 @@
 package com.sage.adapters;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import com.example.myfirstapp.R;
-import com.sage.activity.interfaces.ICategoryEditListener;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeDetails;
-import com.sage.listeners.ChooseCategoryClickListener;
-import com.sage.listeners.EditCategoryPopupClickListener;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -21,7 +10,17 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class CategoriesArrayAdapter extends ArrayAdapter<String> {
+import com.example.myfirstapp.R;
+import com.sage.activity.interfaces.ICategoryEditListener;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeDetails;
+import com.sage.listeners.ChooseCategoryClickListener;
+import com.sage.listeners.EditCategoryPopupClickListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CategoriesArrayAdapter extends ArrayAdapter<RecipeCategory> {
 
 	private static final String BLACK_TEXT_COLOR = "#000000";
 	private final Activity context;
@@ -29,9 +28,9 @@ public class CategoriesArrayAdapter extends ArrayAdapter<String> {
 	private LayoutInflater inflater;
 	private RecipeDetails details;
 
-	public CategoriesArrayAdapter(Activity context, Collection<RecipeCategory> categories, String[] headers,
+	public CategoriesArrayAdapter(Activity context, ArrayList<RecipeCategory> categories,
 			RecipeDetails details) {
-		super(context, -1, headers);
+		super(context,0, categories);
 		this.context = context;
 		this.categories = new ArrayList<RecipeCategory>(categories);
 		this.details = details;

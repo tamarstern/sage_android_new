@@ -1,26 +1,5 @@
 package com.sage.listeners;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
-import com.example.myfirstapp.ProgressDialogContainer;
-import com.example.myfirstapp.R;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.sage.activity.interfaces.ICategoryEditListener;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeCategoryBase;
-import com.sage.services.DeleteCategoryService;
-import com.sage.services.SaveNewCategoryService;
-import com.sage.services.UpdateCategoryService;
-import com.sage.tasks.BaseDeleteCategoryTask;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.AnalyticsUtils;
-import com.sage.utils.EntityUtils;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -38,6 +17,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
+
+import com.example.myfirstapp.ProgressDialogContainer;
+import com.example.myfirstapp.R;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.sage.activity.interfaces.ICategoryEditListener;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.RecipeCategory;
+import com.sage.services.DeleteCategoryService;
+import com.sage.services.SaveNewCategoryService;
+import com.sage.services.UpdateCategoryService;
+import com.sage.tasks.BaseDeleteCategoryTask;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.EntityUtils;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class EditCategoryPopupHandler {
 
@@ -156,13 +154,13 @@ public class EditCategoryPopupHandler {
 
 	}
 
-	public void notifySaveCategory(RecipeCategoryBase category) {
+	public void notifySaveCategory(RecipeCategory category) {
 		for (ICategoryEditListener listener : listeners) {
 			listener.onSaveCategory(category);
 		}
 	}
 
-	public void notifyDeleteCategory(RecipeCategoryBase category) {
+	public void notifyDeleteCategory(RecipeCategory category) {
 		for (ICategoryEditListener listener : listeners) {
 			listener.onDeleteCategory(category);
 		}

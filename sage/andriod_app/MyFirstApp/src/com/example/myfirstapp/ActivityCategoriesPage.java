@@ -24,21 +24,19 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.sage.activity.interfaces.ICategoryEditListener;
 import com.sage.adapters.CategoriesArrayAdapter;
+import com.sage.application.UserCategoriesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeCategoryBase;
 import com.sage.entities.RecipeDetails;
 import com.sage.listeners.EditCategoryPopupHandler;
 import com.sage.services.GetCategoriesForUserService;
 import com.sage.utils.ActivityUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ActivityCategoriesPage extends AppCompatActivity implements ICategoryEditListener {
 
-	public static final String CATEGORIES = "CATEGORIES";
 	private ListView listView;
 
 	private ArrayList<RecipeCategory> categories = new ArrayList<RecipeCategory>();
@@ -64,16 +62,21 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 		initSupportActionBar();
 
 		initEditCategoryHandler();
-		initCategories(savedInstanceState);
+		initCategories();
 
 	}
 
-	private void initCategories(Bundle savedInstanceState) {
-		if(savedInstanceState != null && savedInstanceState.get(CATEGORIES) != null) {
-			this.categories = (ArrayList<RecipeCategory>)savedInstanceState.get(CATEGORIES);
+	private void initCategories() {
+		if(UserCategoriesContainer.getInstance().categoriesInitialized()) {
+			initCategoriesFromCache();
 		} else {
 			fetchCategories();
 		}
+	}
+
+	private void initCategoriesFromCache() {
+		this.categories = UserCategoriesContainer.getInstance().getCategories();
+		initCategoriesUI();
 	}
 
 
@@ -125,26 +128,13 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 
 	}
 
-	private String[] getCategoriesHeaders() {
-
-		List<String> categoryNames = new ArrayList<String>();
-
-		for (RecipeCategory category : categories) {
-			categoryNames.add(category.getHeader());
-		}
-
-		String[] namesArray = categoryNames.toArray(new String[categoryNames.size()]);
-		return namesArray;
-
-	}
 
 	private void initCategoriesUI() {
 		if (categories == null || categories.size() == 0) {
 			noCategoriesLbl.setVisibility(View.VISIBLE);			
 		} else {
 			noCategoriesLbl.setVisibility(View.GONE);
-			String[] headers = getCategoriesHeaders();
-			CategoriesArrayAdapter adapter = new CategoriesArrayAdapter(this, categories, headers, recipeDetails);
+			CategoriesArrayAdapter adapter = new CategoriesArrayAdapter(this, categories, recipeDetails);
 			listView.setAdapter(adapter);
 
 		}
@@ -161,8 +151,10 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 
 
 	@Override
-	public void onSaveCategory(RecipeCategoryBase category) {
-		fetchCategories();
+	public void onSaveCategory(RecipeCategory category) {
+		UserCategoriesContainer.getInstance().putCategory(category);
+
+		initCategoriesFromCache();
 	}
 
 	private class GetCategoriesForUserTask extends AsyncTask<String, Void, JsonElement> {
@@ -210,14 +202,16 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 
 			categories = gson.fromJson(resultJsonObject, new TypeToken<ArrayList<RecipeCategory>>() {
 			}.getType());
+			UserCategoriesContainer.getInstance().putCategories(categories);
 			initCategoriesUI();
 
 		}
 	}
 
 	@Override
-	public void onDeleteCategory(RecipeCategoryBase category) {
-		fetchCategories();
+	public void onDeleteCategory(RecipeCategory category) {
+		UserCategoriesContainer.getInstance().deleteCategory(category);
+		initCategoriesFromCache();
 		
 	}
 

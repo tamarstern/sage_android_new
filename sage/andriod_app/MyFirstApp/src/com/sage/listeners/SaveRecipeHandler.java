@@ -170,7 +170,6 @@ public class SaveRecipeHandler {
 				JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
 				RecipeDetails recipeDetails = ServicesUtils.createRecipeDetailsFromResponse(gson, dataElement);
 				String recipeId = recipeDetails.get_id();
-				saveRecipeImage(recipeId);
 				if (isNewRecipe) {
 					if (category == null) {
 						ActivityUtils.openCategoriesPage(recipeDetails, context);
@@ -181,6 +180,7 @@ public class SaveRecipeHandler {
 					NavigationUtils.openNewsfeed(context);
 
 				}
+				saveRecipeImage(recipeId);
 
 			}
 

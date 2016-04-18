@@ -3,7 +3,7 @@ package com.sage.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeCategory extends RecipeCategoryBase {
+public class RecipeCategory extends RecipeCategoryBase implements Comparable<RecipeCategory> {
 
 	/**
 	 * 
@@ -28,4 +28,9 @@ public class RecipeCategory extends RecipeCategoryBase {
 		this.recipes = recipes;
 	}
 
+
+	@Override
+	public int compareTo(RecipeCategory another) {
+		return this.getHeader().compareTo(another.getHeader());
+	}
 }
