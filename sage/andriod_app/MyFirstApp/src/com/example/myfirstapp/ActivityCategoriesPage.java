@@ -34,6 +34,7 @@ import com.sage.services.GetCategoriesForUserService;
 import com.sage.utils.ActivityUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ActivityCategoriesPage extends AppCompatActivity implements ICategoryEditListener {
 
@@ -76,6 +77,7 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 
 	private void initCategoriesFromCache() {
 		this.categories = UserCategoriesContainer.getInstance().getCategories();
+		Collections.sort(categories);
 		initCategoriesUI();
 	}
 
