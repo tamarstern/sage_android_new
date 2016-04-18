@@ -25,6 +25,9 @@ public class RecipeDetails implements Serializable {
 	private String userId;
 	
 	private String userObjectId;
+
+
+	private String userDisplayName;
 	
 	private String ownerObjectId;
 	
@@ -36,7 +39,32 @@ public class RecipeDetails implements Serializable {
 	
 	private boolean userLikeRecipe;
 	
-	private boolean recipeChanges;	
+	private boolean recipeChanges;
+
+	private String ingredients;
+
+	private String preparationDescription;
+
+	private String pictureId;
+
+	private boolean linkDataInitialized;
+
+	private boolean featuredRecipe;
+
+	private String imageRecipe_pictureId;
+
+	private transient Bitmap recipeAsPictureImage;
+
+	private String linkTitle;
+
+	private String linkImageUrl;
+
+	private String linkSiteName;
+
+	private String url;
+
+	private boolean linkUiInitialized;
+
 
 	public RecipeDetails() {
 
@@ -188,4 +216,107 @@ public class RecipeDetails implements Serializable {
 	}
 
 
+	public String getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(String ingredients) {
+		this.ingredients = ingredients;
+	}
+
+	public String getPreparationDescription() {
+		return preparationDescription;
+	}
+
+	public void setPreparationDescription(String preparationDescription) {
+		this.preparationDescription = preparationDescription;
+	}
+
+	public String getPictureId() {
+		return pictureId;
+	}
+
+	public void setPictureId(String pictureId) {
+		this.pictureId = pictureId;
+	}
+
+	public boolean isLinkDataInitialized() {
+		return linkDataInitialized;
+	}
+
+	public void setLinkDataInitialized(boolean linkDataInitialized) {
+		this.linkDataInitialized = linkDataInitialized;
+	}
+
+	public boolean isFeaturedRecipe() {
+		return featuredRecipe;
+	}
+
+	public void setFeaturedRecipe(boolean featuredRecipe) {
+		this.featuredRecipe = featuredRecipe;
+	}
+
+	public String getImageRecipe_pictureId() {
+		return imageRecipe_pictureId;
+	}
+
+	public void setImageRecipe_pictureId(String imageRecipe_pictureId) {
+		this.imageRecipe_pictureId = imageRecipe_pictureId;
+	}
+
+	public Bitmap getRecipeAsPictureImage() {
+		return recipeAsPictureImage;
+	}
+
+	public void setRecipeAsPictureImage(Bitmap recipeAsPictureImage) {
+		this.recipeAsPictureImage = recipeAsPictureImage;
+	}
+
+	public String getLinkTitle() {
+		return linkTitle;
+	}
+
+	public void setLinkTitle(String linkTitle) {
+		this.linkTitle = linkTitle;
+	}
+
+	public String getLinkImageUrl() {
+		return linkImageUrl;
+	}
+
+	public void setLinkImageUrl(String linkImageUrl) {
+		this.linkImageUrl = linkImageUrl;
+	}
+
+	public String getLinkSiteName() {
+		return linkSiteName;
+	}
+
+	public void setLinkSiteName(String linkSiteName) {
+		this.linkSiteName = linkSiteName;
+	}
+
+	public String getUserDisplayName() {
+		return userDisplayName;
+	}
+
+	public void setUserDisplayName(String userDisplayName) {
+		this.userDisplayName = userDisplayName;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public boolean isLinkUiInitialized() {
+		return linkUiInitialized;
+	}
+
+	public void setLinkUiInitialized(boolean linkUiInitialized) {
+		this.linkUiInitialized = linkUiInitialized;
+	}
 }

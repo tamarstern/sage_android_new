@@ -22,10 +22,8 @@ import com.google.gson.JsonObject;
 import com.sage.activity.interfaces.IClosePopupCommentListener;
 import com.sage.constants.ActivityConstants;
 import com.sage.constants.ImageType;
-import com.sage.entities.RecipeBasicData;
-import com.sage.entities.RecipeLinkDetails;
+import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
-import com.sage.entities.RecipeUserBasicData;
 import com.sage.listeners.AddCommentsClickListener;
 import com.sage.listeners.ProfilePageClickListener;
 import com.sage.listeners.RecipeDetailsClickListener;
@@ -42,9 +40,9 @@ import com.sage.utils.RecipeOwnerContext;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
-public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> implements IClosePopupCommentListener {
+public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements IClosePopupCommentListener {
 	private final Activity context;
-	private ArrayList<RecipeUserBasicData> details;
+	private ArrayList<RecipeDetails> details;
 	private View rowView;
 	private ViewGroup parent;
 	private ImageButton addLike;
@@ -54,7 +52,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 	private TextView ownerTextView;
 	private LayoutInflater inflater;
 
-	public NewsfeedArrayAdapter(Activity context, ArrayList<RecipeUserBasicData> details) {
+	public NewsfeedArrayAdapter(Activity context, ArrayList<RecipeDetails> details) {
 		super(context, 0, details);
 		this.context = context;
 		this.details = details;
@@ -65,7 +63,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		rowView = inflater.inflate(R.layout.row_layout_newsfeed, parent, false);
 		this.parent = parent;
-		final RecipeUserBasicData recipeUserBasicData = details.get(position);
+		final RecipeDetails recipeUserBasicData = details.get(position);
 
 		TextView recipeHeader = (TextView) rowView.findViewById(R.id.label);
 		initHeaderTextBox(recipeUserBasicData, recipeHeader);
@@ -114,7 +112,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 	}
 
-	private void initLinkAndMainPictureVisibility(final int position, final RecipeUserBasicData recipeUserBasicData) {
+	private void initLinkAndMainPictureVisibility(final int position, final RecipeDetails recipeUserBasicData) {
 		getLinkDetailsProgress.setVisibility(View.VISIBLE);
 		recipeMainPicture.setVisibility(View.GONE);
 		if (!recipeUserBasicData.getRecipeType().equals(RecipeType.LINK)) {
@@ -129,14 +127,14 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 	}
 
 	private void initCommentButtonListener(ViewGroup parent, LayoutInflater inflater,
-			final RecipeUserBasicData recipeUserBasicData, ImageButton addComment) {
+			final RecipeDetails recipeUserBasicData, ImageButton addComment) {
 		AddCommentsClickListener commentsHandler = new AddCommentsClickListener(inflater, parent, rowView,
 				recipeUserBasicData.get_id(), context);
 		commentsHandler.registerListener(this);
 		addComment.setOnClickListener(commentsHandler);
 	}
 
-	private void initFeaturedRecipeButton(final RecipeUserBasicData recipeUserBasicData) {
+	private void initFeaturedRecipeButton(final RecipeDetails recipeUserBasicData) {
 
 		ImageButton featuredRecipe = (ImageButton) rowView.findViewById(R.id.featured_recipe);
 
@@ -153,34 +151,26 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		}
 	}
 
-	private void initLinkAndPictureComponents(RecipeBasicData recipeUserBasicData) {
+	private void initLinkAndPictureComponents(RecipeDetails recipeUserBasicData) {
 		recipeMainPicture = (ImageView) rowView.findViewById(R.id.recipe_main_picture);
-		recipeMainPicture.setOnClickListener(new RecipeDetailsClickListener(context, recipeUserBasicData.get_id()));
+		recipeMainPicture.setOnClickListener(new RecipeDetailsClickListener(context, recipeUserBasicData));
 		getLinkDetailsProgress = (ProgressBar) rowView.findViewById(R.id.get_recipe_link_details_progress);
 	}
 
-	private void InitLinkRecipeData(RecipeUserBasicData recipeUserBasicData, int position) {
+	private void InitLinkRecipeData(RecipeDetails recipeUserBasicData, int position) {
 		Object[] params = ActivityUtils.generateServiceParamObject(context, recipeUserBasicData.getUrl());
 
 		new GetRecipeUrlDetails(recipeUserBasicData, position).execute(params);
 
 	}
 
-	private void initLikeAndUnlikeButtons(final int position, final RecipeUserBasicData recipeUserBasicData) {
+	private void initLikeAndUnlikeButtons(final int position, final RecipeDetails recipeUserBasicData) {
 		addLike = (ImageButton) rowView.findViewById(R.id.like_button);
 		addLike.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.ADD_LIKE_NEWSFEED_PAGE);
-
-			/*	initLikeButtonsVisibility(true);
-
-				RecipeBasicData currentData = details.get(position);
-
-				currentData.setLikes_count(currentData.getLikes_count() + 1);
-
-				initCommentsLikeUi(position);*/
 
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(context,
 						recipeUserBasicData.get_id());
@@ -196,14 +186,6 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 			public void onClick(View v) {
 
 
-			/*	initLikeButtonsVisibility(false);
-
-				RecipeBasicData currentData = details.get(position);
-
-				currentData.setLikes_count(currentData.getLikes_count() - 1);
-
-				initCommentsLikeUi(position);*/
-
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(context,
 						recipeUserBasicData.get_id());
 				new RemoveAdaptorLikeTask(position, recipeUserBasicData.isFeaturedRecipe()).execute(params);
@@ -211,7 +193,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		});
 	}
 
-	private void initRecipeMainPicture(final RecipeUserBasicData recipeUserBasicData) {
+	private void initRecipeMainPicture(final RecipeDetails recipeUserBasicData) {
 
 		ImagesInitializer.initialRecipeImage(getContext(), recipeUserBasicData.getPictureId(), recipeMainPicture,
 				ImageType.IMAGE_RECIPE_PICTURE);
@@ -219,14 +201,14 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 	}
 
-	private void initHeaderTextBox(final RecipeUserBasicData recipeUserBasicData, TextView recipeHeader) {
+	private void initHeaderTextBox(final RecipeDetails recipeUserBasicData, TextView recipeHeader) {
 
 		String recipeHeaderValue = recipeUserBasicData.getHeader();
 		recipeHeader.setText(recipeHeaderValue);
-		recipeHeader.setOnClickListener(new RecipeDetailsClickListener(context, recipeUserBasicData.get_id()));
+		recipeHeader.setOnClickListener(new RecipeDetailsClickListener(context, recipeUserBasicData));
 	}
 
-	private void initUserNameTextView(TextView recipeUser, final RecipeUserBasicData recipeUserBasicData) {
+	private void initUserNameTextView(TextView recipeUser, final RecipeDetails recipeUserBasicData) {
 		String recipeUserName = recipeUserBasicData.getUserDisplayName();
 		if (TextUtils.isEmpty(recipeUserName)) {
 			recipeUserName = recipeUserBasicData.getUserId();
@@ -241,7 +223,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 	private void initCommentsAndLikesText( int position) {
 		initCommentsLikeUi(position);
 		TextView comments_number = (TextView) rowView.findViewById(R.id.comments_likes_text);
-		RecipeUserBasicData recipeUserBasicData = details.get(position);
+		RecipeDetails recipeUserBasicData = details.get(position);
 		AddCommentsClickListener commentsHandler = new AddCommentsClickListener(inflater, parent, rowView,
 				recipeUserBasicData.get_id(), context);
 		commentsHandler.registerListener(this);
@@ -251,7 +233,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 	public void initCommentsLikeUi(int position) {
 		TextView comments_number = (TextView) rowView.findViewById(R.id.comments_likes_text);
-		RecipeUserBasicData recipeUserBasicData = details.get(position);
+		RecipeDetails recipeUserBasicData = details.get(position);
 		Integer numberOfComments = recipeUserBasicData.getComments_count();
 		Integer numberOfLikes = recipeUserBasicData.getLikes_count();
 
@@ -272,7 +254,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		}
 	}
 
-	private void initOwnerTextView(final RecipeUserBasicData recipeUserBasicData) {
+	private void initOwnerTextView(final RecipeDetails recipeUserBasicData) {
 
 		boolean isLinkRecipe = recipeUserBasicData.getRecipeType().equals(RecipeType.LINK);
 		if (isLinkRecipe) {
@@ -284,7 +266,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 	}
 
-	private void initOwnerTextViewForNonLinkRecipe(final RecipeUserBasicData recipeUserBasicData) {
+	private void initOwnerTextViewForNonLinkRecipe(final RecipeDetails recipeUserBasicData) {
 		if (recipeUserBasicData.getUserObjectId().equals(recipeUserBasicData.getOwnerObjectId())) {
 			String ownUserLbl = MessageFormat.format("{0}", context.getResources().getString(R.string.a_lbl));
 			ownerTextView.setText(ownUserLbl);
@@ -299,7 +281,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		}
 	}
 
-	private void initOwnerTextViewForLinkRecipe(final RecipeUserBasicData recipeUserBasicData) {
+	private void initOwnerTextViewForLinkRecipe(final RecipeDetails recipeUserBasicData) {
 		String ownerName = RecipeOwnerContext.getOwner(recipeUserBasicData.getUrl());
 		if (!TextUtils.isEmpty(ownerName)) {
 			String ownerDislayNameText = MessageFormat.format("{0}'\'s", ownerName);
@@ -308,7 +290,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 				@Override
 				public void onClick(View v) {
-					RecipeLinkDetails linkDetails = createNewRecipeDetailsObject(recipeUserBasicData);
+					RecipeDetails linkDetails = createNewRecipeDetailsObject(recipeUserBasicData);
 					ActivityUtils.openDisplayLinkActivity(context, linkDetails,
 							EntityUtils.isLoggedInUserRecipe(recipeUserBasicData.getUserId(), context));
 				}
@@ -321,9 +303,9 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		return;
 	}
 
-	private void initLinkRecipeUi(final RecipeUserBasicData recipeBasicData) {
+	private void initLinkRecipeUi(final RecipeDetails recipeBasicData) {
 
-		recipeMainPicture.setOnClickListener(new RecipeDetailsClickListener(context, recipeBasicData.get_id()));
+		recipeMainPicture.setOnClickListener(new RecipeDetailsClickListener(context, recipeBasicData));
 
 		String linkImageUrl = recipeBasicData.getLinkImageUrl();
 		if (!TextUtils.isEmpty(linkImageUrl)) {
@@ -339,14 +321,14 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		recipeBasicData.setLinkUiInitialized(true);
 	}
 
-	private void initLinkOwnerName(final RecipeUserBasicData recipeBasicData) {
+	private void initLinkOwnerName(final RecipeDetails recipeBasicData) {
 		String ownerDislayNameText = MessageFormat.format("{0}'\'s", recipeBasicData.getLinkSiteName());
 		ownerTextView.setText(ownerDislayNameText);
 		ownerTextView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				RecipeLinkDetails linkDetails = createNewRecipeDetailsObject(recipeBasicData);
+				RecipeDetails linkDetails = createNewRecipeDetailsObject(recipeBasicData);
 
 				ActivityUtils.openDisplayLinkActivity(context, linkDetails,
 						EntityUtils.isLoggedInUserRecipe(recipeBasicData.getUserId(), context));
@@ -357,8 +339,9 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 		ownerTextView.setTypeface(null, Typeface.BOLD);
 	}
 
-	private RecipeLinkDetails createNewRecipeDetailsObject(final RecipeUserBasicData recipeBasicData) {
-		RecipeLinkDetails linkDetails = new RecipeLinkDetails();
+	private RecipeDetails createNewRecipeDetailsObject(final RecipeDetails recipeBasicData) {
+		RecipeDetails linkDetails = new RecipeDetails();
+		linkDetails.setRecipeType(RecipeType.LINK);
 		if (EntityUtils.isLoggedInUserRecipe(recipeBasicData.getUserId(), context)) {
 			linkDetails.set_id(recipeBasicData.get_id());
 		}
@@ -371,7 +354,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 	@Override
 	public void onClosePopupComment(int numOfComments, String recipeId) {
-		for (RecipeUserBasicData recipeData : details) {
+		for (RecipeDetails recipeData : details) {
 			if (recipeData.get_id().equals(recipeId)) {
 				recipeData.setComments_count(numOfComments);
 				int index = details.indexOf(recipeData);
@@ -399,7 +382,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 			JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
 
-			RecipeUserBasicData recipeData = gson.fromJson(dataElement, RecipeUserBasicData.class);
+			RecipeDetails recipeData = gson.fromJson(dataElement, RecipeDetails.class);
 
 			details.set(position, recipeData);
 
@@ -424,7 +407,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 			JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
 
-			RecipeUserBasicData recipeData = gson.fromJson(dataElement, RecipeUserBasicData.class);
+			RecipeDetails recipeData = gson.fromJson(dataElement, RecipeDetails.class);
 
 			details.set(position, recipeData);
 
@@ -435,10 +418,10 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeUserBasicData> impl
 
 	private class GetRecipeUrlDetails extends GetRecipeUrlDetailsTask {
 
-		private RecipeUserBasicData recipeBasicData;
+		private RecipeDetails recipeBasicData;
 		private int position;
 
-		public GetRecipeUrlDetails(RecipeUserBasicData recipeBasicData, int position) {
+		public GetRecipeUrlDetails(RecipeDetails recipeBasicData, int position) {
 			super(context);
 			this.recipeBasicData = recipeBasicData;
 			this.position = position;

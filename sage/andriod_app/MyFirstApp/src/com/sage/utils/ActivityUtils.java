@@ -1,26 +1,5 @@
 package com.sage.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.example.myfirstapp.ActivityCategoriesPage;
-import com.example.myfirstapp.DisplayLinkWebPageActivity;
-import com.example.myfirstapp.LinkRecipePageActivity;
-import com.example.myfirstapp.PictureRecipePageActivity;
-import com.example.myfirstapp.R;
-import com.example.myfirstapp.ResetPasswordActivity;
-import com.example.myfirstapp.TextReciptPageActivity;
-import com.sage.activity.interfaces.IExitWithoutSaveListener;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipeLinkDetails;
-import com.sage.entities.RecipePublished;
-import com.sage.entities.RecipeUserBasicData;
-import com.sage.entities.User;
-import com.sage.listeners.ExitRecipeWithoutSavingPopupHandler;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -32,11 +11,24 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.Toast;
+
+import com.example.myfirstapp.ActivityCategoriesPage;
+import com.example.myfirstapp.DisplayLinkWebPageActivity;
+import com.example.myfirstapp.LinkRecipePageActivity;
+import com.example.myfirstapp.PictureRecipePageActivity;
+import com.example.myfirstapp.R;
+import com.example.myfirstapp.ResetPasswordActivity;
+import com.example.myfirstapp.TextReciptPageActivity;
+import com.sage.activity.interfaces.IExitWithoutSaveListener;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeDetails;
+import com.sage.listeners.ExitRecipeWithoutSavingPopupHandler;
 
 public class ActivityUtils {
 
@@ -53,7 +45,7 @@ public class ActivityUtils {
 		context.startActivity(intent);
 	}
 
-	public static void openDisplayLinkActivity(Activity activity, RecipeLinkDetails recipeDetails,
+	public static void openDisplayLinkActivity(Activity activity, RecipeDetails recipeDetails,
 			boolean isLoggedInUserRecipe) {
 		Intent intent = new Intent(activity, DisplayLinkWebPageActivity.class)
 				.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, recipeDetails);
@@ -171,18 +163,5 @@ public class ActivityUtils {
 		handler.handleExitWithoutSave();
 	}
 
-	public static String[] initializeRecipeHeaders(List<RecipePublished> recipes) {
-
-		int size = recipes.size();
-
-		String[] headers = new String[size];
-
-		for (int i = 0; i < size; i++) {
-			headers[i] = recipes.get(i).getHeader();
-		}
-
-		return headers;
-
-	}
 
 }

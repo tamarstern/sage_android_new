@@ -1,8 +1,5 @@
 package com.example.myfirstapp;
 
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeLinkDetails;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +11,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeDetails;
+import com.sage.entities.RecipeType;
 
 public class AddRecipeAsLinkActivity extends AppCompatActivity {
 
@@ -77,7 +78,8 @@ public class AddRecipeAsLinkActivity extends AppCompatActivity {
 	private void saveRecipeAsLink() {
 		String url = holder.webView.getUrl();
 		Context applicationContext = getApplicationContext();
-		RecipeLinkDetails recipeLinkDetails = new RecipeLinkDetails();
+		RecipeDetails recipeLinkDetails = new RecipeDetails();
+		recipeLinkDetails.setRecipeType(RecipeType.LINK);
 		recipeLinkDetails.setUrl(url);
 		Intent intent = new Intent(applicationContext, LinkRecipePageActivity.class)
 				.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, recipeLinkDetails)

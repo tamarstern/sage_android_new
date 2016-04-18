@@ -1,13 +1,5 @@
 package com.example.myfirstapp;
 
-import java.io.Serializable;
-
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeLinkDetails;
-import com.sage.utils.EntityUtils;
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,9 +13,15 @@ import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeDetails;
+import com.sage.utils.EntityUtils;
+
+import java.io.Serializable;
+
 public class DisplayLinkWebPageActivity extends AppCompatActivity {
 
-	private RecipeLinkDetails recipeDetails;
+	private RecipeDetails recipeDetails;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +30,7 @@ public class DisplayLinkWebPageActivity extends AppCompatActivity {
 
 		Intent i = getIntent();
 
-		recipeDetails = (RecipeLinkDetails) i
+		recipeDetails = (RecipeDetails) i
 				.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
 
 		Toolbar myToolbar = (Toolbar) findViewById(R.id.display_link_toolbar);

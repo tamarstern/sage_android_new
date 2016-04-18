@@ -28,7 +28,7 @@ import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipePictureDetails;
+import com.sage.entities.RecipeType;
 import com.sage.services.BaseSaveRecipeService;
 import com.sage.services.PostRecipeImage;
 import com.sage.services.SaveNewRecipeService;
@@ -201,10 +201,10 @@ public class SaveRecipeHandler {
                         ImageType.RECIPE_PICTURE };
                 new SetRecipeImageTask().execute(mainImageParams);
             }
-			if(!(this.recipeDetails instanceof RecipePictureDetails)) {
+			if(!(this.recipeDetails.getRecipeType().equals(RecipeType.PICTURE))) {
 				return;
 			}
-			Bitmap recipeAsPictureImage = ((RecipePictureDetails) this.recipeDetails).getRecipeAsPictureImage();
+			Bitmap recipeAsPictureImage = (this.recipeDetails).getRecipeAsPictureImage();
 			if (recipeAsPictureImage != null) {
                 Object[] recipePictureParams = new Object[] { recipeAsPictureImage, token, recipeId,
                         context.getFilesDir().getPath().toString() + File.separator + recipeId,

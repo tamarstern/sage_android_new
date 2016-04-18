@@ -12,8 +12,7 @@ import android.widget.ImageView;
 
 import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipePictureDetails;
-import com.sage.entities.RecipeTextDetails;
+import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
 import com.sage.utils.ImagesInitializer;
 
@@ -61,11 +60,12 @@ public class DisplayImageActivity extends Activity implements View.OnTouchListen
     }
 
     private void initImage(Intent intent, ImageView image, RecipeType type) {
+        RecipeDetails details = (RecipeDetails)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
         if(type.equals(RecipeType.PICTURE)) {
-            RecipePictureDetails details = (RecipePictureDetails)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
+
             ImagesInitializer.initialRecipeImage(this, details.getImageRecipe_pictureId(), image, ImageType.IMAGE_RECIPE_PICTURE);
         } else {
-            RecipeTextDetails details = (RecipeTextDetails)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
+
             ImagesInitializer.initialRecipeImage(this,details.getPictureId(), image, ImageType.RECIPE_PICTURE);
         }
     }

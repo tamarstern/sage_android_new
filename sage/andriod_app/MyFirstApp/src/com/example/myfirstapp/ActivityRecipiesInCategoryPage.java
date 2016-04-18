@@ -12,6 +12,7 @@ import com.sage.adapters.SubCategoriesArrayAdapter;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipePublished;
 import com.sage.entities.RecipeSubCategory;
 import com.sage.listeners.AddRecipePopupHandler;
@@ -147,13 +148,12 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 
 			Gson gson = new GsonBuilder().create();
 
-			List<RecipePublished> recipes = gson.fromJson(resultJsonObject,
-					new TypeToken<ArrayList<RecipePublished>>() {
+			ArrayList<RecipeDetails> recipes = gson.fromJson(resultJsonObject,
+					new TypeToken<ArrayList<RecipeDetails>>() {
 					}.getType());
 
-			String[] headers = ActivityUtils.initializeRecipeHeaders(recipes);
 
-			SubCategoriesArrayAdapter adapter = new SubCategoriesArrayAdapter(activity, recipes, headers);
+			SubCategoriesArrayAdapter adapter = new SubCategoriesArrayAdapter(activity, recipes);
 			listView.setAdapter(adapter);
 
 		}

@@ -26,7 +26,7 @@ import com.sage.activity.interfaces.IOnWindowFocusChanged;
 import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipePictureDetails;
+import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
 import com.sage.fragments.ToolbarFragment;
 import com.sage.listeners.SaveRecipeHandler;
@@ -38,7 +38,7 @@ import com.sage.utils.ImagesInitializer;
 
 public class PictureRecipePageActivity extends AppCompatActivity implements IExitWithoutSaveListener {
 
-	private RecipePictureDetails recipeDetails;
+	private RecipeDetails recipeDetails;
 	private RecipeCategory category;
 
 	private Button addImageButton;
@@ -55,7 +55,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		setContentView(R.layout.activity_picture_recipe_page);
 		Intent i = getIntent();
 
-		recipeDetails = (RecipePictureDetails) i
+		recipeDetails = (RecipeDetails) i
 				.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
 
 		category = (RecipeCategory) i

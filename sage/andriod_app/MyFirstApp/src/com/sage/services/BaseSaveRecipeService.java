@@ -7,8 +7,6 @@ import android.text.TextUtils;
 import com.google.gson.JsonElement;
 import com.sage.constants.ServicesConstants;
 import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipeLinkDetails;
-import com.sage.entities.RecipeTextDetails;
 import com.sage.entities.RecipeType;
 
 import java.net.HttpURLConnection;
@@ -30,7 +28,7 @@ public abstract class BaseSaveRecipeService extends BaseService {
 		return super.service();
 	}
 
-	private void AddTextRecipeParameters(Builder builder, RecipeTextDetails recipeDetails) {
+	private void AddTextRecipeParameters(Builder builder, RecipeDetails recipeDetails) {
 		String ingredients = recipeDetails.getIngredients();
 		if (!TextUtils.isEmpty(ingredients)) {
 			builder.appendQueryParameter("ingredients", ingredients);
@@ -48,15 +46,13 @@ public abstract class BaseSaveRecipeService extends BaseService {
 
 		initRecipeType(recipeDetails, builder);
 
-		if (recipeDetails instanceof RecipeTextDetails) {
+		if (recipeDetails.getRecipeType().equals(RecipeType.TEXT)) {
 
-			RecipeTextDetails textRecipeDetails = (RecipeTextDetails) recipeDetails;
-			AddTextRecipeParameters(builder, textRecipeDetails);
+			AddTextRecipeParameters(builder, recipeDetails);
 		}
 
-		if (recipeDetails instanceof RecipeLinkDetails) {
-			RecipeLinkDetails linkRecipeDetails = (RecipeLinkDetails) recipeDetails;
-			builder.appendQueryParameter("url", linkRecipeDetails.getUrl());
+		if (recipeDetails.getRecipeType().equals(RecipeType.LINK)) {
+			builder.appendQueryParameter("url", recipeDetails.getUrl());
 		}
 
 	}

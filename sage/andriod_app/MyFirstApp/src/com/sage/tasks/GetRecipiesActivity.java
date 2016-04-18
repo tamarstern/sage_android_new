@@ -10,13 +10,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;
-import com.sage.entities.RecipeBasicData;
+import com.sage.entities.RecipeDetails;
 import com.sage.utils.ActivityUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public abstract class GetRecipiesActivity<T extends RecipeBasicData> extends AsyncTask<Object, Void, JsonElement> {
+public abstract class GetRecipiesActivity<T extends RecipeDetails> extends AsyncTask<Object, Void, JsonElement> {
 
 	protected ArrayList<T> details;
 

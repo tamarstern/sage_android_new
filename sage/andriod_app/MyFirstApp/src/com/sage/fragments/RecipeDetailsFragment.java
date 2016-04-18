@@ -22,7 +22,7 @@ import com.example.myfirstapp.R;
 import com.sage.activity.interfaces.IOnWindowFocusChanged;
 import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeTextDetails;
+import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ImageSelectorUtils;
@@ -31,7 +31,7 @@ import com.sage.utils.RecipeDetailsBinder;
 
 public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusChanged {
 
-	private RecipeTextDetails recipeDetails;
+	private RecipeDetails recipeDetails;
 
 	private EditText ingredients;
 
@@ -58,7 +58,7 @@ public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusCha
 		final Activity activity = getActivity();
 		Intent i = activity.getIntent();
 
-		recipeDetails = (RecipeTextDetails) i
+		recipeDetails = (RecipeDetails) i
 				.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
 
 		addImageButton = (Button) recipeDetailsPanel.findViewById(R.id.add_picture);

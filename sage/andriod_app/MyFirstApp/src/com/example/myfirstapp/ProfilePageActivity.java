@@ -23,8 +23,8 @@ import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeBasicData;
-import com.sage.entities.RecipeUserBasicData;
+
+import com.sage.entities.RecipeDetails;
 import com.sage.services.FollowUserService;
 import com.sage.services.GetPublishedRecipesForUser;
 import com.sage.services.UnfollowUserService;
@@ -39,7 +39,7 @@ import java.util.Iterator;
 
 public class ProfilePageActivity extends AppCompatActivity {
 
-	private ArrayList<RecipeBasicData> details;
+	private ArrayList<RecipeDetails> details;
 
 	private boolean currentUserProfile;
 
@@ -94,7 +94,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 	private void initListView() {
 		if (listView.getAdapter() == null) {
 
-			adapter = new NewsfeedArrayAdapter(this, new ArrayList<RecipeUserBasicData>());
+			adapter = new NewsfeedArrayAdapter(this, new ArrayList<RecipeDetails>());
 			listView.setAdapter(adapter);
 		}
 
@@ -213,7 +213,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 		String recipeAuthor = (String) i.getSerializableExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER);
 		recipeAuthor = TextUtils.isEmpty(recipeAuthor) ? userName : recipeAuthor;
-		new GetRecipiesTask<RecipeUserBasicData>(this, recipeAuthor).execute(token, userName, pageNumber);
+		new GetRecipiesTask<RecipeDetails>(this, recipeAuthor).execute(token, userName, pageNumber);
 	}
 
 	private void InitProfileDisplay() {
@@ -277,12 +277,12 @@ public class ProfilePageActivity extends AppCompatActivity {
 		getSupportActionBar().setTitle(currentTitle);
 	}
 
-	private class GetRecipiesTask<T extends RecipeUserBasicData> extends GetRecipiesActivity {
+	private class GetRecipiesTask<T extends RecipeDetails> extends GetRecipiesActivity {
 
 		private String recipeAuthor;
 
 		GetRecipiesTask(Activity context, String recipeAuthor) {
-			super(new TypeToken<ArrayList<RecipeUserBasicData>>() {
+			super(new TypeToken<ArrayList<RecipeDetails>>() {
 			}.getType(), context);
 			this.recipeAuthor = recipeAuthor;
 		}
@@ -332,7 +332,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 			if (details != null) {
 				Iterator iterator = details.iterator();
 				while (iterator.hasNext()) {
-					adapter.add((RecipeUserBasicData) iterator.next());
+					adapter.add((RecipeDetails) iterator.next());
 				}
 				adapter.notifyDataSetChanged();
 				if(shouldIncreasePage) {

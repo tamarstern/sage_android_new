@@ -29,7 +29,7 @@ import com.sage.activity.interfaces.IInitLinkDetailsListener;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeLinkDetails;
+import com.sage.entities.RecipeDetails;
 import com.sage.fragments.ToolbarFragment;
 import com.sage.listeners.SaveRecipeHandler;
 import com.sage.tasks.GetRecipeUrlDetailsTask;
@@ -44,7 +44,7 @@ import java.util.Set;
 
 public class LinkRecipePageActivity extends AppCompatActivity implements IExitWithoutSaveListener {
 
-	private RecipeLinkDetails recipeDetails;
+	private RecipeDetails recipeDetails;
 
 	private RecipeCategory category;
 
@@ -79,7 +79,7 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 
 		Intent i = getIntent();
 
-		recipeDetails = (RecipeLinkDetails) i
+		recipeDetails = (RecipeDetails) i
 				.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
 
 		category = (RecipeCategory) i
@@ -222,7 +222,7 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 		}
 	}
 
-	private void initLinkRecipeUi(RecipeLinkDetails linkDetails) {
+	private void initLinkRecipeUi(RecipeDetails linkDetails) {
 
 		String linkTitle = linkDetails.getLinkTitle();
 		if (!TextUtils.isEmpty(linkTitle)) {
@@ -253,9 +253,9 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 
 	private class GetRecipeUrlDetails extends GetRecipeUrlDetailsTask {
 
-		private RecipeLinkDetails linkDetails;
+		private RecipeDetails linkDetails;
 
-		public GetRecipeUrlDetails(RecipeLinkDetails linkDetails, Activity activity) {
+		public GetRecipeUrlDetails(RecipeDetails linkDetails, Activity activity) {
 			super(activity);
 			this.linkDetails = linkDetails;
 

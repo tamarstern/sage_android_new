@@ -1,21 +1,5 @@
 package com.example.myfirstapp;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-import com.sage.adapters.SubCategoriesArrayAdapter;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.RecipePublished;
-import com.sage.services.GetSearchMyRecipes;
-import com.sage.utils.ActivityUtils;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -32,6 +16,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.sage.adapters.SubCategoriesArrayAdapter;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.RecipeDetails;
+import com.sage.services.GetSearchMyRecipes;
+import com.sage.utils.ActivityUtils;
+
+import java.util.ArrayList;
 
 public class SearchMyRecipesActivity extends AppCompatActivity {
 
@@ -142,13 +140,12 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 
 				Gson gson = new GsonBuilder().create();
 
-				List<RecipePublished> recipes = gson.fromJson(resultDataObject,
-						new TypeToken<ArrayList<RecipePublished>>() {
+				ArrayList<RecipeDetails> recipes = gson.fromJson(resultDataObject,
+						new TypeToken<ArrayList<RecipeDetails>>() {
 						}.getType());
 
-				String[] headers = ActivityUtils.initializeRecipeHeaders(recipes);
 
-				SubCategoriesArrayAdapter adapter = new SubCategoriesArrayAdapter(activity, recipes, headers);
+				SubCategoriesArrayAdapter adapter = new SubCategoriesArrayAdapter(activity, recipes);
 				listView.setAdapter(adapter);
 			}
 

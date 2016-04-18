@@ -1,29 +1,27 @@
 package com.sage.listeners;
 
-import com.example.myfirstapp.AddRecipeAsLinkActivity;
-import com.example.myfirstapp.PictureRecipePageActivity;
-import com.example.myfirstapp.R;
-import com.example.myfirstapp.TextReciptPageActivity;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeLinkDetails;
-import com.sage.entities.RecipePictureDetails;
-import com.sage.entities.RecipeSubCategory;
-import com.sage.entities.RecipeTextDetails;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.AnalyticsUtils;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.PopupWindow;
+
+import com.example.myfirstapp.AddRecipeAsLinkActivity;
+import com.example.myfirstapp.PictureRecipePageActivity;
+import com.example.myfirstapp.R;
+import com.example.myfirstapp.TextReciptPageActivity;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeDetails;
+import com.sage.entities.RecipeType;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.AnalyticsUtils;
 
 public class AddRecipePopupHandler {
 
@@ -61,8 +59,10 @@ public class AddRecipePopupHandler {
 			@Override
 			public void onClick(View v) {
 				AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.CLICK_ADD_LINK_RECIPE);
+				RecipeDetails recipeDetails = new RecipeDetails();
+				recipeDetails.setRecipeType(RecipeType.LINK);
 				Intent intent = new Intent(context, AddRecipeAsLinkActivity.class)
-						.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, new RecipeLinkDetails())
+						.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, recipeDetails)
 						.putExtra(EntityDataTransferConstants.CATEGORY_DATA_TRANSFER, category)
 						.putExtra(EntityDataTransferConstants.IN_MY_RECIPE_PAGE, true);
 				context.startActivity(intent);
@@ -76,7 +76,8 @@ public class AddRecipePopupHandler {
 
 			@Override
 			public void onClick(View v) {
-				RecipeTextDetails textRecipe = new RecipeTextDetails();	
+				RecipeDetails textRecipe = new RecipeDetails();
+				textRecipe.setRecipeType(RecipeType.TEXT);
 				AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.CLICK_ADD_TEXT_RECIPE);
 				Intent intent = new Intent(context, TextReciptPageActivity.class)
 						.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, textRecipe)
@@ -94,7 +95,8 @@ public class AddRecipePopupHandler {
 			@Override
 			public void onClick(View v) {
 				AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.CLICK_ADD_PICTURE_RECIPE);
-				RecipePictureDetails pictureRecipe = new RecipePictureDetails();		
+				RecipeDetails pictureRecipe = new RecipeDetails();
+				pictureRecipe.setRecipeType(RecipeType.PICTURE);
 				Intent intent = new Intent(context, PictureRecipePageActivity.class)
 						.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, pictureRecipe)
 						.putExtra(EntityDataTransferConstants.CATEGORY_DATA_TRANSFER, category)

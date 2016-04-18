@@ -16,7 +16,6 @@ import com.example.myfirstapp.R;
 import com.sage.activity.interfaces.IInitLinkDetailsListener;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipeLinkDetails;
 import com.sage.entities.RecipeType;
 import com.sage.listeners.ProfilePageClickListener;
 import com.sage.utils.ActivityUtils;
@@ -79,7 +78,7 @@ public class RecipeOwnerFragment extends Fragment implements IInitLinkDetailsLis
 	}
 
 	private void initLinkOwnerName(final Activity activity) {
-		final RecipeLinkDetails linkDetails = (RecipeLinkDetails) receiptDetails;
+		final RecipeDetails linkDetails = (RecipeDetails) receiptDetails;
 		String ownerName = RecipeOwnerContext.getOwner(linkDetails.getUrl());
 		if (!TextUtils.isEmpty(ownerName)) {
             ownerDisplayName.setText(ownerName);
@@ -98,8 +97,7 @@ public class RecipeOwnerFragment extends Fragment implements IInitLinkDetailsLis
 	@Override
 	public void onInitLinkDetails() {
 		final Activity activity = getActivity();
-		final RecipeLinkDetails recipeLinkDetails = (RecipeLinkDetails) receiptDetails;
-		String linkSiteName = recipeLinkDetails.getLinkSiteName();
+		String linkSiteName = receiptDetails.getLinkSiteName();
 		if (!TextUtils.isEmpty(linkSiteName)) {
 			ownerDisplayName.setText(linkSiteName);
 			ownerDisplayName.setOnClickListener(new OnClickListener() {
@@ -107,7 +105,7 @@ public class RecipeOwnerFragment extends Fragment implements IInitLinkDetailsLis
 				@Override
 				public void onClick(View v) {
 
-					ActivityUtils.openDisplayLinkActivity(getActivity(), recipeLinkDetails,
+					ActivityUtils.openDisplayLinkActivity(getActivity(), receiptDetails,
 							EntityUtils.isLoggedInUserRecipe(receiptDetails.getUserId(), activity));
 
 				}

@@ -1,19 +1,13 @@
 package com.sage.services;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
+import android.app.Activity;
+import android.net.Uri.Builder;
 
 import com.google.gson.JsonElement;
 import com.sage.constants.ServicesConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipeLinkDetails;
-import com.sage.entities.RecipeTextDetails;
-import com.sage.entities.RecipeType;
 
-import android.app.Activity;
-import android.net.Uri.Builder;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 
 public class CopyExistingRecipeService extends BaseService {
 

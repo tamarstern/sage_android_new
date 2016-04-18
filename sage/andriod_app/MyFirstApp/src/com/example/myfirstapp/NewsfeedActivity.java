@@ -20,7 +20,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeUserBasicData;
+import com.sage.entities.RecipeDetails;
 import com.sage.services.GetNewsFeedRecipesForUser;
 import com.sage.tasks.GetRecipiesActivity;
 import com.sage.utils.AnalyticsUtils;
@@ -68,7 +68,7 @@ public class NewsfeedActivity extends AppCompatActivity {
 	private void initListView() {
 		if (listView.getAdapter() == null) {
 
-			adapter = new NewsfeedArrayAdapter(this, new ArrayList<RecipeUserBasicData>());
+			adapter = new NewsfeedArrayAdapter(this, new ArrayList<RecipeDetails>());
 			listView.setAdapter(adapter);
 		}
 
@@ -119,7 +119,7 @@ public class NewsfeedActivity extends AppCompatActivity {
 			userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
 		}
 
-		new GetRecipiesForNewFeed<RecipeUserBasicData>(this).execute(token, userName, pageNumber);
+		new GetRecipiesForNewFeed<RecipeDetails>(this).execute(token, userName, pageNumber);
 
 	}
 
@@ -162,10 +162,10 @@ public class NewsfeedActivity extends AppCompatActivity {
 		super.onBackPressed();
 	}
 
-	private class GetRecipiesForNewFeed<T extends RecipeUserBasicData> extends GetRecipiesActivity {
+	private class GetRecipiesForNewFeed<T extends RecipeDetails> extends GetRecipiesActivity {
 
 		public GetRecipiesForNewFeed(Activity activity) {
-			super(new TypeToken<ArrayList<RecipeUserBasicData>>() {
+			super(new TypeToken<ArrayList<RecipeDetails>>() {
 			}.getType(), activity);
 
 		}
@@ -215,7 +215,7 @@ public class NewsfeedActivity extends AppCompatActivity {
 			if (details != null) {
 				Iterator iterator = details.iterator();
 				while (iterator.hasNext()) {
-					adapter.add((RecipeUserBasicData) iterator.next());
+					adapter.add((RecipeDetails) iterator.next());
 				}
 				adapter.notifyDataSetChanged();
 				if (shouldIncreasePage) {

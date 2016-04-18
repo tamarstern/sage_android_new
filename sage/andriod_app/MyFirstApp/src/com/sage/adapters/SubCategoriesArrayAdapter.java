@@ -1,14 +1,5 @@
 package com.sage.adapters;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import com.example.myfirstapp.R;
-import com.sage.entities.RecipeBasicData;
-import com.sage.entities.RecipePublished;
-import com.sage.listeners.RecipeDetailsClickListener;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,16 +10,23 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class SubCategoriesArrayAdapter extends ArrayAdapter<String> {
+import com.example.myfirstapp.R;
+import com.sage.entities.RecipeDetails;
+import com.sage.listeners.RecipeDetailsClickListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SubCategoriesArrayAdapter extends ArrayAdapter<RecipeDetails> {
 
 	private final Activity context;
-	private List<RecipePublished> recipes;
+	private List<RecipeDetails> recipes;
 	private LayoutInflater inflater;
 
-	public SubCategoriesArrayAdapter(Activity context, Collection<RecipePublished> recipes, String[] headers) {
-		super(context, -1, headers);
+	public SubCategoriesArrayAdapter(Activity context, ArrayList<RecipeDetails> recipes) {
+		super(context, 0, recipes);
 		this.context = context;
-		this.recipes = new ArrayList<RecipePublished>(recipes);
+		this.recipes = new ArrayList<RecipeDetails>(recipes);
 	}
 
 	@Override
@@ -36,7 +34,7 @@ public class SubCategoriesArrayAdapter extends ArrayAdapter<String> {
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.row_layout_sub_categories, parent, false);
 
-		RecipePublished recipePublished = recipes.get(position);
+		RecipeDetails recipePublished = recipes.get(position);
 
 		String recipeNameValue = recipePublished.getHeader();
 
@@ -44,7 +42,7 @@ public class SubCategoriesArrayAdapter extends ArrayAdapter<String> {
 		categoryName.setText(recipeNameValue);
 		
 		RelativeLayout recipeLine = (RelativeLayout)rowView.findViewById(R.id.recipe_line);
-		recipeLine.setOnClickListener(new RecipeDetailsClickListener(context, recipePublished.get_id()));
+		recipeLine.setOnClickListener(new RecipeDetailsClickListener(context, recipePublished));
 
 		ImageView recipePublishedIcon = (ImageView) rowView.findViewById(R.id.recipe_published);
 

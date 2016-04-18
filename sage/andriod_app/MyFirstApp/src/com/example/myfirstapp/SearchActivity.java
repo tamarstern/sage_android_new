@@ -24,7 +24,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;
 import com.sage.constants.ActivityConstants;
-import com.sage.entities.RecipeUserBasicData;
+import com.sage.entities.RecipeDetails;
 import com.sage.services.GetSearchRecipes;
 import com.sage.tasks.GetRecipiesActivity;
 
@@ -112,7 +112,7 @@ public class SearchActivity extends AppCompatActivity {
 	}
 
 	private void initListAdaptor() {
-		adapter = new NewsfeedArrayAdapter(this, new ArrayList<RecipeUserBasicData>());
+		adapter = new NewsfeedArrayAdapter(this, new ArrayList<RecipeDetails>());
 		listView.setAdapter(adapter);
 	}
 
@@ -172,7 +172,7 @@ public class SearchActivity extends AppCompatActivity {
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 
-		new GetRecipiesForSearch<RecipeUserBasicData>(this).execute(token, userName, pageNumber);
+		new GetRecipiesForSearch<RecipeDetails>(this).execute(token, userName, pageNumber);
 
 	}
 
@@ -181,11 +181,11 @@ public class SearchActivity extends AppCompatActivity {
 				|| TextUtils.isEmpty(searchEditText.getEditableText().toString());
 	}
 
-	private class GetRecipiesForSearch<T extends RecipeUserBasicData> extends GetRecipiesActivity {
+	private class GetRecipiesForSearch<T extends RecipeDetails> extends GetRecipiesActivity {
 	
 		private Activity activity;
 		public GetRecipiesForSearch(Activity activity) {
-			super(new TypeToken<ArrayList<RecipeUserBasicData>>() {
+			super(new TypeToken<ArrayList<RecipeDetails>>() {
 			}.getType(), activity);
 
 		}
@@ -244,7 +244,7 @@ public class SearchActivity extends AppCompatActivity {
 				}
 				Iterator iterator = details.iterator();
 				while (iterator.hasNext()) {
-					adapter.add((RecipeUserBasicData) iterator.next());
+					adapter.add((RecipeDetails) iterator.next());
 				}
 				adapter.notifyDataSetChanged();
 				if(shouldIncreasePage) {

@@ -7,7 +7,6 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipeTextDetails;
 
 public class RecipeDetailsBinder {
 
@@ -60,7 +59,7 @@ public class RecipeDetailsBinder {
 		});
 	}
 
-	public static void bindTextBoxToPreparation(EditText title, final RecipeTextDetails deatils) {
+	public static void bindTextBoxToPreparation(EditText title, final RecipeDetails deatils) {
 
 		title.addTextChangedListener(new TextWatcher() {
 
@@ -82,7 +81,7 @@ public class RecipeDetailsBinder {
 		});
 	}
 
-	public static void bindTextBoxToIngredients(EditText title, final RecipeTextDetails deatils) {
+	public static void bindTextBoxToIngredients(EditText title, final RecipeDetails deatils) {
 
 		title.addTextChangedListener(new TextWatcher() {
 
