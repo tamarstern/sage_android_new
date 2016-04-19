@@ -8,13 +8,13 @@ public class RecipeSubCategory extends RecipeCategoryBase {
 	
 	private String categoryId;
 	
-	private List<RecipePublished> recipes;
+	private List<RecipeDetails> recipes;
 
-	public List<RecipePublished> getRecipes() {
+	public List<RecipeDetails> getRecipes() {
 		return recipes;
 	}
 
-	public void setRecipes(List<RecipePublished> recipeNames) {
+	public void setRecipes(List<RecipeDetails> recipeNames) {
 		this.recipes = recipeNames;
 	}
 

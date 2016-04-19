@@ -28,6 +28,7 @@ import com.facebook.login.widget.LoginButton;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.backgroundServices.CategoriesReceiver;
+import com.sage.backgroundServices.GetFollowingReceiver;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.services.AuthenticateWithTokenService;
@@ -58,7 +59,7 @@ public class LoginActivity extends Activity {
 
 		//Intent intent = new Intent(this, CategoriesBackgroundService.class);
 		//startService(intent);
-		scheduleAlarm();
+		scheduleAlarmCategories();
 		//openNewsfeedIfAlreadyLoggedInToFacebook();
 
 		String token = getDirectAuthenticationToken();
@@ -85,16 +86,22 @@ public class LoginActivity extends Activity {
 		}
 	}
 
-
-	// Setup a recurring alarm every half hour
-	public void scheduleAlarm() {
-		Intent intent = new Intent(getApplicationContext(), CategoriesReceiver.class);
-		final PendingIntent pIntent = PendingIntent.getBroadcast(this, CategoriesReceiver.REQUEST_CODE,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	public void scheduleAlarmCategories() {
 		long firstMillis = System.currentTimeMillis();
 		AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+
+		Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesReceiver.class);
+		final PendingIntent categoriesPIntent = PendingIntent.getBroadcast(this, CategoriesReceiver.REQUEST_CODE,
+				categoriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				1000, pIntent);
+				AlarmManager.INTERVAL_HALF_HOUR, categoriesPIntent);
+
+		Intent followingIntent = new Intent(getApplicationContext(), GetFollowingReceiver.class);
+		final PendingIntent followingPIntent = PendingIntent.getBroadcast(this, GetFollowingReceiver.REQUEST_CODE,
+				followingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				AlarmManager.INTERVAL_HALF_HOUR, followingPIntent);
+
 	}
 
 

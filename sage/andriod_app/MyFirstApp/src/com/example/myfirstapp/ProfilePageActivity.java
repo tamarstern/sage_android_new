@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -21,10 +23,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;
+import com.sage.application.UserFollowingContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
-
 import com.sage.entities.RecipeDetails;
+import com.sage.entities.User;
 import com.sage.services.FollowUserService;
 import com.sage.services.GetPublishedRecipesForUser;
 import com.sage.services.UnfollowUserService;
@@ -48,6 +51,8 @@ public class ProfilePageActivity extends AppCompatActivity {
 	private MenuItem followUserMenuItem;
 
 	private MenuItem unfollowUserMenuItem;
+
+	private String userDisplayName;
 
 	private ListView listView;
 
@@ -189,8 +194,22 @@ public class ProfilePageActivity extends AppCompatActivity {
 
 		new FollowUser(this).execute(token, userName, usernameToFollow);
 
+		User user = createUserObject();
+		UserFollowingContainer.getInstance().follow(user);
 		AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.PRESS_FOLLOW_USER);
 
+	}
+
+	@NonNull
+	private User createUserObject() {
+		Intent i = getIntent();
+		User user = new User();
+		user.setUserDisplayName(this.userDisplayName);
+		String userId = (String) i.getSerializableExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER);
+		user.set_id(userId);
+		String username = (String) i.getSerializableExtra(EntityDataTransferConstants.USER_NAME_DATA_TRANSFER);
+		user.setUsername(username);
+		return user;
 	}
 
 	private void unfollowUser() {
@@ -201,6 +220,8 @@ public class ProfilePageActivity extends AppCompatActivity {
 		String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
 
 		new UnFollowUser(this).execute(token, userName, usernameToFollow);
+		User user = createUserObject();
+		UserFollowingContainer.getInstance().unFollow(user);
 
 		AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.PRESS_UNFOLLOW_USER);
 
@@ -224,12 +245,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 		Serializable transferedUserDisplayName = i
 				.getSerializableExtra(EntityDataTransferConstants.USER_DISPLAY_NAME_DATA_TRANSFER);
 		iniActionBarWithUserName(sharedPref, transferedUserDisplayName);
-		//String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-
-		//String userObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 		if (!currentUserProfile) {
-		//	String userToFolloId = (String) i
-		//			.getSerializableExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER);
 			boolean isFollowing = (boolean)i.getSerializableExtra(EntityDataTransferConstants.IS_FOLLOWING);
 			initFollowButtonsVisibility(isFollowing);
 		}
@@ -245,13 +261,14 @@ public class ProfilePageActivity extends AppCompatActivity {
 	}
 
 	private void iniActionBarWithUserName(SharedPreferences sharedPref, Serializable transferedUserDisplayName) {
+		ActionBar supportActionBar = getSupportActionBar();
 		if (transferedUserDisplayName != null) {
-			String userDisplayName = transferedUserDisplayName.toString();
-			getSupportActionBar().setTitle(userDisplayName);
+			this.userDisplayName = transferedUserDisplayName.toString();
+			supportActionBar.setTitle(userDisplayName);
 
 		} else {
-			String loogeDInUserDisplayName = sharedPref.getString(ActivityConstants.USER_DISPLAY_NAME, null);
-			getSupportActionBar().setTitle(loogeDInUserDisplayName);
+			userDisplayName = sharedPref.getString(ActivityConstants.USER_DISPLAY_NAME, null);
+			supportActionBar.setTitle(userDisplayName);
 		}
 	}
 
@@ -272,9 +289,10 @@ public class ProfilePageActivity extends AppCompatActivity {
 
 		String currentText = getResources().getString(R.string.user_followed_by);
 		String followedByText = MessageFormat.format("{0}: {1}", currentText, followedByCount);
-		String currentTitle = getSupportActionBar().getTitle().toString();
+		ActionBar supportActionBar = getSupportActionBar();
+		String currentTitle = supportActionBar.getTitle().toString();
 		currentTitle = MessageFormat.format("{0}   ({1})", currentTitle, followedByText);
-		getSupportActionBar().setTitle(currentTitle);
+		supportActionBar.setTitle(currentTitle);
 	}
 
 	private class GetRecipiesTask<T extends RecipeDetails> extends GetRecipiesActivity {

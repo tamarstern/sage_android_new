@@ -1,14 +1,5 @@
 package com.example.myfirstapp;
 
-import java.util.List;
-
-import com.google.gson.JsonElement;
-import com.sage.adapters.UsersArrayAdapter;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.User;
-import com.sage.services.GetFollowingService;
-import com.sage.tasks.BaseFetchUsersTask;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +10,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+
+import com.google.gson.JsonElement;
+import com.sage.adapters.UsersArrayAdapter;
+import com.sage.application.UserFollowingContainer;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.User;
+import com.sage.services.GetFollowingService;
+import com.sage.tasks.BaseFetchUsersTask;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DisplayFollowingActivity extends AppCompatActivity {
 
@@ -36,7 +38,21 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 		fetchUsers();
 	}
 
+	private void initAdapter(List<User> users) {
+		UsersArrayAdapter adapter = new UsersArrayAdapter(this, users);
+		listView.setAdapter(adapter);
+	}
+
+
 	private void fetchUsers() {
+
+		if(UserFollowingContainer.getInstance().followingInitialized()) {
+			ArrayList<User> users = UserFollowingContainer.getInstance().getUsers();
+			initAdapter(users);
+			return;
+		}
+
+
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 		Intent intent = getIntent();
@@ -98,8 +114,9 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 
 		@Override
 		protected void initializeUi(List<User> users) {
-			UsersArrayAdapter adapter = new UsersArrayAdapter(activity, users);
-			listView.setAdapter(adapter);
+			initAdapter(users);
+
+			UserFollowingContainer.getInstance().putUsers(new ArrayList<User>(users));
 
 		}
 

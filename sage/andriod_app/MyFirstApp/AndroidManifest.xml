@@ -53,6 +53,16 @@
             android:name="com.sage.backgroundServices.CategoriesBackgroundService"
             android:exported="false"/>
 
+        <receiver
+            android:name="com.sage.backgroundServices.GetFollowingReceiver"
+            android:process=":remote">
+        </receiver>
+        <service
+            android:name="com.sage.backgroundServices.FollowingBackgroundService"
+            android:exported="false"/>
+
+
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

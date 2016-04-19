@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -47,11 +48,13 @@ public class CategoriesBackgroundService extends IntentService {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
         String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
-
-        GetCategoriesForUserService service = new GetCategoriesForUserService(token, userName);
-        JsonElement categories = null;
+        if(TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
+            return;
+        }
+            GetCategoriesForUserService service = new GetCategoriesForUserService(token, userName);
+            JsonElement categories;
             categories = service.getCategories();
-        if(categories != null) {
+            if(categories != null) {
             JsonArray resultJsonObject = categories.getAsJsonArray();
 
             Gson gson = new GsonBuilder().create();
@@ -62,10 +65,7 @@ public class CategoriesBackgroundService extends IntentService {
             if(categoriesToSave != null) {
                 UserCategoriesContainer.getInstance().putCategories(categoriesToSave);
             }
-
-
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        }
+            }
         } catch (Exception e) {
             Log.e("failedFetchCategories", "failed to get categories", e);
         } finally {

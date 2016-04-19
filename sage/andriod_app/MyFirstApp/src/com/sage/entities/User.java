@@ -1,6 +1,6 @@
 package com.sage.entities;
 
-public class User {
+public class User implements Comparable<User> {
 	
 	private String userDisplayName;
 	
@@ -30,6 +30,29 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	@Override
+	public int compareTo(User another) {
+		return getUserDisplayName().compareTo(another.getUserDisplayName());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != this.getClass()) {
+			return false;
+		}
+		User other = (User) obj;
+		return this._id.equals(other._id);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) _id.hashCode();
 	}
 
 }

@@ -10,7 +10,7 @@ public class RecipeCategory extends RecipeCategoryBase implements Comparable<Rec
 	 */
 	private static final long serialVersionUID = 4174511217569167918L;
 	private List<RecipeSubCategory> subCategories = new ArrayList<RecipeSubCategory>();
-	private List<RecipePublished> recipes;	
+	private List<RecipeDetails> recipes;
 
 	public List<RecipeSubCategory> getSubCategories() {
 		return subCategories;
@@ -20,11 +20,11 @@ public class RecipeCategory extends RecipeCategoryBase implements Comparable<Rec
 		this.subCategories = subCategories;
 	}
 
-	public List<RecipePublished> getRecipes() {
+	public List<RecipeDetails> getRecipes() {
 		return recipes;
 	}
 
-	public void setRecipes(List<RecipePublished> recipes) {
+	public void setRecipes(List<RecipeDetails> recipes) {
 		this.recipes = recipes;
 	}
 
