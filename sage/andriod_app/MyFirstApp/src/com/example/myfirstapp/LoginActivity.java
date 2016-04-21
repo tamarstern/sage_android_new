@@ -29,6 +29,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.backgroundServices.CategoriesReceiver;
 import com.sage.backgroundServices.GetFollowingReceiver;
+import com.sage.backgroundServices.GetProfileRecipiesReceiver;
 import com.sage.backgroundServices.RecipesForCategoryReceiver;
 import com.sage.backgroundServices.SyncFollowUsersReceiver;
 import com.sage.constants.ActivityConstants;
@@ -61,7 +62,7 @@ public class LoginActivity extends Activity {
 
 		//Intent intent = new Intent(this, CategoriesBackgroundService.class);
 		//startService(intent);
-		scheduleAlarmCategories();
+		scheduleAlarmBackgroundServices();
 		//openNewsfeedIfAlreadyLoggedInToFacebook();
 
 		String token = getDirectAuthenticationToken();
@@ -88,7 +89,7 @@ public class LoginActivity extends Activity {
 		}
 	}
 
-	public void scheduleAlarmCategories() {
+	public void scheduleAlarmBackgroundServices() {
 		long firstMillis = System.currentTimeMillis();
 		AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 
@@ -97,6 +98,15 @@ public class LoginActivity extends Activity {
 				categoriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
 				AlarmManager.INTERVAL_FIFTEEN_MINUTES, categoriesPIntent);
+
+
+		Intent profileRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
+		final PendingIntent profileRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
+				profileRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				5*60*1000, profileRecipiesPIntent);
+
+
 
 		Intent followingIntent = new Intent(getApplicationContext(), GetFollowingReceiver.class);
 		final PendingIntent followingPIntent = PendingIntent.getBroadcast(this, GetFollowingReceiver.REQUEST_CODE,

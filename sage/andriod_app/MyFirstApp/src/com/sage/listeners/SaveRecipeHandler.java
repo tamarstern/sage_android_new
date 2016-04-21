@@ -23,6 +23,7 @@ import com.example.myfirstapp.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.application.UserCategoriesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.constants.ImageType;
@@ -170,6 +171,7 @@ public class SaveRecipeHandler {
                 Gson gson = new Gson();
                 JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
                 RecipeDetails recipeDetails = ServicesUtils.createRecipeDetailsFromResponse(gson, dataElement);
+                MyProfileRecipiesContainer.getInstance().addRecipe(recipeDetails);
                 String recipeId = recipeDetails.get_id();
                 if (isNewRecipe) {
                     if (category == null) {

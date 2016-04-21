@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;
+import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.application.UserFollowingContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
@@ -209,6 +210,11 @@ public class ProfilePageActivity extends AppCompatActivity {
 	}
 
 	private void getAllRecipiesForUser() {
+		ArrayList<RecipeDetails> recipesByPage = MyProfileRecipiesContainer.getInstance().getRecipesByPage(pageNumber);
+		if( recipesByPage!= null ) {
+			initAdaptor(recipesByPage);
+			return;
+		}
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 		Intent i = getIntent();
@@ -276,6 +282,19 @@ public class ProfilePageActivity extends AppCompatActivity {
 		supportActionBar.setTitle(currentTitle);
 	}
 
+	private void initAdaptor(ArrayList<RecipeDetails> details) {
+		Iterator iterator = details.iterator();
+		while (iterator.hasNext()) {
+			adapter.add((RecipeDetails) iterator.next());
+		}
+		adapter.notifyDataSetChanged();
+		if(shouldIncreasePage) {
+			pageNumber += 1;
+		}
+	}
+
+
+
 	private class GetRecipiesTask<T extends RecipeDetails> extends GetRecipiesActivity {
 
 		private String recipeAuthor;
@@ -329,14 +348,8 @@ public class ProfilePageActivity extends AppCompatActivity {
 		protected void onPostExecute(JsonElement result) {
 			super.onPostExecute(result);
 			if (details != null) {
-				Iterator iterator = details.iterator();
-				while (iterator.hasNext()) {
-					adapter.add((RecipeDetails) iterator.next());
-				}
-				adapter.notifyDataSetChanged();
-				if(shouldIncreasePage) {
-					pageNumber += 1;
-				}
+				MyProfileRecipiesContainer.getInstance().putRecipesForPage(pageNumber, details);
+				initAdaptor(details);
 				
 				loadingMore = false;
 

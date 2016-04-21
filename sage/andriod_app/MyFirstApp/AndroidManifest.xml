@@ -77,6 +77,15 @@
             android:name="com.sage.backgroundServices.GetRecipesForCategoriesService"
             android:exported="false"/>
 
+        <receiver
+            android:name="com.sage.backgroundServices.GetProfileRecipiesReceiver"
+            android:process=":remote">
+        </receiver>
+        <service
+            android:name="com.sage.backgroundServices.GetProfilePageRecipesService"
+            android:exported="false"/>
+
+
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

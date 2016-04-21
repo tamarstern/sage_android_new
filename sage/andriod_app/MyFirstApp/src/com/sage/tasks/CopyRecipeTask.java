@@ -1,21 +1,20 @@
 package com.sage.tasks;
 
-import java.io.IOException;
+import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.myfirstapp.ProgressDialogContainer;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.services.CopyExistingRecipeService;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.ServicesUtils;
-
-import android.app.Activity;
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
 
 public class CopyRecipeTask extends AsyncTask<Object, Void, JsonElement> {	
 	
@@ -68,6 +67,8 @@ public class CopyRecipeTask extends AsyncTask<Object, Void, JsonElement> {
 			JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
 
 			RecipeDetails recipeDetails = ServicesUtils.createRecipeDetailsFromResponse(gson, dataElement);
+
+			MyProfileRecipiesContainer.getInstance().addRecipe(recipeDetails);
 
 			ActivityUtils.openCategoriesPage(recipeDetails, context);
 
