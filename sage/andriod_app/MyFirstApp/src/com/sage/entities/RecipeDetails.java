@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import java.io.Serializable;
 
-public class RecipeDetails implements Serializable {
+public class RecipeDetails implements Serializable, Comparable<RecipeDetails> {
 
 	private static final long serialVersionUID = 672748343523798530L;
 
@@ -26,6 +26,7 @@ public class RecipeDetails implements Serializable {
 	
 	private String userObjectId;
 
+	private String categoryId;
 
 	private String userDisplayName;
 	
@@ -156,7 +157,7 @@ public class RecipeDetails implements Serializable {
 
 	@Override
 	public int hashCode() {
-		  return (int) _id.hashCode();
+		  return _id.hashCode();
 	}
 
 	public Bitmap getImage() {
@@ -318,5 +319,18 @@ public class RecipeDetails implements Serializable {
 
 	public void setLinkUiInitialized(boolean linkUiInitialized) {
 		this.linkUiInitialized = linkUiInitialized;
+	}
+
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	@Override
+	public int compareTo(RecipeDetails another) {
+		return this.getHeader().compareTo(another.getHeader());
 	}
 }

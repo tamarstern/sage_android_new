@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -15,13 +14,11 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import com.example.myfirstapp.ActivityCategoriesPage;
 import com.example.myfirstapp.DisplayLinkWebPageActivity;
 import com.example.myfirstapp.LinkRecipePageActivity;
 import com.example.myfirstapp.PictureRecipePageActivity;
-import com.example.myfirstapp.R;
 import com.example.myfirstapp.ResetPasswordActivity;
 import com.example.myfirstapp.TextReciptPageActivity;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
@@ -119,16 +116,6 @@ public class ActivityUtils {
 	public static void HandleConnectionUnsuccessfullToServer(final Activity context) {
 
 		Log.d(Context.CONNECTIVITY_SERVICE, "Unable to login. URL may be invalid.");
-
-		Resources res = context.getResources();
-		final String notInternetConnectionText = res.getString(R.string.no_internet_connection);
-
-		context.runOnUiThread(new Runnable() {
-			public void run() {
-				Toast.makeText(context, notInternetConnectionText, Toast.LENGTH_LONG).show();
-			}
-		});
-
 	}
 
 	public static Object[] generateServiceParamObject(Context context, String firstParam) {

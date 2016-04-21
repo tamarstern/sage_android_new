@@ -19,6 +19,7 @@ import com.sage.entities.RecipeCategory;
 import com.sage.services.GetCategoriesForUserService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by tamar.twena on 4/17/2016.
@@ -36,7 +37,7 @@ public class CategoriesBackgroundService extends IntentService {
         super(name);
     }
 
-    public CategoriesBackgroundService(){
+    public CategoriesBackgroundService() {
         super("CategoriesBackgroundService");
     }
 
@@ -46,25 +47,24 @@ public class CategoriesBackgroundService extends IntentService {
         try {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-        String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
-        if(TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
-            return;
-        }
+            String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
+            String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+            if (TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
+                return;
+            }
             GetCategoriesForUserService service = new GetCategoriesForUserService(token, userName);
             JsonElement categories;
             categories = service.getCategories();
-            if(categories != null) {
-            JsonArray resultJsonObject = categories.getAsJsonArray();
+            if (categories != null) {
+                JsonArray resultJsonObject = categories.getAsJsonArray();
+                Gson gson = new GsonBuilder().create();
+                ArrayList<RecipeCategory> categoriesToSave = gson.fromJson(resultJsonObject, new TypeToken<ArrayList<RecipeCategory>>() {
+                }.getType());
 
-            Gson gson = new GsonBuilder().create();
-
-            ArrayList<RecipeCategory> categoriesToSave = gson.fromJson(resultJsonObject, new TypeToken<ArrayList<RecipeCategory>>() {
-            }.getType());
-
-            if(categoriesToSave != null) {
-                UserCategoriesContainer.getInstance().putCategories(categoriesToSave);
-            }
+                if (categoriesToSave != null) {
+                    UserCategoriesContainer.getInstance().putCategories(new HashSet<RecipeCategory>(categoriesToSave));
+                    initRecipesForCategories();
+                }
             }
         } catch (Exception e) {
             Log.e("failedFetchCategories", "failed to get categories", e);
@@ -73,6 +73,10 @@ public class CategoriesBackgroundService extends IntentService {
         }
 
 
+    }
 
+    private void initRecipesForCategories() {
+        Intent fetchCategoriesRecipes = new Intent(this, GetRecipesForCategoriesService.class);
+        startService(fetchCategoriesRecipes);
     }
 }

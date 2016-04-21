@@ -29,6 +29,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.backgroundServices.CategoriesReceiver;
 import com.sage.backgroundServices.GetFollowingReceiver;
+import com.sage.backgroundServices.RecipesForCategoryReceiver;
+import com.sage.backgroundServices.SyncFollowUsersReceiver;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.services.AuthenticateWithTokenService;
@@ -94,13 +96,27 @@ public class LoginActivity extends Activity {
 		final PendingIntent categoriesPIntent = PendingIntent.getBroadcast(this, CategoriesReceiver.REQUEST_CODE,
 				categoriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				AlarmManager.INTERVAL_HALF_HOUR, categoriesPIntent);
+				AlarmManager.INTERVAL_FIFTEEN_MINUTES, categoriesPIntent);
 
 		Intent followingIntent = new Intent(getApplicationContext(), GetFollowingReceiver.class);
 		final PendingIntent followingPIntent = PendingIntent.getBroadcast(this, GetFollowingReceiver.REQUEST_CODE,
 				followingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				AlarmManager.INTERVAL_HALF_HOUR, followingPIntent);
+				AlarmManager.INTERVAL_FIFTEEN_MINUTES, followingPIntent);
+
+
+		Intent syncFollowingIntent = new Intent(getApplicationContext(), SyncFollowUsersReceiver.class);
+		final PendingIntent syncFollowingPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
+				syncFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				5*60*1000, syncFollowingPIntent);
+
+		Intent recipesForCategoryIntent = new Intent(getApplicationContext(), RecipesForCategoryReceiver.class);
+		final PendingIntent recipesForCategoryPIntent = PendingIntent.getBroadcast(this, RecipesForCategoryReceiver.REQUEST_CODE,
+				recipesForCategoryIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				5*60*1000, recipesForCategoryPIntent);
+
 
 	}
 

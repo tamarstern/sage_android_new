@@ -1,22 +1,5 @@
 package com.example.myfirstapp;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-import com.sage.adapters.SubCategoriesArrayAdapter;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeDetails;
-import com.sage.listeners.AddRecipePopupHandler;
-import com.sage.services.GetRecipiesForCategoryService;
-import com.sage.utils.ActivityUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +14,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+import com.sage.adapters.SubCategoriesArrayAdapter;
+import com.sage.application.UserCategoriesContainer;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeDetails;
+import com.sage.listeners.AddRecipePopupHandler;
+import com.sage.services.GetRecipiesForCategoryService;
+import com.sage.utils.ActivityUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
 public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 
@@ -94,21 +96,33 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 	}
 
 	private void fetchRecipes() {
+		if(UserCategoriesContainer.getInstance().hasRecipesForCategory(this.category)) {
+			HashSet<RecipeDetails> recipesForCategory = UserCategoriesContainer.getInstance().getRecipesForCategory(this.category);
+			initAdapter(new ArrayList<RecipeDetails>(recipesForCategory));
+			return;
+		}
+
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
-
-		new GetRecipesForSubCategoryTask(this).execute(token, userName);
+		new GetRecipesForCategoryTask(this).execute(token, userName);
 
 	}
 
-	private class GetRecipesForSubCategoryTask extends AsyncTask<String, Void, JsonElement> {
+	private void initAdapter(ArrayList<RecipeDetails> recipes) {
+		Collections.sort(recipes);
+		SubCategoriesArrayAdapter adapter = new SubCategoriesArrayAdapter(this, recipes);
+		listView.setAdapter(adapter);
+	}
+
+
+	private class GetRecipesForCategoryTask extends AsyncTask<String, Void, JsonElement> {
 
 		private Activity activity;
 
 		private ProgressDialogContainer container;
 
-		public GetRecipesForSubCategoryTask(Activity activity) {
+		public GetRecipesForCategoryTask(Activity activity) {
 			this.activity = activity;
 			container = new ProgressDialogContainer(activity);
 		}
@@ -150,11 +164,11 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 					new TypeToken<ArrayList<RecipeDetails>>() {
 					}.getType());
 
-
-			SubCategoriesArrayAdapter adapter = new SubCategoriesArrayAdapter(activity, recipes);
-			listView.setAdapter(adapter);
+			UserCategoriesContainer.getInstance().putRecipesForCategory(category, new HashSet<RecipeDetails>(recipes));
+			initAdapter(recipes);
 
 		}
+
 
 	}
 }

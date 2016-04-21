@@ -1,20 +1,20 @@
 package com.sage.listeners;
 
-import com.example.myfirstapp.ActivityRecipiesInCategoryPage;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeCategory;
-import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipeSubCategory;
-import com.sage.tasks.AddRecipeToCategoryTask;
-import com.sage.utils.AnalyticsUtils;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import com.example.myfirstapp.ActivityRecipiesInCategoryPage;
+import com.sage.application.UserCategoriesContainer;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeCategory;
+import com.sage.entities.RecipeDetails;
+import com.sage.tasks.AddRecipeToCategoryTask;
+import com.sage.utils.AnalyticsUtils;
 
 public class ChooseCategoryClickListener implements OnClickListener {
 
@@ -67,6 +67,10 @@ public class ChooseCategoryClickListener implements OnClickListener {
 
 		@Override
 		protected void doHandleSuccess() {
+			String oldId = recipeDetails.getCategoryId();
+			String newId = recipeCategory.get_id();
+			UserCategoriesContainer.getInstance().
+					updateRecipeForCategoryInCache(recipeDetails, oldId, newId);
 			openCategoryPage();
 
 		}

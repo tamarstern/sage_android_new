@@ -3,7 +3,6 @@ package com.sage.application;
 import com.sage.entities.User;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,6 +18,11 @@ public class UserFollowingContainer {
     private static final Object LOCK = new Object();
 
     public static String FOLLOWING_KEY = "followingKey";
+
+    public static String USERS_TO_FOLLOW_KEY = "usersToFollowKey";
+
+    public static String USERS_TO_UNFOLLOW_KEY = "usersToUnfollowKey";
+
 
     private UserFollowingContainer() {
 
@@ -36,7 +40,6 @@ public class UserFollowingContainer {
     }
 
     public void putUsers(ArrayList<User> users) {
-        Collections.sort(users);
         HashSet<User> categoriesSet = new HashSet<User>(users);
         this.usersMap.put(FOLLOWING_KEY, categoriesSet);
     }
@@ -53,19 +56,54 @@ public class UserFollowingContainer {
         }
         ArrayList<User> usersArray = new ArrayList<User>(users);
         putUsers(usersArray);
+
+        HashSet<User> usersToFollow = getUsersToFollow();
+        usersToFollow.add(user);
+        putUsersToFollow(usersToFollow);
     }
 
     public void unFollow(User user) {
         HashSet<User> users =  (HashSet<User>)this.usersMap.get(FOLLOWING_KEY);
         users.remove(user);
-        this.usersMap.put(FOLLOWING_KEY, users);
+        ArrayList<User> usersArray = new ArrayList<User>(users);
+        putUsers(usersArray);
+
+        HashSet<User> usersToUnfollow = getUsersToUnfollow();
+        usersToUnfollow.add(user);
+        putUsersToUnfollow(usersToUnfollow);
     }
 
     public boolean followingInitialized() {
         return this.usersMap.containsKey(FOLLOWING_KEY);
     }
 
+    public HashSet<User> getUsersToFollow() {
+        HashSet<User> usersToFollow = (HashSet<User>)this.usersMap.get(USERS_TO_FOLLOW_KEY);
+        if(usersToFollow == null) {
+            usersToFollow = new HashSet<User>();
+            putUsersToFollow(usersToFollow);
+        }
+        return usersToFollow;
+    }
 
+    public void putUsersToFollow(HashSet<User> users) {
+        usersMap.put(USERS_TO_FOLLOW_KEY, users);
+    }
+
+
+    public HashSet<User> getUsersToUnfollow() {
+        HashSet<User> usersToUnFollow = (HashSet<User>)this.usersMap.get(USERS_TO_UNFOLLOW_KEY);
+        if(usersToUnFollow == null) {
+            usersToUnFollow = new HashSet<User>();
+            putUsersToUnfollow(usersToUnFollow);
+        }
+        return usersToUnFollow;
+    }
+
+
+    public void putUsersToUnfollow(HashSet<User> users) {
+        usersMap.put(USERS_TO_UNFOLLOW_KEY, users);
+    }
 
 
 

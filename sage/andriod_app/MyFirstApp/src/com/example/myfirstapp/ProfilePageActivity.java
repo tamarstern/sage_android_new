@@ -3,7 +3,6 @@ package com.example.myfirstapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -20,7 +19,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;
 import com.sage.application.UserFollowingContainer;
@@ -28,11 +26,8 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.User;
-import com.sage.services.FollowUserService;
 import com.sage.services.GetPublishedRecipesForUser;
-import com.sage.services.UnfollowUserService;
 import com.sage.tasks.GetRecipiesActivity;
-import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
 
 import java.io.Serializable;
@@ -186,16 +181,9 @@ public class ProfilePageActivity extends AppCompatActivity {
 	}
 
 	private void followUser() {
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-		Intent i = getIntent();
-		String usernameToFollow = (String) i.getSerializableExtra(EntityDataTransferConstants.USER_NAME_DATA_TRANSFER);
-		String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
-
-		new FollowUser(this).execute(token, userName, usernameToFollow);
-
 		User user = createUserObject();
 		UserFollowingContainer.getInstance().follow(user);
+		initFollowButtonsVisibility(true);
 		AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.PRESS_FOLLOW_USER);
 
 	}
@@ -213,16 +201,9 @@ public class ProfilePageActivity extends AppCompatActivity {
 	}
 
 	private void unfollowUser() {
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-		Intent i = getIntent();
-		String usernameToFollow = (String) i.getSerializableExtra(EntityDataTransferConstants.USER_NAME_DATA_TRANSFER);
-		String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
-
-		new UnFollowUser(this).execute(token, userName, usernameToFollow);
 		User user = createUserObject();
 		UserFollowingContainer.getInstance().unFollow(user);
-
+		initFollowButtonsVisibility(false);
 		AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.PRESS_UNFOLLOW_USER);
 
 	}
@@ -369,84 +350,6 @@ public class ProfilePageActivity extends AppCompatActivity {
 			GetPublishedRecipesForUser service = new GetPublishedRecipesForUser(currentToken, userName, recipeAuthor,
 					pageNumber);
 			return service.getRecipies();
-		}
-
-	}
-
-
-	private class FollowUser extends AsyncTask<String, Void, JsonElement> {
-
-		private Activity activity;
-
-		public FollowUser(Activity activity) {
-			this.activity = activity;
-		}
-
-		@Override
-		protected JsonElement doInBackground(String... params) {
-
-			try {
-				String currentToken = params[0];
-				String userName = params[1];
-				String usernameToFollow = params[2];
-				FollowUserService service = new FollowUserService(currentToken, userName, usernameToFollow, activity);
-				return service.followUser();
-			} catch (Exception e) {
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(JsonElement result) {
-			if (result == null) {
-				return;
-			}
-			JsonObject resultJsonObject = result.getAsJsonObject();
-			boolean requestSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
-			if (requestSuccess) {
-				initFollowButtonsVisibility(true);
-			}
-
-		}
-
-	}
-
-	private class UnFollowUser extends AsyncTask<String, Void, JsonElement> {
-
-		private Activity activity;
-
-		public UnFollowUser(Activity activity) {
-			this.activity = activity;
-		}
-
-		@Override
-		protected JsonElement doInBackground(String... params) {
-
-			try {
-				String currentToken = params[0];
-				String userName = params[1];
-				String usernameToFollow = params[2];
-				UnfollowUserService service = new UnfollowUserService(currentToken, userName, usernameToFollow,
-						activity);
-				return service.unfollowUser();
-			} catch (Exception e) {
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(JsonElement result) {
-			if (result == null) {
-				return;
-			}
-			JsonObject resultJsonObject = result.getAsJsonObject();
-			boolean requestSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
-			if (requestSuccess) {
-				initFollowButtonsVisibility(false);
-			}
-
 		}
 
 	}

@@ -35,6 +35,7 @@ import com.sage.utils.ActivityUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 public class ActivityCategoriesPage extends AppCompatActivity implements ICategoryEditListener {
 
@@ -204,7 +205,7 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 
 			categories = gson.fromJson(resultJsonObject, new TypeToken<ArrayList<RecipeCategory>>() {
 			}.getType());
-			UserCategoriesContainer.getInstance().putCategories(categories);
+			UserCategoriesContainer.getInstance().putCategories(new HashSet<RecipeCategory>(categories));
 			initCategoriesUI();
 
 		}

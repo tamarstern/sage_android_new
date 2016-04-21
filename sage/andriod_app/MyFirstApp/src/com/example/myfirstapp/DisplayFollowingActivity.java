@@ -20,6 +20,7 @@ import com.sage.services.GetFollowingService;
 import com.sage.tasks.BaseFetchUsersTask;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DisplayFollowingActivity extends AppCompatActivity {
@@ -39,6 +40,7 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 	}
 
 	private void initAdapter(List<User> users) {
+		Collections.sort(users);
 		UsersArrayAdapter adapter = new UsersArrayAdapter(this, users);
 		listView.setAdapter(adapter);
 	}
