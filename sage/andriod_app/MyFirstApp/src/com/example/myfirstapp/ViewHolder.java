@@ -9,6 +9,8 @@ public class ViewHolder {
 	 */
 	private final Activity activity;
 
+	private boolean failedToLoad;
+
 	/**
 	 * @param activity
 	 */
@@ -17,4 +19,12 @@ public class ViewHolder {
 	}
 
 	WebView webView;
+
+	public boolean isFailedToLoad() {
+		return failedToLoad;
+	}
+
+	public void setFailedToLoad(boolean failedToLoad) {
+		this.failedToLoad = failedToLoad;
+	}
 }

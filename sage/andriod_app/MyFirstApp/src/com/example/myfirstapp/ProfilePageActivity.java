@@ -210,10 +210,13 @@ public class ProfilePageActivity extends AppCompatActivity {
 	}
 
 	private void getAllRecipiesForUser() {
-		ArrayList<RecipeDetails> recipesByPage = MyProfileRecipiesContainer.getInstance().getRecipesByPage(pageNumber);
-		if( recipesByPage!= null ) {
-			initAdaptor(recipesByPage);
-			return;
+		if(currentUserProfile) {
+			ArrayList<RecipeDetails> recipesByPage = MyProfileRecipiesContainer.getInstance().getRecipesByPage(pageNumber);
+			if( recipesByPage!= null && recipesByPage.size() > 0 ) {
+				initAdaptor(recipesByPage);
+				pageNumber +=1;
+				return;
+			}
 		}
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
@@ -348,7 +351,10 @@ public class ProfilePageActivity extends AppCompatActivity {
 		protected void onPostExecute(JsonElement result) {
 			super.onPostExecute(result);
 			if (details != null) {
-				MyProfileRecipiesContainer.getInstance().putRecipesForPage(pageNumber, details);
+				if((pageNumber == 0 || pageNumber ==1) && currentUserProfile) {
+					MyProfileRecipiesContainer.getInstance().putRecipesForPage(pageNumber, details);
+				}
+
 				initAdaptor(details);
 				
 				loadingMore = false;

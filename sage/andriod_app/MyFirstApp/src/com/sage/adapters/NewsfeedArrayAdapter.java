@@ -458,6 +458,16 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 			notifyDataSetChanged();
 
 		}
+
+		@Override
+		protected void handleFailure() {
+			if(getLinkDetailsProgress != null) {
+				getLinkDetailsProgress.setVisibility(View.GONE);
+			}
+			if(recipeMainPicture != null) {
+				recipeMainPicture.setVisibility(View.VISIBLE);
+			}
+		}
 	}
 
 }

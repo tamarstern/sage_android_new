@@ -54,6 +54,7 @@ public class UserCategoriesContainer {
         categories.remove(category);
         categories.add(category);
         putCategories(categories);
+        putRecipesForCategory(category, new HashSet<RecipeDetails>());
     }
 
     public void deleteCategory(RecipeCategory category) {
@@ -104,13 +105,16 @@ public class UserCategoriesContainer {
         if (!TextUtils.isEmpty(oldCategoryId)) {
             String oldKey = generateKey(oldCategoryId);
             HashSet<RecipeDetails> recipeSet = (HashSet<RecipeDetails>) this.categoriesMap.get(oldKey);
-            recipeSet.remove(recipe);
+            if(recipeSet != null && recipeSet.contains(recipe)) {
+                recipeSet.remove(recipe);
+            }
         }
         if(!TextUtils.isEmpty(newCategoryId)) {
             String newKey = generateKey(newCategoryId);
             HashSet<RecipeDetails> recipeSet = (HashSet<RecipeDetails>) this.categoriesMap.get(newKey);
-            recipeSet.remove(recipe);
-            recipeSet.add(recipe);
+            if(recipeSet != null && !recipeSet.contains(recipe)) {
+                recipeSet.add(recipe);
+            }
         }
     }
 }

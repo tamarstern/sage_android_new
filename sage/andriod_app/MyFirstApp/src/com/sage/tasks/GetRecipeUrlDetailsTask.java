@@ -1,13 +1,13 @@
 package com.sage.tasks;
 
+import android.app.Activity;
+import android.os.AsyncTask;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;
 import com.sage.services.GetRecipeUrlDetailsService;
 import com.sage.utils.ActivityUtils;
-
-import android.app.Activity;
-import android.os.AsyncTask;
 
 public abstract class GetRecipeUrlDetailsTask extends AsyncTask<Object, Void, JsonElement> {
 
@@ -40,15 +40,20 @@ public abstract class GetRecipeUrlDetailsTask extends AsyncTask<Object, Void, Js
 	@Override
 	protected void onPostExecute(JsonElement result) {
 		if (result == null) {
+			handleFailure();
 			return;
 		}
 		JsonObject resultJsonObject = result.getAsJsonObject();
 		boolean saveSucceed = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
 		if (saveSucceed) {
 			handleSuccess(resultJsonObject);
+		} else {
+			handleFailure();
 		}
 
 	}
 
 	protected abstract void handleSuccess(JsonObject resultJsonObject);
+
+	protected abstract void handleFailure();
 }

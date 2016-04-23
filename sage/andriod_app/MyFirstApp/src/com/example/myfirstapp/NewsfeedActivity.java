@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;
+import com.sage.application.NewsfeedContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
@@ -112,6 +113,12 @@ public class NewsfeedActivity extends AppCompatActivity {
 	}
 
 	private void getNewsFeedRecipiesForUser() {
+		ArrayList<RecipeDetails> recipesByPage = NewsfeedContainer.getInstance().getRecipesByPage(pageNumber);
+		if(recipesByPage != null && recipesByPage.size() > 0) {
+			initAdaptor(recipesByPage);
+			pageNumber +=1;
+			return;
+		}
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
@@ -147,6 +154,18 @@ public class NewsfeedActivity extends AppCompatActivity {
 
 		}
 	}
+
+	private void initAdaptor(ArrayList<RecipeDetails> details) {
+		Iterator iterator = details.iterator();
+		while (iterator.hasNext()) {
+			adapter.add((RecipeDetails) iterator.next());
+		}
+		adapter.notifyDataSetChanged();
+		if (shouldIncreasePage) {
+			pageNumber += 1;
+		}
+	}
+
 
 	@Override
 	public void onBackPressed() {
@@ -213,18 +232,15 @@ public class NewsfeedActivity extends AppCompatActivity {
 		protected void onPostExecute(JsonElement result) {
 			super.onPostExecute(result);
 			if (details != null) {
-				Iterator iterator = details.iterator();
-				while (iterator.hasNext()) {
-					adapter.add((RecipeDetails) iterator.next());
+				if(pageNumber == 0 || pageNumber ==1) {
+					NewsfeedContainer.getInstance().putRecipesForPage(pageNumber, details);
 				}
-				adapter.notifyDataSetChanged();
-				if (shouldIncreasePage) {
-					pageNumber += 1;
-				}
+				initAdaptor(details);
 				loadingMore = false;
 			}
 
 		}
+
 
 		@Override
 		protected JsonElement CreateAndExecuteService(String currentToken, String userName, int pageNumber)

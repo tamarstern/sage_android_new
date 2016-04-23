@@ -7,11 +7,15 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
@@ -22,6 +26,10 @@ import java.io.Serializable;
 public class DisplayLinkWebPageActivity extends AppCompatActivity {
 
 	private RecipeDetails recipeDetails;
+
+	private View no_internet_connection;
+
+	private ProgressBar progressbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,19 +45,61 @@ public class DisplayLinkWebPageActivity extends AppCompatActivity {
 		setSupportActionBar(myToolbar);
 		getSupportActionBar().setTitle(recipeDetails.getHeader());
 
+		final WebView webView = (WebView) findViewById(R.id.recipe_link_page_content);
+
+		progressbar = (ProgressBar)findViewById(R.id.display_link_progress);
+
+		no_internet_connection = findViewById(R.id.no_internet_connection_panel);
+		no_internet_connection.setVisibility(View.GONE);
+		no_internet_connection.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				no_internet_connection.setVisibility(View.GONE);
+				RefershWebView(webView);
+			}
+		});
+
+
 		if (!TextUtils.isEmpty(recipeDetails.getUrl())) {
 
-			ViewHolder holder = new ViewHolder(this);
-			holder.webView = (WebView) findViewById(R.id.recipe_link_page_content);
-			holder.webView.setBackgroundResource(R.drawable.appliction_panel_style);
-			holder.webView.getSettings().setJavaScriptEnabled(true);
-			holder.webView.getSettings().setRenderPriority(RenderPriority.HIGH);
-			holder.webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-			holder.webView.setWebViewClient(new WebViewClient());
-			holder.webView.loadUrl(recipeDetails.getUrl());
+			RefershWebView(webView);
 		}
 
 		disableLockScreenAndTimeout();
+	}
+
+	private void RefershWebView(WebView webView) {
+		final ViewHolder holder = new ViewHolder(this);
+		holder.setFailedToLoad(false);
+		holder.webView = webView;
+		progressbar.setVisibility(View.VISIBLE);
+		no_internet_connection.setVisibility(View.GONE);
+		holder.webView.setBackgroundResource(R.drawable.appliction_panel_style);
+		holder.webView.getSettings().setJavaScriptEnabled(true);
+		holder.webView.getSettings().setRenderPriority(RenderPriority.HIGH);
+		holder.webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+		holder.webView.setWebViewClient(new WebViewClient());
+		holder.webView.loadUrl(recipeDetails.getUrl());
+		holder.webView.setWebViewClient(new WebViewClient(){
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                holder.webView.setVisibility(View.GONE);
+				holder.setFailedToLoad(true);
+				progressbar.setVisibility(View.GONE);
+				no_internet_connection.setVisibility(View.VISIBLE);
+            }
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+				if(!holder.isFailedToLoad()) {
+					progressbar.setVisibility(View.GONE);
+					holder.webView.setVisibility(View.VISIBLE);
+				}
+			}
+		});
 	}
 
 	private void disableLockScreenAndTimeout() {

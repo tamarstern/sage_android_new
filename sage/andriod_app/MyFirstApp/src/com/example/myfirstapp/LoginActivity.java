@@ -107,6 +107,12 @@ public class LoginActivity extends Activity {
 				5*60*1000, profileRecipiesPIntent);
 
 
+		Intent newsfeedRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
+		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
+				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				20*60*1000, newsfeedRecipiesPIntent);
+
 
 		Intent followingIntent = new Intent(getApplicationContext(), GetFollowingReceiver.class);
 		final PendingIntent followingPIntent = PendingIntent.getBroadcast(this, GetFollowingReceiver.REQUEST_CODE,

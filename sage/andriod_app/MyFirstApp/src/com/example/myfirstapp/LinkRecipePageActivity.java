@@ -110,7 +110,11 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 				}
 			});
 			Object[] params = ActivityUtils.generateServiceParamObject(this, recipeDetails.getUrl());
-			new GetRecipeUrlDetails(recipeDetails, this).execute(params);
+			if(EntityUtils.isNewRecipe(recipeDetails)) {
+				new GetRecipeUrlDetails(recipeDetails, this).execute(params);
+			} else {
+				initLinkRecipeUi(recipeDetails);
+			}
 
 		}
 
@@ -170,6 +174,15 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 			getSupportActionBar().setTitle(recipeTitle);
 		} else {
 			getSupportActionBar().setTitle(getResources().getString(R.string.add_recipe_title_toolbar));
+		}
+	}
+
+	public void handleUiOnFailure() {
+		if(getLinkDetailsProgress != null) {
+			getLinkDetailsProgress.setVisibility(View.GONE);
+		}
+		if(linkImage != null) {
+			linkImage.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -263,6 +276,7 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 
 		@Override
 		protected void handleSuccess(JsonObject resultJsonObject) {
+			getLinkDetailsProgress.setVisibility(View.GONE);
 			JsonElement urlTitleElement = resultJsonObject.get(ActivityConstants.URL_TITLE_ELEMENT_NAME);
 			if (urlTitleElement != null) {
 				String urlTitle = urlTitleElement.getAsString();
@@ -284,6 +298,16 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 
 			initLinkRecipeUi(linkDetails);
 
+		}
+
+		@Override
+		protected void handleFailure() {
+			if(getLinkDetailsProgress != null) {
+				getLinkDetailsProgress.setVisibility(View.GONE);
+			}
+			if(linkImage != null) {
+				linkImage.setVisibility(View.VISIBLE);
+			}
 		}
 
 	}

@@ -115,7 +115,7 @@ public class ActivityUtils {
 
 	public static void HandleConnectionUnsuccessfullToServer(final Activity context) {
 
-		Log.d(Context.CONNECTIVITY_SERVICE, "Unable to login. URL may be invalid.");
+		Log.e(Context.CONNECTIVITY_SERVICE, "Unable to login. URL may be invalid.");
 	}
 
 	public static Object[] generateServiceParamObject(Context context, String firstParam) {

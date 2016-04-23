@@ -54,6 +54,16 @@
             android:exported="false"/>
 
         <receiver
+            android:name="com.sage.backgroundServices.GetNewsfeedRecipiesReceiver"
+            android:process=":remote">
+        </receiver>
+        <service
+            android:name="com.sage.backgroundServices.GetNewsfeedRecipesService"
+            android:exported="false"/>
+
+
+
+        <receiver
             android:name="com.sage.backgroundServices.SyncFollowUsersReceiver"
             android:process=":remote">
         </receiver>
@@ -174,7 +184,8 @@
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".DisplayLinkWebPageActivity"
-            android:label="@string/title_activity_display_link_web_page"></activity>
+            android:label="@string/title_activity_display_link_web_page"
+            android:configChanges="orientation|screenSize"></activity>
         <activity
             android:name=".SearchActivity"
             android:configChanges="orientation|screenSize"
