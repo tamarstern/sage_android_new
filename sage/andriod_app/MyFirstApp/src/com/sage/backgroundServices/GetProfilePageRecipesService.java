@@ -17,9 +17,13 @@ import com.google.gson.reflect.TypeToken;
 import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
+import com.sage.entities.RecipeType;
+import com.sage.services.GetMyProfile;
 import com.sage.services.GetPublishedRecipesForUser;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by tamar.twena on 4/21/2016.
@@ -42,24 +46,9 @@ public class GetProfilePageRecipesService extends IntentService {
             if (TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
                 return;
             }
-            for (int i = 0; i < 2; i++) {
-                GetPublishedRecipesForUser service = new GetPublishedRecipesForUser(token, userName, userName,
-                        i);
-                JsonElement recipies = service.getRecipies();
+            initProfilePageRecipies(token, userName);
 
-                JsonObject recipiesAsJsonObject = recipies.getAsJsonObject();
-
-                boolean recipiesFound = recipiesAsJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
-
-                if (recipiesFound) {
-                    JsonElement dataElement = recipiesAsJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME);
-                    JsonArray resultDataObject = dataElement.getAsJsonArray();
-                    Gson gson = new GsonBuilder().create();
-                    ArrayList<RecipeDetails> details = gson.fromJson(resultDataObject, new TypeToken<ArrayList<RecipeDetails>>() {
-                    }.getType());
-                    MyProfileRecipiesContainer.getInstance().putRecipesForPage(i, details);
-                }
-            }
+            initFollowedByCount(token, userName);
 
         } catch (Exception e) {
             Log.e("failed fetch profile", "failed fetch profile", e);
@@ -68,5 +57,43 @@ public class GetProfilePageRecipesService extends IntentService {
         }
 
 
+    }
+
+    private void initFollowedByCount(String token, String userName) throws Exception {
+        GetMyProfile service = new GetMyProfile(token, userName);
+        JsonElement myProfile = service.getMyProfile();
+        JsonObject resultJsonObject = myProfile.getAsJsonObject();
+
+        boolean requestSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
+
+        if (requestSuccess) {
+            String follwedByCount = NumberFormat.getNumberInstance(Locale.US)
+                    .format(resultJsonObject.get(ActivityConstants.FOLLOEWD_BY_COUNT).getAsInt());
+            MyProfileRecipiesContainer.getInstance().setFollowByCountForUser(userName, follwedByCount);
+        }
+    }
+
+    private void initProfilePageRecipies(String token, String userName) throws Exception {
+        for (int i = 0; i < 2; i++) {
+            GetPublishedRecipesForUser service = new GetPublishedRecipesForUser(token, userName, userName,
+                    i);
+            JsonElement recipies = service.getRecipies();
+            JsonObject recipiesAsJsonObject = recipies.getAsJsonObject();
+            boolean recipiesFound = recipiesAsJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
+
+            if (recipiesFound) {
+                JsonElement dataElement = recipiesAsJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME);
+                JsonArray resultDataObject = dataElement.getAsJsonArray();
+                Gson gson = new GsonBuilder().create();
+                ArrayList<RecipeDetails> details = gson.fromJson(resultDataObject, new TypeToken<ArrayList<RecipeDetails>>() {
+                }.getType());
+                for (RecipeDetails recipe : details) {
+                    if (recipe.getRecipeType().equals(RecipeType.LINK) && !TextUtils.isEmpty(recipe.getUrl())) {
+                        BackgroundServicesUtils.GetRecipeLinkDetails(token, userName, recipe);
+                    }
+                }
+                MyProfileRecipiesContainer.getInstance().putRecipesForPage(i, details);
+            }
+        }
     }
 }

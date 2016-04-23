@@ -104,14 +104,14 @@ public class LoginActivity extends Activity {
 		final PendingIntent profileRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
 				profileRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				5*60*1000, profileRecipiesPIntent);
+				AlarmManager.INTERVAL_FIFTEEN_MINUTES, profileRecipiesPIntent);
 
 
 		Intent newsfeedRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
 		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
 				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				20*60*1000, newsfeedRecipiesPIntent);
+				10*60*1000, newsfeedRecipiesPIntent);
 
 
 		Intent followingIntent = new Intent(getApplicationContext(), GetFollowingReceiver.class);
@@ -131,7 +131,7 @@ public class LoginActivity extends Activity {
 		final PendingIntent recipesForCategoryPIntent = PendingIntent.getBroadcast(this, RecipesForCategoryReceiver.REQUEST_CODE,
 				recipesForCategoryIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				5*60*1000, recipesForCategoryPIntent);
+				AlarmManager.INTERVAL_FIFTEEN_MINUTES, recipesForCategoryPIntent);
 
 
 	}
@@ -275,8 +275,7 @@ public class LoginActivity extends Activity {
 				LoginService service = new LoginService(activity);
 				return service.login(username, password);
 			} catch (Exception e) {
-				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}
@@ -337,10 +336,7 @@ public class LoginActivity extends Activity {
 				String currentToken = token[0];
 				return service.authenticateWithToke(currentToken);
 			} catch (Exception e) {
-				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
-				initLoginFormVisibility(View.VISIBLE);
-
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}
@@ -349,6 +345,7 @@ public class LoginActivity extends Activity {
 		protected void onPostExecute(JsonElement result) {
 			container.dismissProgress();
 			if (result == null) {
+				initLoginFormVisibility(View.VISIBLE);
 				return;
 			}
 

@@ -85,7 +85,8 @@
         </receiver>
         <service
             android:name="com.sage.backgroundServices.GetRecipesForCategoriesService"
-            android:exported="false"/>
+            android:exported="false"
+            />
 
         <receiver
             android:name="com.sage.backgroundServices.GetProfileRecipiesReceiver"

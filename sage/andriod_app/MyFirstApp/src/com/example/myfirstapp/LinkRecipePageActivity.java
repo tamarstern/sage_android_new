@@ -100,6 +100,15 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 
 		this.recipeLinkContent = (TextView) findViewById(R.id.recipe_link_content);
 
+		InitRecipeUiWithData();
+
+		initPreparationComments();
+
+		disableLockScreenAndTimeout();
+
+	}
+
+	private void InitRecipeUiWithData() {
 		String recipeUrl = recipeDetails.getUrl();
 		if (!TextUtils.isEmpty(recipeUrl)) {
 			recipeLinkContent.setText(recipeUrl);
@@ -110,18 +119,13 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 				}
 			});
 			Object[] params = ActivityUtils.generateServiceParamObject(this, recipeDetails.getUrl());
-			if(EntityUtils.isNewRecipe(recipeDetails)) {
+			if(EntityUtils.isNewRecipe(recipeDetails) || !recipeDetails.isLinkDataInitialized()) {
 				new GetRecipeUrlDetails(recipeDetails, this).execute(params);
 			} else {
 				initLinkRecipeUi(recipeDetails);
 			}
 
 		}
-
-		initPreparationComments();
-
-		disableLockScreenAndTimeout();
-
 	}
 
 	private void disableLockScreenAndTimeout() {

@@ -187,8 +187,7 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 
 				return service.getCategories();
 			} catch (Exception e) {
-				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}

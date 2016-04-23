@@ -1,15 +1,13 @@
 package com.sage.tasks;
 
-import java.io.IOException;
+import android.app.Activity;
+import android.os.AsyncTask;
 
 import com.example.myfirstapp.ProgressDialogContainer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;
 import com.sage.utils.ActivityUtils;
-
-import android.app.Activity;
-import android.os.AsyncTask;
 
 public abstract class BaseDeleteCategoryTask extends AsyncTask<Object, Void, JsonElement> {
 
@@ -38,7 +36,7 @@ public abstract class BaseDeleteCategoryTask extends AsyncTask<Object, Void, Jso
 			return createAndExecuteService(categoryId, token, userName);
 		} catch (Exception e) {
 			container.dismissProgress();
-			ActivityUtils.HandleConnectionUnsuccessfullToServer(context);
+			ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 			return null;
 		}
 	}

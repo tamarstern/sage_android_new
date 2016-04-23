@@ -101,7 +101,7 @@ public class RegisterNewUserActivity extends Activity {
 						usernameEditText.getText().toString(), passwordEditText.getText().toString());
 			} catch (Exception e) {
 				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}

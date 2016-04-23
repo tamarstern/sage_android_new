@@ -17,6 +17,7 @@ import com.sage.application.UserCategoriesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
+import com.sage.entities.RecipeType;
 import com.sage.services.GetRecipiesForCategoryService;
 
 import java.util.ArrayList;
@@ -38,16 +39,16 @@ public class GetRecipesForCategoriesService extends IntentService {
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 
-            if(TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
+            if (TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
                 return;
             }
 
             ArrayList<RecipeCategory> categories = UserCategoriesContainer.getInstance().getCategories();
-            if(categories == null || categories.size() == 0) {
+            if (categories == null || categories.size() == 0) {
                 return;
             }
 
-            for(RecipeCategory category :  categories) {
+            for (RecipeCategory category : categories) {
                 initRecipesPerCategory(token, userName, category);
             }
 
@@ -65,7 +66,7 @@ public class GetRecipesForCategoriesService extends IntentService {
 
         JsonElement recipes = service.getRecipes();
 
-        if(recipes != null) {
+        if (recipes != null) {
             JsonArray resultJsonObject = recipes.getAsJsonArray();
 
             Gson gson = new GsonBuilder().create();
@@ -75,7 +76,11 @@ public class GetRecipesForCategoriesService extends IntentService {
                     }.getType());
 
             HashSet<RecipeDetails> recipesSetToSave = new HashSet<RecipeDetails>(recipesToSave);
-
+            for (RecipeDetails recipe : recipesSetToSave) {
+                if(recipe.getRecipeType().equals(RecipeType.LINK) && !TextUtils.isEmpty(recipe.getUrl())) {
+                    BackgroundServicesUtils.GetRecipeLinkDetails(token, userName, recipe);
+                }
+            }
             UserCategoriesContainer.getInstance().putRecipesForCategory(category, recipesSetToSave);
         }
     }

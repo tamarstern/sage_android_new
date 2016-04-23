@@ -32,7 +32,7 @@ public abstract class GetRecipeUrlDetailsTask extends AsyncTask<Object, Void, Js
 			GetRecipeUrlDetailsService service = new GetRecipeUrlDetailsService(url, token, userName);
 			return service.getUrlDetails();
 		} catch (Exception e) {
-			ActivityUtils.HandleConnectionUnsuccessfullToServer(context);
+			ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 			return null;
 		}
 	}
@@ -55,5 +55,9 @@ public abstract class GetRecipeUrlDetailsTask extends AsyncTask<Object, Void, Js
 
 	protected abstract void handleSuccess(JsonObject resultJsonObject);
 
-	protected abstract void handleFailure();
+
+	protected void handleFailure() {
+
+	}
+
 }

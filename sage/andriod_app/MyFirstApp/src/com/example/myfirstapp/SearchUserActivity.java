@@ -1,14 +1,5 @@
 package com.example.myfirstapp;
 
-import java.util.List;
-
-import com.google.gson.JsonElement;
-import com.sage.adapters.UsersArrayAdapter;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.User;
-import com.sage.services.SearchUsersService;
-import com.sage.tasks.BaseFetchUsersTask;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,7 +15,17 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.google.gson.JsonElement;
+import com.sage.adapters.UsersArrayAdapter;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.User;
+import com.sage.services.SearchUsersService;
+import com.sage.tasks.BaseFetchUsersTask;
+
+import java.util.List;
 
 public class SearchUserActivity extends AppCompatActivity {
 
@@ -38,12 +39,25 @@ public class SearchUserActivity extends AppCompatActivity {
 
 	private int pageNumber;
 
+	RelativeLayout failedToLoadPanel;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_user);
 
 		listView = (ListView) findViewById(android.R.id.list);
+
+		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
+		failedToLoadPanel.setVisibility(View.GONE);
+		failedToLoadPanel.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				failedToLoadPanel.setVisibility(View.GONE);
+				fetchUsers();
+			}
+		});
+
 
 		initSupportActionBar();
 
@@ -108,6 +122,11 @@ public class SearchUserActivity extends AppCompatActivity {
 
 	}
 
+	private void initListAdapter(List<User> users) {
+		UsersArrayAdapter adapter = new UsersArrayAdapter(this, users);
+		listView.setAdapter(adapter);
+	}
+
 	private class SearchUsersTask extends BaseFetchUsersTask {
 
 		private Activity activity;
@@ -134,14 +153,15 @@ public class SearchUserActivity extends AppCompatActivity {
 
 		@Override
 		protected void initializeUi(List<User> users) {
-			UsersArrayAdapter adapter = new UsersArrayAdapter(activity, users);
-			listView.setAdapter(adapter);
+			initListAdapter(users);
+
 
 		}
 
 		@Override
 		protected void performCustomActionsOnException() {
 			container.dismissProgress();
+			failedToLoadPanel.setVisibility(View.VISIBLE);
 
 		}
 

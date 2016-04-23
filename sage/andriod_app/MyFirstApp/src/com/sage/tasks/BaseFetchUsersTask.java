@@ -1,7 +1,7 @@
 package com.sage.tasks;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.app.Activity;
+import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,8 +13,8 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.utils.ActivityUtils;
 
-import android.app.Activity;
-import android.os.AsyncTask;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseFetchUsersTask extends AsyncTask<String, Void, JsonElement> {
 	
@@ -34,8 +34,7 @@ public abstract class BaseFetchUsersTask extends AsyncTask<String, Void, JsonEle
 			int pageNumber = Integer.valueOf(token[2]);
 			return createAndExecuteService(currentToken, secondParam, pageNumber);
 		} catch (Exception e) {
-			performCustomActionsOnException();		
-			ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+			ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 			return null;
 		}
 	}
@@ -46,10 +45,11 @@ public abstract class BaseFetchUsersTask extends AsyncTask<String, Void, JsonEle
 	protected abstract JsonElement createAndExecuteService(String currentToken, String secondParam, int pageNumber) throws Exception;	
 	@Override
 	protected void onPostExecute(JsonElement result) {
-		performCustomActionsOnPostExecute();
 		if (result == null) {
+			performCustomActionsOnException();
 			return;
 		}
+		performCustomActionsOnPostExecute();
 		JsonObject resultJsonObject = result.getAsJsonObject();
 
 		boolean foundResults = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();

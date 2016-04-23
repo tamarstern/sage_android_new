@@ -1,15 +1,6 @@
 package com.example.myfirstapp;
 
-import java.io.IOException;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.sage.constants.ActivityConstants;
-import com.sage.services.FindUserService;
-import com.sage.utils.ActivityUtils;
-
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,6 +9,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.sage.constants.ActivityConstants;
+import com.sage.services.FindUserService;
+import com.sage.utils.ActivityUtils;
 
 public class ForgotPasswordActivity extends Activity {
 
@@ -81,8 +78,7 @@ public class ForgotPasswordActivity extends Activity {
 				FindUserService service = new FindUserService(username);
 				return service.findUser();
 			} catch (Exception e) {
-				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}

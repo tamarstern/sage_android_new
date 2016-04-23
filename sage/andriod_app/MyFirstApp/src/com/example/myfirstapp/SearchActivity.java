@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
@@ -45,6 +46,8 @@ public class SearchActivity extends AppCompatActivity {
 	private ProgressBar progressBar;
 	private boolean afterStop;
 
+	private RelativeLayout failedToLoadPanel;
+
 
 	private int pageNumber = 0;
 	private int preLast = 0;
@@ -55,6 +58,17 @@ public class SearchActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
+
+		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
+		failedToLoadPanel.setVisibility(View.GONE);
+		failedToLoadPanel.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				failedToLoadPanel.setVisibility(View.GONE);
+				listView.setVisibility(View.VISIBLE);
+				getSearchRecipies();
+			}
+		});
 
 		View footer = getLayoutInflater().inflate(R.layout.progress_bar_footer, null);
 		progressBar = (ProgressBar) footer.findViewById(R.id.get_recipies_progress);
@@ -75,7 +89,6 @@ public class SearchActivity extends AppCompatActivity {
 
 	private void initListView() {
 		if (listView.getAdapter() == null) {
-
 			initListAdaptor();
 		}
 
@@ -168,6 +181,9 @@ public class SearchActivity extends AppCompatActivity {
 			Toast.makeText(this, R.string.did_not_enter_search_text, Toast.LENGTH_SHORT).show();
 			return;
 		}
+		if(pageNumber == 0) {
+			initListAdaptor();
+		}
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
@@ -205,11 +221,12 @@ public class SearchActivity extends AppCompatActivity {
 
 		@Override
 		protected void performCustomActionsOnException() {
-
 			loadingMore = false;
 			shouldIncreasePage = false;
 			if(pageNumber == 0) {
-				super.performCustomActionsOnPostExecute();
+				super.performCustomActionsOnException();
+				failedToLoadPanel.setVisibility(View.VISIBLE);
+				listView.setVisibility(View.GONE);
 			}else if (listView.getAdapter().getCount()-1 > 0) {
 				progressBar.setVisibility(View.GONE);
 			} else {

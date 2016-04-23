@@ -1,13 +1,13 @@
 package com.sage.tasks;
 
+import android.app.Activity;
+import android.os.AsyncTask;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;
 import com.sage.services.SaveNewLikeService;
 import com.sage.utils.ActivityUtils;
-
-import android.app.Activity;
-import android.os.AsyncTask;
 
 public abstract class AddLikeTask extends AsyncTask<Object, Void, JsonElement> {
 
@@ -33,7 +33,7 @@ public abstract class AddLikeTask extends AsyncTask<Object, Void, JsonElement> {
 			SaveNewLikeService service = new SaveNewLikeService(recipeId, token, userName,featuredRecipe, activity);
 			return service.saveLike();
 		} catch (Exception e) {
-			ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+			ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 			return null;
 		}
 	}

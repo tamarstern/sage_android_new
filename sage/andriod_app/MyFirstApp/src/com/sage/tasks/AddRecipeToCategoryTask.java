@@ -1,5 +1,8 @@
 package com.sage.tasks;
 
+import android.app.Activity;
+import android.os.AsyncTask;
+
 import com.example.myfirstapp.ProgressDialogContainer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -8,9 +11,6 @@ import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
 import com.sage.services.AddRecipeToCategoryService;
 import com.sage.utils.ActivityUtils;
-
-import android.app.Activity;
-import android.os.AsyncTask;
 
 public abstract class AddRecipeToCategoryTask extends AsyncTask<Object, Void, JsonElement> {
 
@@ -40,8 +40,7 @@ public abstract class AddRecipeToCategoryTask extends AsyncTask<Object, Void, Js
 					categoryToSave, token, userName, context);
 			return service.addRecipeToSubCategory();
 		} catch (Exception e) {
-			container.dismissProgress();
-			ActivityUtils.HandleConnectionUnsuccessfullToServer(context);
+			ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 			return null;
 		}
 	}

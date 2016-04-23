@@ -11,6 +11,7 @@ import com.example.myfirstapp.ProfilePageActivity;
 import com.example.myfirstapp.ProgressDialogContainer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.services.GetMyProfile;
@@ -48,20 +49,37 @@ public class ProfilePageHandler {
 
     public void HandleOpenProfilePage() {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String token = getTokenFromSharedPref();
 
-        String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-
-        String loggedInUserObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+        String loggedInUserObjectId = getUserObjectIdFromSharedPref();
 
         if(TextUtils.isEmpty(userId)) {
-            new GetMyProfileTask().execute(token, loggedInUserObjectId);
+            openProfilePageWithCacheInitialization(token, loggedInUserObjectId);
         } else if(!TextUtils.isEmpty(this.userObjectId) && this.userObjectId.equals(loggedInUserObjectId) ) {
-            new GetMyProfileTask().execute(token, loggedInUserObjectId);
+            openProfilePageWithCacheInitialization(token, loggedInUserObjectId);
         } else {
             new GetUserProfile(context).execute(token, loggedInUserObjectId, userObjectId);
         }
 
+    }
+
+    private String getUserObjectIdFromSharedPref() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+    }
+
+    private String getTokenFromSharedPref() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
+    }
+
+    private void openProfilePageWithCacheInitialization(String token, String loggedInUserObjectId) {
+        if(MyProfileRecipiesContainer.getInstance().hasCountForUser(loggedInUserObjectId)) {
+            String followedByCount = MyProfileRecipiesContainer.getInstance().getFollowedByCountForUser(loggedInUserObjectId);
+            openProfilePageActivity(followedByCount, false);
+        } else {
+            new GetMyProfileTask().execute(token, loggedInUserObjectId);
+        }
     }
 
     private void openProfilePageActivity(String followByCount, boolean isFollowing) {
@@ -72,6 +90,8 @@ public class ProfilePageHandler {
                 .putExtra(EntityDataTransferConstants.OPEN_USER_PROFILE, openUserProfile);
 
         if(followByCount != null) {
+            String userObjectIdFromSharedPref = getUserObjectIdFromSharedPref();
+            MyProfileRecipiesContainer.getInstance().setFollowByCountForUser(userObjectIdFromSharedPref, followByCount);
             intent.putExtra(EntityDataTransferConstants.FOLLOW_BY_COUNT, followByCount );
         }
         if(!openUserProfile) {
@@ -108,8 +128,7 @@ public class ProfilePageHandler {
 
                 return service.getProfile();
             } catch (Exception e) {
-                container.dismissProgress();
-                ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+                ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
                 return null;
             }
         }
@@ -157,9 +176,7 @@ public class ProfilePageHandler {
 
                 return service.getMyProfile();
             } catch (Exception e) {
-                container.dismissProgress();
-                ActivityUtils.HandleConnectionUnsuccessfullToServer(context);
-
+                ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
                 return null;
             }
 

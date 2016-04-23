@@ -151,8 +151,7 @@ public class SaveRecipeHandler {
                 return service.saveRecipe(recipeDetails, token, userName);
 
             } catch (Exception e) {
-                container.dismissProgress();
-                ActivityUtils.HandleConnectionUnsuccessfullToServer(context);
+                ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
                 return null;
             }
         }

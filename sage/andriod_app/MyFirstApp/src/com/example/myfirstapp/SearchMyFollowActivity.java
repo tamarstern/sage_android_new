@@ -1,14 +1,5 @@
 package com.example.myfirstapp;
 
-import java.util.List;
-
-import com.google.gson.JsonElement;
-import com.sage.adapters.UsersArrayAdapter;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.User;
-import com.sage.services.SearchFollowingService;
-import com.sage.tasks.BaseFetchUsersTask;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,7 +14,17 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.google.gson.JsonElement;
+import com.sage.adapters.UsersArrayAdapter;
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.User;
+import com.sage.services.SearchFollowingService;
+import com.sage.tasks.BaseFetchUsersTask;
+
+import java.util.List;
 
 public class SearchMyFollowActivity extends AppCompatActivity {
 
@@ -35,6 +36,7 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 	
 	private int pageNumber;
 
+	RelativeLayout failedToLoadPanel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,17 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_search_my_follow);
 
 		listView = (ListView) findViewById(android.R.id.list);
+
+		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
+		failedToLoadPanel.setVisibility(View.GONE);
+		failedToLoadPanel.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				failedToLoadPanel.setVisibility(View.GONE);
+				fetchUsers();
+			}
+		});
+
 
 		initSupportActionBar();
 
@@ -130,6 +143,7 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 		@Override
 		protected void performCustomActionsOnException() {
 			container.dismissProgress();
+			failedToLoadPanel.setVisibility(View.VISIBLE);
 
 		}
 

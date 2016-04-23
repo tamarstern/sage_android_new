@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sage.application.NewsfeedContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
+import com.sage.entities.RecipeType;
 import com.sage.services.GetNewsFeedRecipesForUser;
 
 import java.util.ArrayList;
@@ -57,6 +58,11 @@ public class GetNewsfeedRecipesService extends IntentService {
                     Gson gson = new GsonBuilder().create();
                     ArrayList<RecipeDetails> details = gson.fromJson(resultDataObject, new TypeToken<ArrayList<RecipeDetails>>() {
                     }.getType());
+                    for (RecipeDetails recipe : details) {
+                        if(recipe.getRecipeType().equals(RecipeType.LINK) && !TextUtils.isEmpty(recipe.getUrl())) {
+                            BackgroundServicesUtils.GetRecipeLinkDetails(token, userName, recipe);
+                        }
+                    }
                     NewsfeedContainer.getInstance().putRecipesForPage(i, details);
                 }
             }

@@ -1,15 +1,13 @@
 package com.sage.tasks;
 
-import java.io.IOException;
+import android.app.Activity;
+import android.os.AsyncTask;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;
 import com.sage.services.RemoveLikeService;
 import com.sage.utils.ActivityUtils;
-
-import android.app.Activity;
-import android.os.AsyncTask;
 
 public abstract class RemoveLikeTask extends AsyncTask<Object, Void, JsonElement> {
 
@@ -35,7 +33,7 @@ public abstract class RemoveLikeTask extends AsyncTask<Object, Void, JsonElement
 			RemoveLikeService service = new RemoveLikeService(recipeId, token, userName,featuredRecipe, activity);
 			return service.removeLike();
 		} catch (Exception e) {
-			ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+			ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 			return null;
 		}
 	}

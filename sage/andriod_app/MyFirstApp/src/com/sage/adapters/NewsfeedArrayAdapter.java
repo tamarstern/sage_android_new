@@ -464,9 +464,6 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 			if(getLinkDetailsProgress != null) {
 				getLinkDetailsProgress.setVisibility(View.GONE);
 			}
-			if(recipeMainPicture != null) {
-				recipeMainPicture.setVisibility(View.VISIBLE);
-			}
 		}
 	}
 

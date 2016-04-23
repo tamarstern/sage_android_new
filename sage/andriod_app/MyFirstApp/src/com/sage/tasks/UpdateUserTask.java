@@ -1,6 +1,7 @@
 package com.sage.tasks;
 
-import java.io.IOException;
+import android.app.Activity;
+import android.os.AsyncTask;
 
 import com.example.myfirstapp.ProgressDialogContainer;
 import com.google.gson.JsonElement;
@@ -8,9 +9,6 @@ import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;
 import com.sage.services.UpdateUserService;
 import com.sage.utils.ActivityUtils;
-
-import android.app.Activity;
-import android.os.AsyncTask;
 
 public abstract class UpdateUserTask extends AsyncTask<String, Void, JsonElement> {
 
@@ -46,8 +44,7 @@ public abstract class UpdateUserTask extends AsyncTask<String, Void, JsonElement
 			UpdateUserService service = new UpdateUserService(userName, password, userDisplayName, activity);
 			return service.updateUser();
 		} catch (Exception e) {
-			container.dismissProgress();
-			ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+			ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 			return null;
 		}
 	}

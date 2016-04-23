@@ -12,6 +12,8 @@ public class MyProfileRecipiesContainer {
 
     private ConcurrentHashMap<Integer, Object> profilePageMap = new ConcurrentHashMap<Integer, Object>();
 
+    private ConcurrentHashMap<String, String> profilePageFollowedByMap = new ConcurrentHashMap<String, String>();
+
     private static volatile MyProfileRecipiesContainer instance;
 
     private static final Object LOCK = new Object();
@@ -51,6 +53,21 @@ public class MyProfileRecipiesContainer {
             recipes.add(0, details);
             putRecipesForPage(0, recipes);
         }
+    }
+
+    public boolean hasCountForUser(String userId) {
+        return profilePageFollowedByMap.contains(userId);
+    }
+
+    public String getFollowedByCountForUser(String userId) {
+        if(profilePageFollowedByMap.contains(userId)) {
+            return profilePageFollowedByMap.get(userId);
+        }
+        return Integer.toString(0);
+    }
+
+    public void setFollowByCountForUser(String userId, String followedByCount) {
+        profilePageFollowedByMap.put(userId, followedByCount);
     }
 
 }

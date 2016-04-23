@@ -212,7 +212,7 @@ public class EditCategoryPopupHandler {
 
 			} catch (Exception e) {
 				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(context);
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}

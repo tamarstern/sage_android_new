@@ -182,8 +182,7 @@ public class AddCommentsClickListener implements OnClickListener {
 				return service.getComments();
 
 			} catch (Exception e) {
-				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}
@@ -245,8 +244,7 @@ public class AddCommentsClickListener implements OnClickListener {
 				return service.saveComment();
 
 			} catch (Exception e) {
-				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}

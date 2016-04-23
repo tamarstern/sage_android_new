@@ -107,8 +107,7 @@ public class DeletePopupClickListener implements OnClickListener {
 				return service.deleteRecipe();
 
 			} catch (Exception e) {
-				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(context);
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}

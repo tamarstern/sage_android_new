@@ -144,8 +144,7 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 
 				return service.getRecipes();
 			} catch (Exception e) {
-				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}

@@ -49,8 +49,7 @@ public abstract class GetRecipiesActivity<T extends RecipeDetails> extends Async
 			int pageNumber = (int) token[2];
 			return CreateAndExecuteService(currentToken, userName, pageNumber);
 		} catch (Exception e) {
-			performCustomActionsOnException();
-			ActivityUtils.HandleConnectionUnsuccessfullToServer(context);
+			ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 			return null;
 		}
 	}
@@ -64,11 +63,11 @@ public abstract class GetRecipiesActivity<T extends RecipeDetails> extends Async
 
 	@Override
 	protected void onPostExecute(JsonElement result) {
-		performCustomActionsOnPostExecute();
 		if (result == null) {
+			performCustomActionsOnException();
 			return;
 		}
-
+		performCustomActionsOnPostExecute();
 		JsonObject resultJsonObject = result.getAsJsonObject();
 
 		boolean recipiesFound = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();

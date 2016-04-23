@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -39,12 +40,25 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 
 	private ImageView searchImageView;
 
+	RelativeLayout failedToLoadPanel;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_my_recipes);
 
 		listView = (ListView) findViewById(android.R.id.list);
+
+		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
+		failedToLoadPanel.setVisibility(View.GONE);
+		failedToLoadPanel.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				failedToLoadPanel.setVisibility(View.GONE);
+				getSearchRecipies();
+			}
+		});
+
 
 		initSupportActionBar();
 
@@ -78,11 +92,18 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 
 	}
 
+	private void initListAdaptor(ArrayList<RecipeDetails> recipes) {
+		SubCategoriesArrayAdapter adapter = new SubCategoriesArrayAdapter(this, recipes);
+		listView.setAdapter(adapter);
+	}
+
+
 	private void getSearchRecipies() {
 		if (searchEditText.getEditableText() == null || TextUtils.isEmpty(searchEditText.getEditableText().toString())) {
 			Toast.makeText(this, R.string.did_not_enter_search_text, Toast.LENGTH_SHORT).show();
 			return;
 		}
+
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
@@ -118,8 +139,7 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 
 				return service.getRecipies();
 			} catch (Exception e) {
-				container.dismissProgress();
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(activity);
+				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
 				return null;
 			}
 		}
@@ -128,6 +148,7 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 		protected void onPostExecute(JsonElement result) {
 			container.dismissProgress();
 			if (result == null) {
+				failedToLoadPanel.setVisibility(View.VISIBLE);
 				return;
 			}
 			JsonObject resultJsonObject = result.getAsJsonObject();
@@ -144,13 +165,9 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 						new TypeToken<ArrayList<RecipeDetails>>() {
 						}.getType());
 
-
-				SubCategoriesArrayAdapter adapter = new SubCategoriesArrayAdapter(activity, recipes);
-				listView.setAdapter(adapter);
+				initListAdaptor(recipes);
 			}
-
 		}
-
 	}
 
 }

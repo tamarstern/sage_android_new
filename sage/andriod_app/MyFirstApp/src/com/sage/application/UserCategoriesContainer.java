@@ -46,6 +46,10 @@ public class UserCategoriesContainer {
 
     public ArrayList<RecipeCategory> getCategories() {
         HashSet<RecipeCategory> categories = (HashSet<RecipeCategory>) this.categoriesMap.get(CATEGORIES_KEY);
+        if(categories == null) {
+            categories = new HashSet<RecipeCategory>();
+            putCategories(categories);
+        }
         return new ArrayList<RecipeCategory>(categories);
     }
 
