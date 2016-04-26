@@ -2,7 +2,6 @@ package com.sage.listeners;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -24,6 +23,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.application.MyProfileRecipiesContainer;
+import com.sage.application.NewsfeedContainer;
+import com.sage.application.RecipeImageContainer;
 import com.sage.application.UserCategoriesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.constants.ImageType;
@@ -170,20 +171,23 @@ public class SaveRecipeHandler {
                 Gson gson = new Gson();
                 JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
                 RecipeDetails recipeDetails = ServicesUtils.createRecipeDetailsFromResponse(gson, dataElement);
-                MyProfileRecipiesContainer.getInstance().addRecipe(recipeDetails);
-                String recipeId = recipeDetails.get_id();
+                ActivityUtils.updateRecipeUserTouchUps(recipeDetails, context, true);
                 if (isNewRecipe) {
+                    MyProfileRecipiesContainer.getInstance().addRecipe(recipeDetails);
                     if (category == null) {
                         ActivityUtils.openCategoriesPage(recipeDetails, context);
                     } else {
                         attachRecipeToCategory(recipeDetails);
                     }
                 } else {
+                    UserCategoriesContainer.getInstance().
+                            updateRecipeForCategoryInCache(recipeDetails, null, recipeDetails.getCategoryId());
+                    MyProfileRecipiesContainer.getInstance().updateRecipeInProfile(recipeDetails);
                     NavigationUtils.openNewsfeed(context);
 
                 }
-                saveRecipeImage(recipeId);
-
+                NewsfeedContainer.getInstance().addRecipe(recipeDetails);
+                saveRecipeImage(recipeDetails);
             }
 
         }
@@ -195,23 +199,21 @@ public class SaveRecipeHandler {
             new AddToCategoryTask(category).execute(params);
         }
 
-        private void saveRecipeImage(String recipeId) {
+        private void saveRecipeImage(RecipeDetails recipe) {
             Bitmap recipeMainImage = this.recipeDetails.getImage();
             if (recipeMainImage != null) {
-                Object[] mainImageParams = new Object[]{recipeMainImage, token, recipeId,
-                        context.getFilesDir().getPath().toString() + File.separator + recipeId,
-                        ImageType.RECIPE_PICTURE};
-                new SetRecipeImageTask().execute(mainImageParams);
+                Object[] mainImageParams = new Object[]{recipeMainImage, token,
+                        context.getFilesDir().getPath().toString() + File.separator + recipe.get_id()};
+                new SetRecipeImageTask(ImageType.RECIPE_PICTURE, recipe).execute(mainImageParams);
             }
             if (!(this.recipeDetails.getRecipeType().equals(RecipeType.PICTURE))) {
                 return;
             }
             Bitmap recipeAsPictureImage = (this.recipeDetails).getRecipeAsPictureImage();
             if (recipeAsPictureImage != null) {
-                Object[] recipePictureParams = new Object[]{recipeAsPictureImage, token, recipeId,
-                        context.getFilesDir().getPath().toString() + File.separator + recipeId,
-                        ImageType.IMAGE_RECIPE_PICTURE};
-                new SetRecipeImageTask().execute(recipePictureParams);
+                Object[] recipePictureParams = new Object[]{recipeAsPictureImage, token,
+                        context.getFilesDir().getPath().toString() + File.separator + recipe.get_id()};
+                new SetRecipeImageTask(ImageType.IMAGE_RECIPE_PICTURE, recipe).execute(recipePictureParams);
             }
         }
 
@@ -239,19 +241,42 @@ public class SaveRecipeHandler {
     }
 
     private class SetRecipeImageTask extends AsyncTask<Object, Void, JsonElement> {
-        private Context context;
+
+        private ImageType type;
+        private RecipeDetails details;
+
+        public SetRecipeImageTask(ImageType type, RecipeDetails details) {
+            this.type = type;
+            this.details = details;
+        }
 
         @Override
         protected JsonElement doInBackground(Object... params) {
             Bitmap bitmap = (Bitmap) params[0];
             String token = (String) params[1];
-            String recipeId = (String) params[2];
-            String path = (String) params[3];
-            ImageType type = (ImageType) params[4];
-            PostRecipeImage service = new PostRecipeImage(bitmap, token, recipeId, path, type);
+            String path = (String) params[2];
+            PostRecipeImage service = new PostRecipeImage(bitmap, token, details.get_id(), path, this.type);
             return service.sendImage();
         }
 
+        @Override
+        protected void onPostExecute(JsonElement result) {
+            if (result == null) {
+                return;
+            }
+            JsonObject resultJsonObject = result.getAsJsonObject();
+            boolean saveSucceed = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
+            if (saveSucceed) {
+                String recipeImageId = resultJsonObject.get(ActivityConstants.MESSAGE_ELEMENT_NAME).getAsString();
+                if(!TextUtils.isEmpty(recipeImageId)) {
+                    if(type.equals(ImageType.RECIPE_PICTURE)) {
+                        RecipeImageContainer.getInstance().putRecipeMainPicture(this.details, recipeImageId);
+                    } else if(type.equals(ImageType.IMAGE_RECIPE_PICTURE)) {
+                        RecipeImageContainer.getInstance().putRecipeAsPicture(this.details, recipeImageId);
+                    }
+                }
+            }
+        }
     }
 
 }

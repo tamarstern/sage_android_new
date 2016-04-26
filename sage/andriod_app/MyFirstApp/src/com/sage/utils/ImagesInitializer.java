@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,14 +29,19 @@ public class ImagesInitializer {
 			imageView.setVisibility(View.VISIBLE);
 			// use default picture
 		} else {
-			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-			String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-			String url = MessageFormat.format(ServicesConstants.PICTURE_URL, pictureID,imageType, token);
+			String url = getUrl(context, pictureID, imageType);
 			initImage(context, imageView, url);
 			imageView.setVisibility(View.VISIBLE);
 
 		}
 
+	}
+
+	@NonNull
+	public static String getUrl(Context context, String pictureID, ImageType imageType) {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
+		return MessageFormat.format(ServicesConstants.PICTURE_URL, pictureID, imageType, token);
 	}
 
 	public static void initImage(final Context context, final ImageView imageView, final String url) {

@@ -12,8 +12,10 @@ import com.example.myfirstapp.ProgressDialogContainer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.application.MyProfileRecipiesContainer;
+import com.sage.application.UserFollowingContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.User;
 import com.sage.services.GetMyProfile;
 import com.sage.services.GetProfileById;
 import com.sage.utils.ActivityUtils;
@@ -58,9 +60,24 @@ public class ProfilePageHandler {
         } else if(!TextUtils.isEmpty(this.userObjectId) && this.userObjectId.equals(loggedInUserObjectId) ) {
             openProfilePageWithCacheInitialization(token, loggedInUserObjectId);
         } else {
-            new GetUserProfile(context).execute(token, loggedInUserObjectId, userObjectId);
+            openOtherUserProfile(token, loggedInUserObjectId);
         }
 
+    }
+
+    private void openOtherUserProfile(String token, String loggedInUserObjectId) {
+        if(UserFollowingContainer.getInstance().followingInitialized()) {
+            openProfilePageWithCacheData();
+        } else {
+            new GetUserProfile(context).execute(token, loggedInUserObjectId, userObjectId);
+        }
+    }
+
+    private void openProfilePageWithCacheData() {
+        User userToFollow = new User();
+        userToFollow.set_id(userObjectId);
+        boolean isFollowing = UserFollowingContainer.getInstance().isFollowing(userToFollow);
+        openProfilePageActivity(null, isFollowing);
     }
 
     private String getUserObjectIdFromSharedPref() {
@@ -74,7 +91,8 @@ public class ProfilePageHandler {
     }
 
     private void openProfilePageWithCacheInitialization(String token, String loggedInUserObjectId) {
-        if(MyProfileRecipiesContainer.getInstance().hasCountForUser(loggedInUserObjectId)) {
+        boolean canInitFromCache = MyProfileRecipiesContainer.getInstance().hasCountForUser(loggedInUserObjectId);
+        if(canInitFromCache) {
             String followedByCount = MyProfileRecipiesContainer.getInstance().getFollowedByCountForUser(loggedInUserObjectId);
             openProfilePageActivity(followedByCount, false);
         } else {

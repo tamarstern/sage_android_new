@@ -47,6 +47,19 @@ public class MyProfileRecipiesContainer {
         this.profilePageMap.put(pageNumber, new ArrayList<RecipeDetails>(details));
     }
 
+    public void updateRecipeInProfile(RecipeDetails recipeDetails) {
+        if(!recipeDetails.isPublished()) {
+            for(Integer key : profilePageMap.keySet()) {
+                ArrayList<RecipeDetails> recipes = getRecipesByPage(key);
+                recipes.remove(recipeDetails);
+                putRecipesForPage(key, recipes);
+            }
+        } else {
+            addRecipe(recipeDetails);
+        }
+    }
+
+
     public void addRecipe(RecipeDetails details) {
         if(details.isPublished()) {
             ArrayList<RecipeDetails> recipes = getRecipesByPage(0);
@@ -56,7 +69,7 @@ public class MyProfileRecipiesContainer {
     }
 
     public boolean hasCountForUser(String userId) {
-        return profilePageFollowedByMap.contains(userId);
+        return profilePageFollowedByMap.containsKey(userId);
     }
 
     public String getFollowedByCountForUser(String userId) {
@@ -69,5 +82,6 @@ public class MyProfileRecipiesContainer {
     public void setFollowByCountForUser(String userId, String followedByCount) {
         profilePageFollowedByMap.put(userId, followedByCount);
     }
+
 
 }

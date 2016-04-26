@@ -48,21 +48,25 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 
 	private void fetchUsers() {
 
-		if(UserFollowingContainer.getInstance().followingInitialized()) {
+		Intent intent = getIntent();
+		String userName = (String) intent.getSerializableExtra(ActivityConstants.USER_OBJECT_ID);
+
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		String loggedInUserObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+
+		boolean isLoggedInUser = userName.equals(loggedInUserObjectId);
+
+		if(isLoggedInUser && UserFollowingContainer.getInstance().followingInitialized()) {
 			ArrayList<User> users = UserFollowingContainer.getInstance().getUsers();
 			initAdapter(users);
 			return;
 		}
 
-
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-		Intent intent = getIntent();
-		String userName = (String) intent.getSerializableExtra(ActivityConstants.USER_OBJECT_ID);
 
 		String[] params = new String[] { token, userName, Integer.toString(pageNumber) };
 
-		new GetFollowingTask(this).execute(params);
+		new GetFollowingTask(isLoggedInUser,this).execute(params);
 	}
 
 	private void initSupportActionBar() {
@@ -94,11 +98,13 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 
 		private Activity activity;
 		private ProgressDialogContainer container;
+		private boolean isLoggedInUser;
 
-		public GetFollowingTask(Activity activity) {
+		public GetFollowingTask(boolean isLoggedInUser, Activity activity) {
 			super(activity);
 			this.activity = activity;
 			container = new ProgressDialogContainer(activity);
+			this.isLoggedInUser = isLoggedInUser;
 		}
 
 		@Override
@@ -117,8 +123,9 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 		@Override
 		protected void initializeUi(List<User> users) {
 			initAdapter(users);
-
-			UserFollowingContainer.getInstance().putUsers(new ArrayList<User>(users));
+			if(isLoggedInUser) {
+				UserFollowingContainer.getInstance().putUsers(new ArrayList<User>(users));
+			}
 
 		}
 

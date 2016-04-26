@@ -19,6 +19,7 @@ public class ActivityConstants {
 	public static final String URL_DESCRIPTION_ELEMENT_NAME = "linkDescription";
 	public static final String URL_IMAGE_ELEMENT_NAME = "linkImageUrl";
 	public static final String URL_SITE_ELEMENT_NAME = "linkSiteName";
+	public static final String MESSAGE_ELEMENT_NAME = "message";
 	
 	
 	

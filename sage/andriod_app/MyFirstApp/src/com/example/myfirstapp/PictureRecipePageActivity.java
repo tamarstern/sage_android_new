@@ -176,7 +176,8 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		if(EntityUtils.isNewRecipe(recipeDetails)) {
 			return;
 		}
-		String pictureID = this.recipeDetails.getImageRecipe_pictureId();
+		String pictureID = ActivityUtils.getRecipeImagePicture(recipeDetails);
+
 		if (!TextUtils.isEmpty(pictureID)) {
 			ImagesInitializer.initialRecipeImage(this, pictureID, imageView, imageType);
 		}

@@ -12,6 +12,8 @@ public class NewsfeedContainer {
 
     private ConcurrentHashMap<Integer, Object> newsfeedMap = new ConcurrentHashMap<Integer, Object>();
 
+    private ConcurrentHashMap<String, Object> newsfeedUsersMap = new ConcurrentHashMap<String, Object>();
+
     private static volatile NewsfeedContainer instance;
 
     private static final Object LOCK = new Object();
@@ -48,10 +50,21 @@ public class NewsfeedContainer {
     public void addRecipe(RecipeDetails details) {
         if(details.isPublished()) {
             ArrayList<RecipeDetails> recipes = getRecipesByPage(0);
+            if(recipes.contains(details)) {
+                recipes.remove(details);
+            }
             recipes.add(0, details);
             putRecipesForPage(0, recipes);
         }
     }
 
+    public void addNewsfeedRecipesForUser(String userId, ArrayList<RecipeDetails> newsfeedRecipes) {
+        this.newsfeedUsersMap.put(userId, newsfeedRecipes);
+    }
+
+    public ArrayList<RecipeDetails> getRecipesForUser(String userId) {
+        ArrayList<RecipeDetails> details = (ArrayList<RecipeDetails>)newsfeedUsersMap.get(userId);
+        return details;
+    }
 
 }

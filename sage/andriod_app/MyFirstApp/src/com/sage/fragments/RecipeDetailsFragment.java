@@ -24,6 +24,7 @@ import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
+import com.sage.utils.ActivityUtils;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ImageSelectorUtils;
 import com.sage.utils.ImagesInitializer;
@@ -179,7 +180,7 @@ public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusCha
 	private void initMainRecipePicture() {
 		if(!EntityUtils.isNewRecipe(recipeDetails)) {
 			ImageView mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
-			String pictureID = recipeDetails.getPictureId();
+			String pictureID = ActivityUtils.getRecipeMainPicture(recipeDetails);
 
 			ImagesInitializer.initialRecipeImage(this.getActivity(), pictureID, mainPicture, ImageType.RECIPE_PICTURE);
 		}

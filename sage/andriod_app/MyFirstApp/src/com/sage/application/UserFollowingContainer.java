@@ -39,6 +39,11 @@ public class UserFollowingContainer {
         return instance;
     }
 
+    public boolean isFollowing(User user) {
+        ArrayList<User> users = getUsers();
+        return users.contains(user);
+    }
+
     public void putUsers(ArrayList<User> users) {
         HashSet<User> categoriesSet = new HashSet<User>(users);
         this.usersMap.put(FOLLOWING_KEY, categoriesSet);

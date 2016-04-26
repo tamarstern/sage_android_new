@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myfirstapp.R;
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.activity.interfaces.IClosePopupCommentListener;
@@ -172,6 +171,11 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 			public void onClick(View v) {
 				AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.ADD_LIKE_NEWSFEED_PAGE);
 
+				recipeUserBasicData.setLikes_count(recipeUserBasicData.getLikes_count() + 1);
+				recipeUserBasicData.setUserLikeRecipe(true);
+				details.set(position, recipeUserBasicData);
+				notifyDataSetChanged();
+
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(context,
 						recipeUserBasicData.get_id());
 				new AddLikeAdaptorTask(position, recipeUserBasicData.isFeaturedRecipe()).execute(params);
@@ -185,6 +189,11 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 			@Override
 			public void onClick(View v) {
 
+				recipeUserBasicData.setLikes_count(recipeUserBasicData.getLikes_count()+1);
+				recipeUserBasicData.setUserLikeRecipe(false);
+				details.set(position, recipeUserBasicData);
+				notifyDataSetChanged();
+
 
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(context,
 						recipeUserBasicData.get_id());
@@ -194,8 +203,8 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 	}
 
 	private void initRecipeMainPicture(final RecipeDetails recipeUserBasicData) {
-
-		ImagesInitializer.initialRecipeImage(getContext(), recipeUserBasicData.getPictureId(), recipeMainPicture,
+		String pictureID = ActivityUtils.getRecipeMainPicture(recipeUserBasicData);
+		ImagesInitializer.initialRecipeImage(getContext(), pictureID, recipeMainPicture,
 				ImageType.IMAGE_RECIPE_PICTURE);
 		getLinkDetailsProgress.setVisibility(View.GONE);
 
@@ -378,15 +387,15 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 
 		@Override
 		protected void handleSuccess(JsonObject resultJsonObject) {
-			Gson gson = new Gson();
+		//	Gson gson = new Gson();
 
-			JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
+//			JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
+//
+//			RecipeDetails recipeData = gson.fromJson(dataElement, RecipeDetails.class);
 
-			RecipeDetails recipeData = gson.fromJson(dataElement, RecipeDetails.class);
+//			details.set(position, recipeData);
 
-			details.set(position, recipeData);
-
-			notifyDataSetChanged();
+//			notifyDataSetChanged();
 		}
 
 	}
@@ -403,15 +412,15 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 
 		@Override
 		public void handleSuccess(JsonObject resultJsonObject) {
-			Gson gson = new Gson();
+//			Gson gson = new Gson();
 
-			JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
+//			JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
+//
+//			RecipeDetails recipeData = gson.fromJson(dataElement, RecipeDetails.class);
 
-			RecipeDetails recipeData = gson.fromJson(dataElement, RecipeDetails.class);
+//			details.set(position, recipeData);
 
-			details.set(position, recipeData);
-
-			notifyDataSetChanged();
+//			notifyDataSetChanged();
 		}
 
 	}

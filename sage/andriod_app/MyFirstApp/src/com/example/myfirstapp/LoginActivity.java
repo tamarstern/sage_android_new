@@ -99,27 +99,17 @@ public class LoginActivity extends Activity {
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
 				AlarmManager.INTERVAL_FIFTEEN_MINUTES, categoriesPIntent);
 
-
 		Intent profileRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
 		final PendingIntent profileRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
 				profileRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
 				AlarmManager.INTERVAL_FIFTEEN_MINUTES, profileRecipiesPIntent);
 
-
-		Intent newsfeedRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
-		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
-				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				10*60*1000, newsfeedRecipiesPIntent);
-
-
 		Intent followingIntent = new Intent(getApplicationContext(), GetFollowingReceiver.class);
 		final PendingIntent followingPIntent = PendingIntent.getBroadcast(this, GetFollowingReceiver.REQUEST_CODE,
 				followingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
 				AlarmManager.INTERVAL_FIFTEEN_MINUTES, followingPIntent);
-
 
 		Intent syncFollowingIntent = new Intent(getApplicationContext(), SyncFollowUsersReceiver.class);
 		final PendingIntent syncFollowingPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
@@ -132,6 +122,19 @@ public class LoginActivity extends Activity {
 				recipesForCategoryIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
 				AlarmManager.INTERVAL_FIFTEEN_MINUTES, recipesForCategoryPIntent);
+
+		Intent newsfeedRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
+		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
+				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				10*60*1000, newsfeedRecipiesPIntent);
+
+		Intent profileRecipiesForFollowingIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
+		final PendingIntent profileRecipiesForFollowingPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
+				profileRecipiesForFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis + 5*60*10,
+				30*60*1000, profileRecipiesForFollowingPIntent);
+
 
 
 	}

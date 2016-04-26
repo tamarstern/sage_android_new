@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;
 import com.sage.application.MyProfileRecipiesContainer;
+import com.sage.application.NewsfeedContainer;
 import com.sage.application.UserFollowingContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
@@ -218,10 +219,24 @@ public class ProfilePageActivity extends AppCompatActivity {
 				return;
 			}
 		}
+		if(!currentUserProfile && pageNumber == 0) {
+			Intent i = getIntent();
+			String recipeAuthor = (String) i.getSerializableExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER);
+			ArrayList<RecipeDetails> recipesForUser = NewsfeedContainer.getInstance().getRecipesForUser(recipeAuthor);
+			if(recipesForUser != null && recipesForUser.size() > 0 ) {
+				initAdaptor(recipesForUser);
+				pageNumber +=1;
+				return;
+			}
+		}
+		initRecipiesForUser();
+	}
+
+	private void initRecipiesForUser() {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-		Intent i = getIntent();
 		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+		Intent i = getIntent();
 		String recipeAuthor = (String) i.getSerializableExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER);
 		recipeAuthor = TextUtils.isEmpty(recipeAuthor) ? userName : recipeAuthor;
 		new GetRecipiesTask<RecipeDetails>(this, recipeAuthor).execute(token, userName, pageNumber);
@@ -353,6 +368,9 @@ public class ProfilePageActivity extends AppCompatActivity {
 			if (details != null) {
 				if((pageNumber == 0 || pageNumber ==1) && currentUserProfile) {
 					MyProfileRecipiesContainer.getInstance().putRecipesForPage(pageNumber, details);
+				}
+				if(!currentUserProfile && pageNumber == 0) {
+					NewsfeedContainer.getInstance().addNewsfeedRecipesForUser(recipeAuthor, details);
 				}
 
 				initAdaptor(details);

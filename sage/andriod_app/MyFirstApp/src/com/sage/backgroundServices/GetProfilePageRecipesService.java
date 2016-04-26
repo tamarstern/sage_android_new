@@ -8,18 +8,12 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipeType;
 import com.sage.services.GetMyProfile;
-import com.sage.services.GetPublishedRecipesForUser;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -75,25 +69,12 @@ public class GetProfilePageRecipesService extends IntentService {
 
     private void initProfilePageRecipies(String token, String userName) throws Exception {
         for (int i = 0; i < 2; i++) {
-            GetPublishedRecipesForUser service = new GetPublishedRecipesForUser(token, userName, userName,
-                    i);
-            JsonElement recipies = service.getRecipies();
-            JsonObject recipiesAsJsonObject = recipies.getAsJsonObject();
-            boolean recipiesFound = recipiesAsJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
-
-            if (recipiesFound) {
-                JsonElement dataElement = recipiesAsJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME);
-                JsonArray resultDataObject = dataElement.getAsJsonArray();
-                Gson gson = new GsonBuilder().create();
-                ArrayList<RecipeDetails> details = gson.fromJson(resultDataObject, new TypeToken<ArrayList<RecipeDetails>>() {
-                }.getType());
-                for (RecipeDetails recipe : details) {
-                    if (recipe.getRecipeType().equals(RecipeType.LINK) && !TextUtils.isEmpty(recipe.getUrl())) {
-                        BackgroundServicesUtils.GetRecipeLinkDetails(token, userName, recipe);
-                    }
-                }
+            ArrayList<RecipeDetails> details = BackgroundServicesUtils.getProfilePageRecipiesForPage(token, userName, i);
+            if(details != null) {
                 MyProfileRecipiesContainer.getInstance().putRecipesForPage(i, details);
             }
         }
     }
+
+
 }
