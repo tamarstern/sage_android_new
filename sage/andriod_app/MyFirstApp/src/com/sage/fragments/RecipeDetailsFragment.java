@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import com.example.myfirstapp.DisplayImageActivity;
 import com.example.myfirstapp.R;
 import com.sage.activity.interfaces.IOnWindowFocusChanged;
-import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
@@ -108,7 +107,8 @@ public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusCha
 	private void initRecipeUi( final Activity activity) {
 		if (!EntityUtils.isNewRecipe(recipeDetails)) {
 			initRecipeContentForNonNewRecipes();
-			if (TextUtils.isEmpty(recipeDetails.getPictureId())) {
+			String recipeMainPictureId = ActivityUtils.getRecipeMainPictureId(recipeDetails);
+			if (TextUtils.isEmpty(recipeMainPictureId)) {
 				if (!EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), activity)) {
 					addImageButton.setVisibility(View.GONE);
 					mainPicture.setVisibility(View.VISIBLE);
@@ -180,9 +180,7 @@ public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusCha
 	private void initMainRecipePicture() {
 		if(!EntityUtils.isNewRecipe(recipeDetails)) {
 			ImageView mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
-			String pictureID = ActivityUtils.getRecipeMainPicture(recipeDetails);
-
-			ImagesInitializer.initialRecipeImage(this.getActivity(), pictureID, mainPicture, ImageType.RECIPE_PICTURE);
+			ImagesInitializer.initRecipeMainPicture(mainPicture, recipeDetails, getActivity());
 		}
 
 	}

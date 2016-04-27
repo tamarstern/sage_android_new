@@ -20,7 +20,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.activity.interfaces.IClosePopupCommentListener;
 import com.sage.constants.ActivityConstants;
-import com.sage.constants.ImageType;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
 import com.sage.listeners.AddCommentsClickListener;
@@ -189,11 +188,10 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 			@Override
 			public void onClick(View v) {
 
-				recipeUserBasicData.setLikes_count(recipeUserBasicData.getLikes_count()+1);
+				recipeUserBasicData.setLikes_count(recipeUserBasicData.getLikes_count()-1);
 				recipeUserBasicData.setUserLikeRecipe(false);
 				details.set(position, recipeUserBasicData);
 				notifyDataSetChanged();
-
 
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(context,
 						recipeUserBasicData.get_id());
@@ -203,9 +201,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 	}
 
 	private void initRecipeMainPicture(final RecipeDetails recipeUserBasicData) {
-		String pictureID = ActivityUtils.getRecipeMainPicture(recipeUserBasicData);
-		ImagesInitializer.initialRecipeImage(getContext(), pictureID, recipeMainPicture,
-				ImageType.IMAGE_RECIPE_PICTURE);
+		ImagesInitializer.initRecipeMainPicture(recipeMainPicture, recipeUserBasicData, context);
 		getLinkDetailsProgress.setVisibility(View.GONE);
 
 	}

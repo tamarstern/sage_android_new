@@ -1,6 +1,9 @@
 package com.sage.application;
 
+import android.graphics.Bitmap;
+
 import com.sage.entities.RecipeDetails;
+import com.sage.utils.CachedMap;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +20,9 @@ public class RecipeImageContainer {
 
     private ConcurrentHashMap<RecipeDetails, String> recipeAsPictureMap = new ConcurrentHashMap<RecipeDetails, String>();
 
+    private CachedMap<String, Bitmap> mainImageMap = new CachedMap<String, Bitmap>(10);
+
+    private CachedMap<String, Bitmap> imageRecipeMap = new CachedMap<String, Bitmap>(10);
 
 
     private RecipeImageContainer() {
@@ -48,6 +54,22 @@ public class RecipeImageContainer {
 
     public String getRecipeAsPictureId(RecipeDetails details) {
         return recipeAsPictureMap.get(details);
+    }
+
+    public void putMainImageForRecipe(String recipeId, Bitmap image) {
+        this.mainImageMap.put(recipeId, image);
+    }
+
+    public Bitmap getMainImageForRecipe(String recipeId) {
+        return this.mainImageMap.get(recipeId);
+    }
+
+    public void putRecipeImageForRecipe(String recipeId, Bitmap image) {
+        this.imageRecipeMap.put(recipeId, image);
+    }
+
+    public Bitmap getRecipeImageForRecipe(String recipeId) {
+        return this.imageRecipeMap.get(recipeId);
     }
 
 

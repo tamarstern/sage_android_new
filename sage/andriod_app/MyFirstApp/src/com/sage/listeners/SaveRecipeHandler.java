@@ -202,18 +202,19 @@ public class SaveRecipeHandler {
         private void saveRecipeImage(RecipeDetails recipe) {
             Bitmap recipeMainImage = this.recipeDetails.getImage();
             if (recipeMainImage != null) {
-                Object[] mainImageParams = new Object[]{recipeMainImage, token,
+                Object[] mainImageParams = new Object[]{ token,
                         context.getFilesDir().getPath().toString() + File.separator + recipe.get_id()};
-                new SetRecipeImageTask(ImageType.RECIPE_PICTURE, recipe).execute(mainImageParams);
+                new SetRecipeImageTask(ImageType.RECIPE_PICTURE, recipe, recipeMainImage).execute(mainImageParams);
             }
             if (!(this.recipeDetails.getRecipeType().equals(RecipeType.PICTURE))) {
                 return;
             }
             Bitmap recipeAsPictureImage = (this.recipeDetails).getRecipeAsPictureImage();
             if (recipeAsPictureImage != null) {
-                Object[] recipePictureParams = new Object[]{recipeAsPictureImage, token,
+                Object[] recipePictureParams = new Object[]{token,
                         context.getFilesDir().getPath().toString() + File.separator + recipe.get_id()};
-                new SetRecipeImageTask(ImageType.IMAGE_RECIPE_PICTURE, recipe).execute(recipePictureParams);
+                new SetRecipeImageTask(ImageType.IMAGE_RECIPE_PICTURE, recipe, recipeAsPictureImage)
+                        .execute(recipePictureParams);
             }
         }
 
@@ -244,17 +245,27 @@ public class SaveRecipeHandler {
 
         private ImageType type;
         private RecipeDetails details;
+        private Bitmap bitmap;
 
-        public SetRecipeImageTask(ImageType type, RecipeDetails details) {
+        public SetRecipeImageTask(ImageType type, RecipeDetails details, Bitmap bitmap) {
             this.type = type;
             this.details = details;
+            this.bitmap = bitmap;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            if(type.equals(ImageType.RECIPE_PICTURE)) {
+                RecipeImageContainer.getInstance().putMainImageForRecipe(details.get_id(), bitmap);
+            } else if (type.equals(ImageType.IMAGE_RECIPE_PICTURE)) {
+                RecipeImageContainer.getInstance().putRecipeImageForRecipe(details.get_id(), bitmap);
+            }
         }
 
         @Override
         protected JsonElement doInBackground(Object... params) {
-            Bitmap bitmap = (Bitmap) params[0];
-            String token = (String) params[1];
-            String path = (String) params[2];
+            String token = (String) params[0];
+            String path = (String) params[1];
             PostRecipeImage service = new PostRecipeImage(bitmap, token, details.get_id(), path, this.type);
             return service.sendImage();
         }

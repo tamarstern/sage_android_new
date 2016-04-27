@@ -141,7 +141,7 @@ public class ActivityUtils {
         return params;
     }
 
-    public static String getRecipeImagePicture(RecipeDetails recipeDetails) {
+    public static String getRecipeImagePictureId(RecipeDetails recipeDetails) {
         String recipeAsPictureId = RecipeImageContainer.getInstance().getRecipeAsPictureId(recipeDetails);
         if (!TextUtils.isEmpty(recipeAsPictureId)) {
             return recipeAsPictureId;
@@ -168,13 +168,14 @@ public class ActivityUtils {
         }
     }
 
-    public static String getRecipeMainPicture(RecipeDetails recipeDetails) {
+    public static String getRecipeMainPictureId(RecipeDetails recipeDetails) {
         String recipePictureId = RecipeImageContainer.getInstance().getRecipeMainPictureId(recipeDetails);
         if (!TextUtils.isEmpty(recipePictureId)) {
             return recipePictureId;
         }
         return recipeDetails.getPictureId();
     }
+
 
 
     public static void handleExitWithoutSavingPopup(Activity context) {

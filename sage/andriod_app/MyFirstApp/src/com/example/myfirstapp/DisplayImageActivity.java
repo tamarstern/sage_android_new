@@ -10,11 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
-import com.sage.utils.ActivityUtils;
 import com.sage.utils.ImagesInitializer;
 
 public class DisplayImageActivity extends Activity implements View.OnTouchListener {
@@ -63,13 +61,13 @@ public class DisplayImageActivity extends Activity implements View.OnTouchListen
     private void initImage(Intent intent, ImageView image, RecipeType type) {
         RecipeDetails details = (RecipeDetails)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
         if(type.equals(RecipeType.PICTURE)) {
-            String id = ActivityUtils.getRecipeImagePicture(details);
-            ImagesInitializer.initialRecipeImage(this, id, image, ImageType.IMAGE_RECIPE_PICTURE);
+            ImagesInitializer.initImageViewForRecipePicture(image, details, this);
+
         } else {
-            String id = ActivityUtils.getRecipeMainPicture(details);
-            ImagesInitializer.initialRecipeImage(this,id, image, ImageType.RECIPE_PICTURE);
+            ImagesInitializer.initRecipeMainPicture(image, details, this);
         }
     }
+
 
 
     @Override

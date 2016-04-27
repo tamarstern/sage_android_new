@@ -14,6 +14,7 @@ import com.sage.application.UserFollowingContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.FollowUserService;
+import com.sage.services.UnfollowUserService;
 
 import java.util.HashSet;
 
@@ -30,7 +31,7 @@ public class SyncFollowAndUnfollowUsers extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
-
+            Log.i("syncFollow", "start sync follow backgroundService");
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
@@ -75,8 +76,8 @@ public class SyncFollowAndUnfollowUsers extends IntentService {
             HashSet<User> followingCompleted = new HashSet<User>();
             for(User user : usersToUnfollow) {
                 String userToUnfollow = user.getUsername();
-                FollowUserService service = new FollowUserService(token, userName, userToUnfollow, null);
-                JsonElement jsonElement = service.followUser();
+                UnfollowUserService service = new UnfollowUserService(token, userName, userToUnfollow, null);
+                JsonElement jsonElement = service.unfollowUser();
                 JsonObject resultJsonObject = jsonElement.getAsJsonObject();
                 boolean requestSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
                 if (requestSuccess) {

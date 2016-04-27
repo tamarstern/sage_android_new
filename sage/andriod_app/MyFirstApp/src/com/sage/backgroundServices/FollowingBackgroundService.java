@@ -33,7 +33,7 @@ public class FollowingBackgroundService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
-
+            Log.i("startFollowBackground", "start follow backgroundService");
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);

@@ -35,6 +35,7 @@ public class GetRecipesForCategoriesService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
+            Log.i("startRecForCat", "start recipes for category backgroundService");
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);

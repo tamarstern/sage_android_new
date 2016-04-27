@@ -33,6 +33,7 @@ public class GetProfilePageRecipesService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         try {
+            Log.i("startProfileBackground", "start profile backgroundService");
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);

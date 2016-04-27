@@ -1,5 +1,6 @@
 package com.sage.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -14,6 +15,7 @@ import com.example.myfirstapp.R;
 import com.sage.constants.ActivityConstants;
 import com.sage.constants.ImageType;
 import com.sage.constants.ServicesConstants;
+import com.sage.entities.RecipeDetails;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
@@ -21,7 +23,7 @@ import java.text.MessageFormat;
 
 public class ImagesInitializer {
 
-	private static CachedMap<String, Drawable> drawablesMap = new CachedMap<String, Drawable>(35);
+	private static CachedMap<String, Drawable> drawablesMap = new CachedMap<String, Drawable>(50);
 
 	public static void initialRecipeImage(final Context context, String pictureID, ImageView imageView, ImageType imageType) {
 		if (pictureID == null) {
@@ -80,5 +82,31 @@ public class ImagesInitializer {
 				});
 	}
 
-	
+	public static void initRecipeMainPicture(ImageView image, RecipeDetails details, Activity context) {
+		String id = ActivityUtils.getRecipeMainPictureId(details);
+		//if(!TextUtils.isEmpty(id)) {
+			ImagesInitializer.initialRecipeImage(context, id, image, ImageType.RECIPE_PICTURE);
+		//} else {
+		//	Bitmap bitmap = RecipeImageContainer.getInstance().getMainImageForRecipe(details.get_id());
+		//	if(bitmap != null) {
+		//		image.setImageBitmap(bitmap);
+		//	}
+		//}
+	}
+
+
+	public static void initImageViewForRecipePicture(ImageView image, RecipeDetails details, Activity context) {
+		String id = ActivityUtils.getRecipeImagePictureId(details);
+		//if(!TextUtils.isEmpty(id)) {
+			ImagesInitializer.initialRecipeImage(context, id, image, ImageType.IMAGE_RECIPE_PICTURE);
+		//} else {
+		//	Bitmap bitmap = RecipeImageContainer.getInstance().getRecipeImageForRecipe(details.get_id());
+		//	if(bitmap != null) {
+		//		image.setImageBitmap(bitmap);
+		//	}
+		//}
+	}
+
+
+
 }

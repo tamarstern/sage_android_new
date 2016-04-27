@@ -176,11 +176,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		if(EntityUtils.isNewRecipe(recipeDetails)) {
 			return;
 		}
-		String pictureID = ActivityUtils.getRecipeImagePicture(recipeDetails);
-
-		if (!TextUtils.isEmpty(pictureID)) {
-			ImagesInitializer.initialRecipeImage(this, pictureID, imageView, imageType);
-		}
+		ImagesInitializer.initImageViewForRecipePicture(imageView, recipeDetails, this);
 
 	}
 
@@ -193,7 +189,8 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 	private void initPictureAndPictureButton() {
 
 		if (!EntityUtils.isNewRecipe(recipeDetails)) {
-			if (TextUtils.isEmpty(recipeDetails.getImageRecipe_pictureId())) {
+			String recipeImagePictureId = ActivityUtils.getRecipeImagePictureId(recipeDetails);
+			if (TextUtils.isEmpty(recipeImagePictureId)) {
 				if (!EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), this)) {
 					addImageButton.setVisibility(View.GONE);
 					recipeAsPicture.setVisibility(View.VISIBLE);
