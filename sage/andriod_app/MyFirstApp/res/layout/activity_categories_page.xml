@@ -17,6 +17,35 @@
         android:theme="@style/ToolbarStyle"
         />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/failed_to_load_panel"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+
+        <ImageView
+            android:id="@+id/failed_to_load_icon"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/no_internet_connection"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/failed_to_load_lbl"
+            android:layout_below="@id/failed_to_load_icon"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+
+            android:text="@string/no_connection_tap_to_retry"/>
+    </RelativeLayout>
+
+
     <TextView
         android:id="@+id/no_categories_lbl"
         android:layout_width="wrap_content"

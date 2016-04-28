@@ -177,7 +177,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(context,
 						recipeUserBasicData.get_id());
-				new AddLikeAdaptorTask(position, recipeUserBasicData.isFeaturedRecipe()).execute(params);
+				new AddLikeAdaptorTask(recipeUserBasicData.isFeaturedRecipe()).execute(params);
 			}
 		});
 
@@ -195,7 +195,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(context,
 						recipeUserBasicData.get_id());
-				new RemoveAdaptorLikeTask(position, recipeUserBasicData.isFeaturedRecipe()).execute(params);
+				new RemoveAdaptorLikeTask(recipeUserBasicData.isFeaturedRecipe()).execute(params);
 			}
 		});
 	}
@@ -374,49 +374,30 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 
 	private class AddLikeAdaptorTask extends AddLikeTask {
 
-		private int position;
 
-		public AddLikeAdaptorTask(int position, boolean featuredRecipe) {
+
+		public AddLikeAdaptorTask( boolean featuredRecipe) {
 			super(context, featuredRecipe);
-			this.position = position;
+
 		}
 
 		@Override
 		protected void handleSuccess(JsonObject resultJsonObject) {
-		//	Gson gson = new Gson();
 
-//			JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
-//
-//			RecipeDetails recipeData = gson.fromJson(dataElement, RecipeDetails.class);
-
-//			details.set(position, recipeData);
-
-//			notifyDataSetChanged();
 		}
 
 	}
 
 	private class RemoveAdaptorLikeTask extends RemoveLikeTask {
 
-		private int position;
 
-		public RemoveAdaptorLikeTask(int position, boolean featuredRecipe) {
+		public RemoveAdaptorLikeTask(boolean featuredRecipe) {
 			super(context, featuredRecipe);
-			this.position = position;
 
 		}
 
 		@Override
 		public void handleSuccess(JsonObject resultJsonObject) {
-//			Gson gson = new Gson();
-
-//			JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
-//
-//			RecipeDetails recipeData = gson.fromJson(dataElement, RecipeDetails.class);
-
-//			details.set(position, recipeData);
-
-//			notifyDataSetChanged();
 		}
 
 	}

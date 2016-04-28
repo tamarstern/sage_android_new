@@ -84,27 +84,13 @@ public class ImagesInitializer {
 
 	public static void initRecipeMainPicture(ImageView image, RecipeDetails details, Activity context) {
 		String id = ActivityUtils.getRecipeMainPictureId(details);
-		//if(!TextUtils.isEmpty(id)) {
-			ImagesInitializer.initialRecipeImage(context, id, image, ImageType.RECIPE_PICTURE);
-		//} else {
-		//	Bitmap bitmap = RecipeImageContainer.getInstance().getMainImageForRecipe(details.get_id());
-		//	if(bitmap != null) {
-		//		image.setImageBitmap(bitmap);
-		//	}
-		//}
+		ImagesInitializer.initialRecipeImage(context, id, image, ImageType.RECIPE_PICTURE);
 	}
 
 
 	public static void initImageViewForRecipePicture(ImageView image, RecipeDetails details, Activity context) {
 		String id = ActivityUtils.getRecipeImagePictureId(details);
-		//if(!TextUtils.isEmpty(id)) {
-			ImagesInitializer.initialRecipeImage(context, id, image, ImageType.IMAGE_RECIPE_PICTURE);
-		//} else {
-		//	Bitmap bitmap = RecipeImageContainer.getInstance().getRecipeImageForRecipe(details.get_id());
-		//	if(bitmap != null) {
-		//		image.setImageBitmap(bitmap);
-		//	}
-		//}
+		ImagesInitializer.initialRecipeImage(context, id, image, ImageType.IMAGE_RECIPE_PICTURE);
 	}
 
 

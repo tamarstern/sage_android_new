@@ -24,6 +24,8 @@ public class UserCategoriesContainer {
 
     public static String CATEGORY_ID = "categoryId_";
 
+    private boolean categoriesInitialized;
+
     private UserCategoriesContainer() {
 
     }
@@ -37,6 +39,11 @@ public class UserCategoriesContainer {
             }
         }
         return instance;
+    }
+
+
+    public void setCategoriesInitialized(boolean categoriesInitialized) {
+        this.categoriesInitialized = categoriesInitialized;
     }
 
     public void putCategories(HashSet<RecipeCategory> categories) {
@@ -73,7 +80,7 @@ public class UserCategoriesContainer {
     }
 
     public boolean categoriesInitialized() {
-        return this.categoriesMap.containsKey(CATEGORIES_KEY);
+        return categoriesInitialized;
     }
 
     public void putRecipesForCategory(RecipeCategory category, HashSet<RecipeDetails> recipesSet) {
@@ -82,8 +89,7 @@ public class UserCategoriesContainer {
     }
 
     private String generateKey(String categoryId) {
-        String key = CATEGORY_ID + categoryId;
-        return key;
+        return CATEGORY_ID + categoryId;
     }
 
     public boolean hasRecipesForCategory(RecipeCategory category) {

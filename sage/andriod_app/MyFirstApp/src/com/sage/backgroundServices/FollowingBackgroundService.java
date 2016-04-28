@@ -37,34 +37,36 @@ public class FollowingBackgroundService extends IntentService {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
-            if(TextUtils.isEmpty(token) || TextUtils.isEmpty(userId)) {
-                return;
-            }
-
-            GetFollowingService service = new GetFollowingService(token, userId,0);
-            JsonElement result = service.getUsers();
-            if(result != null) {
-
-                JsonObject resultJsonObject = result.getAsJsonObject();
-
-                boolean foundResults = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
-
-                if (foundResults) {
-                    JsonElement dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME);
-                    JsonArray resultDataObject = dataElement.getAsJsonArray();
-
-                    Gson gson = new GsonBuilder().create();
-
-                    ArrayList<User> users = gson.fromJson(resultDataObject, new TypeToken<ArrayList<User>>() {
-                    }.getType());
-
-                    UserFollowingContainer.getInstance().putUsers(users);
-                }
+            if(!TextUtils.isEmpty(token) && !TextUtils.isEmpty(userId)) {
+                fetchFollowingInBackground(token, userId);
             }
         } catch (Exception e) {
             Log.e("failed fetch following", "failed fetch following", e);
         } finally {
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }
+    }
+
+    private void fetchFollowingInBackground(String token, String userId) throws Exception {
+        GetFollowingService service = new GetFollowingService(token, userId,0);
+        JsonElement result = service.getUsers();
+        if(result != null) {
+
+            JsonObject resultJsonObject = result.getAsJsonObject();
+
+            boolean foundResults = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
+
+            if (foundResults) {
+                JsonElement dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME);
+                JsonArray resultDataObject = dataElement.getAsJsonArray();
+
+                Gson gson = new GsonBuilder().create();
+
+                ArrayList<User> users = gson.fromJson(resultDataObject, new TypeToken<ArrayList<User>>() {
+                }.getType());
+
+                UserFollowingContainer.getInstance().putUsers(users);
+            }
         }
     }
 }

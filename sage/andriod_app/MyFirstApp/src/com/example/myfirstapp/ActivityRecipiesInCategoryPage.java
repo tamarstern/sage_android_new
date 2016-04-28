@@ -12,8 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -44,12 +46,25 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 
 	private ViewGroup viewGroup;
 
+	private RelativeLayout failedToLoadPanel;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recipe_in_category_page);
 
 		listView = (ListView) findViewById(android.R.id.list);
+
+		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
+		failedToLoadPanel.setVisibility(View.GONE);
+		failedToLoadPanel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				failedToLoadPanel.setVisibility(View.GONE);
+				fetchRecipes();
+			}
+		});
+
 
 		Intent i = getIntent();
 
@@ -153,6 +168,7 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 		protected void onPostExecute(JsonElement result) {
 			container.dismissProgress();
 			if (result == null) {
+				failedToLoadPanel.setVisibility(View.VISIBLE);
 				return;
 			}
 			JsonArray resultJsonObject = result.getAsJsonArray();

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -48,6 +49,7 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 	private EditCategoryPopupHandler handler;
 
 	private TextView noCategoriesLbl;
+	private RelativeLayout failedToLoadPanel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,16 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 		listView = (ListView) findViewById(android.R.id.list);
 		noCategoriesLbl = (TextView) findViewById(R.id.no_categories_lbl);
 		noCategoriesLbl.setVisibility(View.GONE);
+		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
+		failedToLoadPanel.setVisibility(View.GONE);
+		failedToLoadPanel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				failedToLoadPanel.setVisibility(View.GONE);
+				fetchCategories();
+			}
+		});
+
 		initSupportActionBar();
 
 		initEditCategoryHandler();
@@ -158,6 +170,7 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 		UserCategoriesContainer.getInstance().putCategory(category);
 
 		initCategoriesFromCache();
+		noCategoriesLbl.setVisibility(View.GONE);
 	}
 
 	private class GetCategoriesForUserTask extends AsyncTask<String, Void, JsonElement> {
@@ -196,6 +209,7 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 		protected void onPostExecute(JsonElement result) {
 			container.dismissProgress();
 			if (result == null) {
+				failedToLoadPanel.setVisibility(View.VISIBLE);
 				return;
 			}
 			JsonArray resultJsonObject = result.getAsJsonArray();
@@ -205,6 +219,7 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 			categories = gson.fromJson(resultJsonObject, new TypeToken<ArrayList<RecipeCategory>>() {
 			}.getType());
 			UserCategoriesContainer.getInstance().putCategories(new HashSet<RecipeCategory>(categories));
+			UserCategoriesContainer.getInstance().setCategoriesInitialized(true);
 			initCategoriesUI();
 
 		}

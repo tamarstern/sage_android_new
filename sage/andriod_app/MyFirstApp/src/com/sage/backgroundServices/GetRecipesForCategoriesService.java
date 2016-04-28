@@ -40,19 +40,15 @@ public class GetRecipesForCategoriesService extends IntentService {
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 
-            if (TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
-                return;
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(userName)) {
+                ArrayList<RecipeCategory> categories = UserCategoriesContainer.getInstance().getCategories();
+                if (categories == null || categories.size() == 0) {
+                    return;
+                }
+                for (RecipeCategory category : categories) {
+                    initRecipesPerCategory(token, userName, category);
+                }
             }
-
-            ArrayList<RecipeCategory> categories = UserCategoriesContainer.getInstance().getCategories();
-            if (categories == null || categories.size() == 0) {
-                return;
-            }
-
-            for (RecipeCategory category : categories) {
-                initRecipesPerCategory(token, userName, category);
-            }
-
         } catch (Exception e) {
             Log.e("failedGetCRecipes", "failed get category recipes", e);
         } finally {

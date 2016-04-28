@@ -33,22 +33,8 @@ public class GetProfilePageRecipesForFollowing extends IntentService {
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String loggedInUserObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 
-            if (TextUtils.isEmpty(token) || TextUtils.isEmpty(loggedInUserObjectId)) {
-                return;
-            }
-            ArrayList<RecipeDetails> firstPageRecipies = NewsfeedContainer.getInstance().getRecipesByPage(0);
-
-            HashSet<String> processedUsers = new HashSet<String>();
-
-            for(RecipeDetails details : firstPageRecipies) {
-                String userId = details.getUserObjectId();
-                if(shouldProcessId(loggedInUserObjectId, processedUsers, userId)) {
-                    addProfileRecipesForUser(token, processedUsers, userId);
-                }
-                String ownerId = details.getOwnerObjectId();
-                if(shouldProcessId(loggedInUserObjectId, processedUsers, ownerId)) {
-                    addProfileRecipesForUser(token, processedUsers, ownerId);
-                }
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(loggedInUserObjectId)) {
+                fetchProfilePageInBackground(token, loggedInUserObjectId);
             }
 
         } catch (Exception e) {
@@ -58,6 +44,23 @@ public class GetProfilePageRecipesForFollowing extends IntentService {
         }
 
 
+    }
+
+    private void fetchProfilePageInBackground(String token, String loggedInUserObjectId) throws Exception {
+        ArrayList<RecipeDetails> firstPageRecipies = NewsfeedContainer.getInstance().getRecipesByPage(0);
+
+        HashSet<String> processedUsers = new HashSet<String>();
+
+        for(RecipeDetails details : firstPageRecipies) {
+            String userId = details.getUserObjectId();
+            if(shouldProcessId(loggedInUserObjectId, processedUsers, userId)) {
+                addProfileRecipesForUser(token, processedUsers, userId);
+            }
+            String ownerId = details.getOwnerObjectId();
+            if(shouldProcessId(loggedInUserObjectId, processedUsers, ownerId)) {
+                addProfileRecipesForUser(token, processedUsers, ownerId);
+            }
+        }
     }
 
     private void addProfileRecipesForUser(String token, HashSet<String> processedUsers, String userId) throws Exception {

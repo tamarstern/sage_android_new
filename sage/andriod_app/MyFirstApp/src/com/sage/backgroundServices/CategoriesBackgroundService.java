@@ -49,22 +49,8 @@ public class CategoriesBackgroundService extends IntentService {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
-            if (TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
-                return;
-            }
-            GetCategoriesForUserService service = new GetCategoriesForUserService(token, userName);
-            JsonElement categories;
-            categories = service.getCategories();
-            if (categories != null) {
-                JsonArray resultJsonObject = categories.getAsJsonArray();
-                Gson gson = new GsonBuilder().create();
-                ArrayList<RecipeCategory> categoriesToSave = gson.fromJson(resultJsonObject, new TypeToken<ArrayList<RecipeCategory>>() {
-                }.getType());
-
-                if (categoriesToSave != null) {
-                    UserCategoriesContainer.getInstance().putCategories(new HashSet<RecipeCategory>(categoriesToSave));
-                    initRecipesForCategories();
-                }
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(userName)) {
+                fetchCategoriesInBackground(token, userName);
             }
         } catch (Exception e) {
             Log.e("failedFetchCategories", "failed to get categories", e);
@@ -73,6 +59,24 @@ public class CategoriesBackgroundService extends IntentService {
         }
 
 
+    }
+
+    private void fetchCategoriesInBackground(String token, String userName) throws Exception {
+        GetCategoriesForUserService service = new GetCategoriesForUserService(token, userName);
+        JsonElement categories;
+        categories = service.getCategories();
+        if (categories != null) {
+            JsonArray resultJsonObject = categories.getAsJsonArray();
+            Gson gson = new GsonBuilder().create();
+            ArrayList<RecipeCategory> categoriesToSave = gson.fromJson(resultJsonObject, new TypeToken<ArrayList<RecipeCategory>>() {
+            }.getType());
+
+            if (categoriesToSave != null) {
+                UserCategoriesContainer.getInstance().putCategories(new HashSet<RecipeCategory>(categoriesToSave));
+                UserCategoriesContainer.getInstance().setCategoriesInitialized(true);
+                initRecipesForCategories();
+            }
+        }
     }
 
     private void initRecipesForCategories() {

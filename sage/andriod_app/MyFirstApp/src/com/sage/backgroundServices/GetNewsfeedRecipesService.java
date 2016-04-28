@@ -33,12 +33,8 @@ public class GetNewsfeedRecipesService extends IntentService {
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 
-            if (TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
-                return;
-            }
-            for (int i = 0; i < 2; i++) {
-                ArrayList<RecipeDetails> details = BackgroundServicesUtils.getNewsfeedRecipiesForPage(token, userName, i);
-                NewsfeedContainer.getInstance().putRecipesForPage(i, details);
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(userName)) {
+                fetchNewsfeedInBackground(token, userName);
             }
 
         } catch (Exception e) {
@@ -48,6 +44,13 @@ public class GetNewsfeedRecipesService extends IntentService {
         }
 
 
+    }
+
+    private void fetchNewsfeedInBackground(String token, String userName) throws Exception {
+        for (int i = 0; i < 2; i++) {
+            ArrayList<RecipeDetails> details = BackgroundServicesUtils.getNewsfeedRecipiesForPage(token, userName, i);
+            NewsfeedContainer.getInstance().putRecipesForPage(i, details);
+        }
     }
 
 

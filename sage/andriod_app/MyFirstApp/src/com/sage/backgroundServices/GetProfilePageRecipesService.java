@@ -38,12 +38,10 @@ public class GetProfilePageRecipesService extends IntentService {
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 
-            if (TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
-                return;
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(userName)) {
+                initProfilePageRecipies(token, userName);
+                initFollowedByCount(token, userName);
             }
-            initProfilePageRecipies(token, userName);
-
-            initFollowedByCount(token, userName);
 
         } catch (Exception e) {
             Log.e("failed fetch profile", "failed fetch profile", e);

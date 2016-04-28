@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.google.gson.JsonElement;
 import com.sage.adapters.UsersArrayAdapter;
@@ -27,6 +29,7 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 
 	private ListView listView;
 	private int pageNumber;
+	private RelativeLayout failedToLoadPanel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,17 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_display_following);
 
 		listView = (ListView) findViewById(android.R.id.list);
+
+		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
+		failedToLoadPanel.setVisibility(View.GONE);
+		failedToLoadPanel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				failedToLoadPanel.setVisibility(View.GONE);
+				fetchUsers();
+			}
+		});
+
 
 		initSupportActionBar();
 		fetchUsers();
@@ -132,7 +146,7 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 		@Override
 		protected void performCustomActionsOnException() {
 			container.dismissProgress();
-
+			failedToLoadPanel.setVisibility(View.VISIBLE);
 		}
 
 		@Override

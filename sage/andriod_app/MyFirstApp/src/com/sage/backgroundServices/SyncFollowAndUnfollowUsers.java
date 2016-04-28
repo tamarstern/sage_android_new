@@ -35,11 +35,10 @@ public class SyncFollowAndUnfollowUsers extends IntentService {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
-            if(TextUtils.isEmpty(token) || TextUtils.isEmpty(userName)) {
-                return;
+            if(!TextUtils.isEmpty(token) && !TextUtils.isEmpty(userName)) {
+                followUsers(token, userName);
+                unfollowUsers(token, userName);
             }
-            followUsers(token, userName);
-            unfollowUsers(token, userName);
 
 
         } catch (Exception e) {
