@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import com.example.myfirstapp.ProgressDialogContainer;
 import com.example.myfirstapp.R;
@@ -54,6 +55,8 @@ public class AddCommentsClickListener implements OnClickListener {
 	private PopupWindow popupWindow;
 	private Button closeCommentsPopup;
 	private Context popupWindowContext;
+
+	private RelativeLayout failedToLoadPanel;
 
 	private Set<IClosePopupCommentListener> listeners = new HashSet<IClosePopupCommentListener>();
 
@@ -99,24 +102,39 @@ public class AddCommentsClickListener implements OnClickListener {
 			public void onClick(View v) {
 				String commentText = commentTextBox.getText().toString();
 				if (!TextUtils.isEmpty(commentText)) {
-					AnalyticsUtils.sendAnalyticsTrackingEvent(activity, AnalyticsUtils.ADD_COMMENT);
-					SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-					String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-
-					String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
-
-					Object[] params = new Object[] { token, userName, recipeId, commentText };
-
-					new AddCommentTask(popupWindowContext).execute(params);
+					addComment(commentText);
 				}
 
 			}
 		});
 
+		failedToLoadPanel = (RelativeLayout)popupView.findViewById(R.id.failed_to_load_panel);
+		failedToLoadPanel.setVisibility(View.GONE);
+		failedToLoadPanel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				failedToLoadPanel.setVisibility(View.GONE);
+				getCommentsForRecipe(popupWindowContext);
+			}
+		});
+
+
 		getCommentsForRecipe(popupWindowContext);
 
 		ActivityUtils.InitPopupWindowWithEventHandler(popupWindow, activity);
 
+	}
+
+	private void addComment(String commentText) {
+		AnalyticsUtils.sendAnalyticsTrackingEvent(activity, AnalyticsUtils.ADD_COMMENT);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
+
+		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+
+		Object[] params = new Object[] { token, userName, recipeId, commentText };
+
+		new AddCommentTask(popupWindowContext).execute(params);
 	}
 
 	private void getCommentsForRecipe(Context context) {
@@ -191,6 +209,7 @@ public class AddCommentsClickListener implements OnClickListener {
 		protected void onPostExecute(JsonElement result) {
 			container.dismissProgress();
 			if (result == null) {
+				failedToLoadPanel.setVisibility(View.VISIBLE);
 				return;
 			}
 			JsonObject resultJsonObject = result.getAsJsonObject();
