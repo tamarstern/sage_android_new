@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -253,21 +254,19 @@ public class SaveRecipeHandler {
             this.bitmap = bitmap;
         }
 
-        @Override
-        protected void onPreExecute() {
-            if(type.equals(ImageType.RECIPE_PICTURE)) {
-                RecipeImageContainer.getInstance().putMainImageForRecipe(details.get_id(), bitmap);
-            } else if (type.equals(ImageType.IMAGE_RECIPE_PICTURE)) {
-                RecipeImageContainer.getInstance().putRecipeImageForRecipe(details.get_id(), bitmap);
-            }
-        }
 
         @Override
         protected JsonElement doInBackground(Object... params) {
-            String token = (String) params[0];
-            String path = (String) params[1];
-            PostRecipeImage service = new PostRecipeImage(bitmap, token, details.get_id(), path, this.type);
-            return service.sendImage();
+            try {
+                String token = (String) params[0];
+                String path = (String) params[1];
+                PostRecipeImage service = new PostRecipeImage(bitmap, token, details.get_id(), path, this.type);
+                return service.sendImage();
+            } catch (Exception e) {
+                Log.e("failedSavePicture", "fail to save picture", e);
+                return null;
+            }
+
         }
 
         @Override

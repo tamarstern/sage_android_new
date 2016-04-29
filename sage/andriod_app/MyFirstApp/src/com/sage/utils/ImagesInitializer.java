@@ -77,6 +77,7 @@ public class ImagesInitializer {
 
 					@Override
 					public void onError() {
+
 						Log.e("failed to load image", "failed to load image");
 					}
 				});

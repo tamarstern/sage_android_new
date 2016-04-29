@@ -22,7 +22,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
-import com.sage.activity.interfaces.IOnWindowFocusChanged;
+import com.sage.application.GoogleAnalyticsApplication;
+import com.sage.application.TCImageLoader;
 import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
@@ -49,10 +50,15 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 
 	private boolean cameraOpened;
 
+	private TCImageLoader loader;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_picture_recipe_page);
+
+		loader = new TCImageLoader(this);
+
 		Intent i = getIntent();
 
 		recipeDetails = (RecipeDetails) i
@@ -85,6 +91,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		initSupportActionBar();
 
 		initPictureAndPictureButton();
+		initMainRecipePicture(this.recipeAsPicture);
 		disableLockScreenAndTimeout();
 
 	}
@@ -93,7 +100,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 	protected void onResume() {
 		super.onResume();
 
-		initMainRecipePicture(this.recipeAsPicture, ImageType.IMAGE_RECIPE_PICTURE);
+		initMainRecipePicture(this.recipeAsPicture);
 
 	}
 
@@ -156,27 +163,15 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 	}
 
 
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-
-		initMainRecipePicture(this.recipeAsPicture, ImageType.IMAGE_RECIPE_PICTURE);
-
-
-		Fragment fragment = getFragmentManager().findFragmentById(R.id.recipe_picture_details_panel);
-
-		if(fragment instanceof IOnWindowFocusChanged) {
-			IOnWindowFocusChanged windowFocusChanged = (IOnWindowFocusChanged)fragment;
-			windowFocusChanged.onFocusChanged();
-		}
-
-	}
-
-	private void initMainRecipePicture(ImageView imageView, ImageType imageType) {
+	private void initMainRecipePicture(ImageView imageView) {
 		if(EntityUtils.isNewRecipe(recipeDetails)) {
 			return;
 		}
-		ImagesInitializer.initImageViewForRecipePicture(imageView, recipeDetails, this);
+		String id = ActivityUtils.getRecipeImagePictureId(recipeDetails);
+		String url = ImagesInitializer.getUrl(this, id, ImageType.IMAGE_RECIPE_PICTURE);
+		TCImageLoader loader = ((GoogleAnalyticsApplication) this.getApplication()).getLoader();
+		loader.display(url, imageView, R.drawable.default_recipe_image);
+		//ImagesInitializer.initImageViewForRecipePicture(imageView, recipeDetails, this);
 
 	}
 

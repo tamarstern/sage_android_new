@@ -11,6 +11,8 @@ public class GoogleAnalyticsApplication extends Application {
 
 	public static int GENERAL_TRACKER = 0;
 
+	private static TCImageLoader loader;
+
 	public enum TrackerName {
 		APP_TRACKER, GLOBAL_TRACKER, ECOMMERCE_TRACKER,
 	}
@@ -28,6 +30,13 @@ public class GoogleAnalyticsApplication extends Application {
 		}
 		return mTracker;
 
+	}
+
+	synchronized public TCImageLoader getLoader() {
+		if(loader == null) {
+			loader = new TCImageLoader(getApplicationContext());
+		}
+		return loader;
 	}
 
 }

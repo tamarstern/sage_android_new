@@ -20,14 +20,12 @@
 
             <ImageView
                 android:id="@+id/receipt_main_pic"
-                android:layout_width="fill_parent"
-                android:layout_height="300dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="0dp"
                 android:adjustViewBounds="true"
-
                 android:contentDescription="@string/description"
-                android:scaleType="fitXY"
-                android:src="@drawable/default_recipe_image" />
+                android:scaleType="fitXY" />
 
             <Button
                 android:id="@+id/edit_main_picture_button"

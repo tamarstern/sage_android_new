@@ -201,6 +201,13 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 	}
 
 	private void initRecipeMainPicture(final RecipeDetails recipeUserBasicData) {
+
+	//	String id = ActivityUtils.getRecipeMainPictureId(recipeUserBasicData);
+	//	String url = ImagesInitializer.getUrl(context, id, ImageType.RECIPE_PICTURE);
+	//	TCImageLoader loader = ((GoogleAnalyticsApplication) context.getApplication()).getLoader();
+	//	loader.display(url, recipeMainPicture, R.drawable.default_recipe_image);
+
+
 		ImagesInitializer.initRecipeMainPicture(recipeMainPicture, recipeUserBasicData, context);
 		getLinkDetailsProgress.setVisibility(View.GONE);
 

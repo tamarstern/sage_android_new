@@ -72,14 +72,16 @@ public class PostRecipeImage {
 			f.createNewFile();
 
 			// Convert bitmap to byte array
-			 bos = new ByteArrayOutputStream();
-			image.compress(CompressFormat.PNG, 0 /* ignored for PNG */, bos);
-			byte[] bitmapdata = bos.toByteArray();
+			bos = new ByteArrayOutputStream();
+			image.compress(CompressFormat.JPEG, 80, bos);
+			byte[] bitmapMetadata = bos.toByteArray();
 
 			// write the bytes in file
 			fos = new FileOutputStream(f);
-			fos.write(bitmapdata);
+			fos.write(bitmapMetadata);
 			fos.flush();
+			long byteCount =f.length();
+			Log.i("fileSizeSavedAtServer", "file size that was saved in Server " + byteCount);
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			builder.addBinaryBody("file", f);
 			HttpEntity entity = builder.build();
@@ -88,7 +90,6 @@ public class PostRecipeImage {
 			HttpEntity respEntity = response.getEntity();
 
 			if (respEntity != null) {
-				// EntityUtils to get the response content
 				String content = EntityUtils.toString(respEntity);
 				return new Gson().fromJson(content, JsonElement.class);
 			}

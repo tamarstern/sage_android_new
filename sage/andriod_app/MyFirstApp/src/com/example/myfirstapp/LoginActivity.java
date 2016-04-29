@@ -30,7 +30,6 @@ import com.google.gson.JsonObject;
 import com.sage.backgroundServices.CategoriesReceiver;
 import com.sage.backgroundServices.GetFollowingReceiver;
 import com.sage.backgroundServices.GetProfileRecipiesReceiver;
-import com.sage.backgroundServices.RecipesForCategoryReceiver;
 import com.sage.backgroundServices.SyncFollowUsersReceiver;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
@@ -60,10 +59,7 @@ public class LoginActivity extends Activity {
 		callbackManager = CallbackManager.Factory.create();
 		setContentView(R.layout.activity_login);
 
-		//Intent intent = new Intent(this, CategoriesBackgroundService.class);
-		//startService(intent);
 		scheduleAlarmBackgroundServices();
-		//openNewsfeedIfAlreadyLoggedInToFacebook();
 
 		String token = getDirectAuthenticationToken();
 		if (!TextUtils.isEmpty(token)) {
@@ -97,37 +93,37 @@ public class LoginActivity extends Activity {
 		final PendingIntent categoriesPIntent = PendingIntent.getBroadcast(this, CategoriesReceiver.REQUEST_CODE,
 				categoriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				AlarmManager.INTERVAL_FIFTEEN_MINUTES, categoriesPIntent);
+				8*60*1000, categoriesPIntent);
 
 		Intent profileRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
 		final PendingIntent profileRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
 				profileRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				AlarmManager.INTERVAL_FIFTEEN_MINUTES, profileRecipiesPIntent);
+				10*60*1000, profileRecipiesPIntent);
 
 		Intent followingIntent = new Intent(getApplicationContext(), GetFollowingReceiver.class);
 		final PendingIntent followingPIntent = PendingIntent.getBroadcast(this, GetFollowingReceiver.REQUEST_CODE,
 				followingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				AlarmManager.INTERVAL_FIFTEEN_MINUTES, followingPIntent);
+				5*60*1000, followingPIntent);
 
 		Intent syncFollowingIntent = new Intent(getApplicationContext(), SyncFollowUsersReceiver.class);
 		final PendingIntent syncFollowingPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
 				syncFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				5*60*1000, syncFollowingPIntent);
+				3*60*1000, syncFollowingPIntent);
 
-		Intent recipesForCategoryIntent = new Intent(getApplicationContext(), RecipesForCategoryReceiver.class);
+		/*Intent recipesForCategoryIntent = new Intent(getApplicationContext(), RecipesForCategoryReceiver.class);
 		final PendingIntent recipesForCategoryPIntent = PendingIntent.getBroadcast(this, RecipesForCategoryReceiver.REQUEST_CODE,
 				recipesForCategoryIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				AlarmManager.INTERVAL_FIFTEEN_MINUTES, recipesForCategoryPIntent);
+				5*60*1000, recipesForCategoryPIntent);*/
 
 		Intent newsfeedRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
 		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
 				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				10*60*1000, newsfeedRecipiesPIntent);
+				5*60*1000, newsfeedRecipiesPIntent);
 
 		Intent profileRecipiesForFollowingIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
 		final PendingIntent profileRecipiesForFollowingPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,

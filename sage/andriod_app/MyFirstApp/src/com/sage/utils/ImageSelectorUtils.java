@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
@@ -75,13 +74,11 @@ public class ImageSelectorUtils {
 		int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
 		cursor.moveToFirst();
 		String selectedImagePath = cursor.getString(column_index);
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inScaled = false;
-		Bitmap bm = BitmapFactory.decodeFile(selectedImagePath, options);
-		Bitmap rotated = ImageResizeUtils.rotateBitmap(selectedImagePath, bm);
+		Bitmap rotated = ImageResizeUtils.resizeImage(selectedImagePath);
 		mainPicture.setImageBitmap(rotated);
 		return rotated;
 	}
+
 
 
 

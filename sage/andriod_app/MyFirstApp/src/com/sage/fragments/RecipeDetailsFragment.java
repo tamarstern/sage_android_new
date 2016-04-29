@@ -19,7 +19,9 @@ import android.widget.RelativeLayout;
 
 import com.example.myfirstapp.DisplayImageActivity;
 import com.example.myfirstapp.R;
-import com.sage.activity.interfaces.IOnWindowFocusChanged;
+import com.sage.application.GoogleAnalyticsApplication;
+import com.sage.application.TCImageLoader;
+import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
@@ -29,7 +31,7 @@ import com.sage.utils.ImageSelectorUtils;
 import com.sage.utils.ImagesInitializer;
 import com.sage.utils.RecipeDetailsBinder;
 
-public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusChanged {
+public class RecipeDetailsFragment extends Fragment {
 
 	private RecipeDetails recipeDetails;
 
@@ -48,7 +50,7 @@ public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusCha
 	private boolean cameraOpened = false;
 	private View recipeDetailsPanel;
 
-	private boolean isImageFitToScreen = false;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,6 +103,7 @@ public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusCha
 		initWithRecipeDetails();
 
 		initRecipeUi(activity);
+		initMainRecipePicture();
 		return recipeDetailsPanel;
 	}
 
@@ -180,7 +183,11 @@ public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusCha
 	private void initMainRecipePicture() {
 		if(!EntityUtils.isNewRecipe(recipeDetails)) {
 			ImageView mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
-			ImagesInitializer.initRecipeMainPicture(mainPicture, recipeDetails, getActivity());
+			String id = ActivityUtils.getRecipeMainPictureId(recipeDetails);
+			String url = ImagesInitializer.getUrl(getActivity(), id, ImageType.RECIPE_PICTURE);
+			TCImageLoader loader = ((GoogleAnalyticsApplication) getActivity().getApplication()).getLoader();
+			loader.display(url, mainPicture, R.drawable.default_recipe_image);
+			//ImagesInitializer.initRecipeMainPicture(mainPicture, recipeDetails, getActivity());
 		}
 
 	}
@@ -244,8 +251,4 @@ public class RecipeDetailsFragment extends Fragment implements IOnWindowFocusCha
 
 	}
 
-	@Override
-	public void onFocusChanged() {
-		initMainRecipePicture();
-	}
 }
