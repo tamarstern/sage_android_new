@@ -9,13 +9,18 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.sage.application.GoogleAnalyticsApplication;
+import com.sage.application.TCImageLoader;
+import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
+import com.sage.utils.ActivityUtils;
 import com.sage.utils.ImagesInitializer;
 
-public class DisplayImageActivity extends Activity implements View.OnTouchListener {
+public class DisplayImageActivity extends Activity  {
 
 
     private static final String TAG = "Touch";
@@ -37,40 +42,43 @@ public class DisplayImageActivity extends Activity implements View.OnTouchListen
     PointF mid = new PointF();
     float oldDist = 1f;
 
+    private ImageView image;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_image);
+        image = (ImageView) findViewById(R.id.imageView);
+        progressBar = (ProgressBar) findViewById(R.id.get_picture_progress);
+        progressBar.setVisibility(View.GONE);
 
-    }
-
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
         Intent intent = getIntent();
-        ImageView image = (ImageView) findViewById(R.id.imageView);
         RecipeType type = (RecipeType)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_IMAGE_TYPE);
+        initImage(intent, image, progressBar, type);
 
-
-        initImage(intent, image, type);
 
     }
 
-    private void initImage(Intent intent, ImageView image, RecipeType type) {
+    private void initImage(Intent intent, ImageView image, ProgressBar progressBar, RecipeType type) {
         RecipeDetails details = (RecipeDetails)intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
+        String id;
+        String url;
         if(type.equals(RecipeType.PICTURE)) {
-            ImagesInitializer.initImageViewForRecipePicture(image, details, this);
-
+            id  = ActivityUtils.getRecipeImagePictureId(details);
+            url = ImagesInitializer.getUrl(this, id, ImageType.IMAGE_RECIPE_PICTURE);
         } else {
-            ImagesInitializer.initRecipeMainPicture(image, details, this);
+            id  = ActivityUtils.getRecipeMainPictureId(details);
+            url = ImagesInitializer.getUrl(this, id, ImageType.RECIPE_PICTURE);
         }
+        TCImageLoader loader = ((GoogleAnalyticsApplication) this.getApplication()).getLoader();
+        loader.display(url, image, progressBar, R.drawable.default_recipe_image);
+
     }
 
 
 
-    @Override
+
     public boolean onTouch(View v, MotionEvent event)
     {
         ImageView view = (ImageView) v;

@@ -3,6 +3,7 @@ package com.sage.application;
 import com.sage.entities.RecipeDetails;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -36,6 +37,15 @@ public class MyProfileRecipiesContainer {
             }
         }
         return instance;
+    }
+
+    public void deleteRecipe(RecipeDetails details) {
+        Set<Integer> keys = profilePageMap.keySet();
+        for(Integer key : keys) {
+            ArrayList<RecipeDetails> recipesByPage = getRecipesByPage(key);
+            recipesByPage.remove(details);
+            putRecipesForPage(key, recipesByPage);
+        }
     }
 
 

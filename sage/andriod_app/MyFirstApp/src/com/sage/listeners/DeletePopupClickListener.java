@@ -21,6 +21,8 @@ import com.example.myfirstapp.ProgressDialogContainer;
 import com.example.myfirstapp.R;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sage.application.MyProfileRecipiesContainer;
+import com.sage.application.NewsfeedContainer;
 import com.sage.application.UserCategoriesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
@@ -127,6 +129,8 @@ public class DeletePopupClickListener implements OnClickListener {
 			boolean saveSucceed = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
 			if (saveSucceed) {
 				UserCategoriesContainer.getInstance().deleteRecipe(recipeDetails);
+				MyProfileRecipiesContainer.getInstance().deleteRecipe(recipeDetails);
+				NewsfeedContainer.getInstance().deleteRecipe(recipeDetails);
 				Intent intent = new Intent(context, NewsfeedActivity.class)
 						.putExtra(EntityDataTransferConstants.RECIPE_DELETED, true);
 				context.startActivity(intent);
