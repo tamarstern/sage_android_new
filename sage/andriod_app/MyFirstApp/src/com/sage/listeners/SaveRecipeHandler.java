@@ -173,6 +173,7 @@ public class SaveRecipeHandler {
                 JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
                 RecipeDetails recipeDetails = ServicesUtils.createRecipeDetailsFromResponse(gson, dataElement);
                 ActivityUtils.updateRecipeUserTouchUps(recipeDetails, context, true);
+                NewsfeedContainer.getInstance().addRecipe(recipeDetails);
                 if (isNewRecipe) {
                     MyProfileRecipiesContainer.getInstance().addRecipe(recipeDetails);
                     if (category == null) {
@@ -187,7 +188,6 @@ public class SaveRecipeHandler {
                     NavigationUtils.openNewsfeed(context);
 
                 }
-                NewsfeedContainer.getInstance().addRecipe(recipeDetails);
                 saveRecipeImage(recipeDetails);
             }
 

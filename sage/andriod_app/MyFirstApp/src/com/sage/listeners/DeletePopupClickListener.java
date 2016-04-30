@@ -2,10 +2,7 @@ package com.sage.listeners;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Rect;
-import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,17 +14,13 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.example.myfirstapp.NewsfeedActivity;
-import com.example.myfirstapp.ProgressDialogContainer;
 import com.example.myfirstapp.R;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.application.NewsfeedContainer;
+import com.sage.application.RecipesToDeleteContainer;
 import com.sage.application.UserCategoriesContainer;
-import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
-import com.sage.services.DeleteRecipeService;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
 
@@ -63,15 +56,13 @@ public class DeletePopupClickListener implements OnClickListener {
 		confirmDelete.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View popupView) {
-				SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-				String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-
-				String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
-
-				Object[] params = new Object[] { recipeDetails, token, userName };
-
-				new DeleteRecipeTask(context).execute(params);
-				
+				UserCategoriesContainer.getInstance().deleteRecipe(recipeDetails);
+				MyProfileRecipiesContainer.getInstance().deleteRecipe(recipeDetails);
+				NewsfeedContainer.getInstance().deleteRecipe(recipeDetails);
+				RecipesToDeleteContainer.getInstance().addRecipeToDelete(recipeDetails);
+				Intent intent = new Intent(context, NewsfeedActivity.class)
+						.putExtra(EntityDataTransferConstants.RECIPE_DELETED, true);
+				context.startActivity(intent);
 				AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.PRESS_DELETE_RECIPE);
 			}
 		});
@@ -85,59 +76,4 @@ public class DeletePopupClickListener implements OnClickListener {
 		});
 
 	}
-
-	private class DeleteRecipeTask extends AsyncTask<Object, Void, JsonElement> {
-		
-		private Activity context;
-		private ProgressDialogContainer container;
-		
-		public DeleteRecipeTask(Activity context) {
-			this.context = context;
-			container = new ProgressDialogContainer(context);
-		}
-
-		@Override
-		protected JsonElement doInBackground(Object... params) {
-
-			try {
-				RecipeDetails recipeDetails = (RecipeDetails) params[0];
-				String token = (String) params[1];
-				String userName = (String) params[2];
-
-				DeleteRecipeService service = new DeleteRecipeService(recipeDetails, token, userName, context);
-
-				return service.deleteRecipe();
-
-			} catch (Exception e) {
-				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
-				return null;
-			}
-		}
-		@Override
-		protected void onPreExecute() {
-			container.showProgress();
-		}
-
-
-		@Override
-		protected void onPostExecute(JsonElement result) {
-			container.dismissProgress();
-			if (result == null) {
-				return;
-			}
-			JsonObject resultJsonObject = result.getAsJsonObject();
-			boolean saveSucceed = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
-			if (saveSucceed) {
-				UserCategoriesContainer.getInstance().deleteRecipe(recipeDetails);
-				MyProfileRecipiesContainer.getInstance().deleteRecipe(recipeDetails);
-				NewsfeedContainer.getInstance().deleteRecipe(recipeDetails);
-				Intent intent = new Intent(context, NewsfeedActivity.class)
-						.putExtra(EntityDataTransferConstants.RECIPE_DELETED, true);
-				context.startActivity(intent);
-			}
-
-		}
-
-	}
-
 }

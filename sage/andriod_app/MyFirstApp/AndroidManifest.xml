@@ -61,6 +61,13 @@
             android:name="com.sage.backgroundServices.GetNewsfeedRecipesService"
             android:exported="false"/>
 
+        <receiver
+            android:name="com.sage.backgroundServices.DeleteRecipesReceiver"
+            android:process=":remote">
+        </receiver>
+        <service
+            android:name="com.sage.backgroundServices.DeleteRecipesService"
+            android:exported="false"/>
 
 
         <receiver

@@ -42,6 +42,7 @@ public class GetProfilePageRecipesService extends IntentService {
                 initProfilePageRecipies(token, userName);
                 initFollowedByCount(token, userName);
             }
+            MyProfileRecipiesContainer.getInstance().removeOldRecipies();
 
         } catch (Exception e) {
             Log.e("failed fetch profile", "failed fetch profile", e);

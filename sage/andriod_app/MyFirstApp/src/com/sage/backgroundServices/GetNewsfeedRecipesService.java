@@ -35,6 +35,7 @@ public class GetNewsfeedRecipesService extends IntentService {
 
             if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(userName)) {
                 fetchNewsfeedInBackground(token, userName);
+                NewsfeedContainer.getInstance().removeOldRecipies();
             }
 
         } catch (Exception e) {

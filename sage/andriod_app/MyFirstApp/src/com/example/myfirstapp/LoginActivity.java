@@ -28,6 +28,7 @@ import com.facebook.login.widget.LoginButton;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.backgroundServices.CategoriesReceiver;
+import com.sage.backgroundServices.DeleteRecipesReceiver;
 import com.sage.backgroundServices.GetFollowingReceiver;
 import com.sage.backgroundServices.GetProfileRecipiesReceiver;
 import com.sage.backgroundServices.SyncFollowUsersReceiver;
@@ -113,6 +114,13 @@ public class LoginActivity extends Activity {
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
 				3*60*1000, syncFollowingPIntent);
 
+		Intent deleteRecipesIntent = new Intent(getApplicationContext(), DeleteRecipesReceiver.class);
+		final PendingIntent deleteRecipesPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
+				deleteRecipesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				3*60*1000, deleteRecipesPIntent);
+
+
 		/*Intent recipesForCategoryIntent = new Intent(getApplicationContext(), RecipesForCategoryReceiver.class);
 		final PendingIntent recipesForCategoryPIntent = PendingIntent.getBroadcast(this, RecipesForCategoryReceiver.REQUEST_CODE,
 				recipesForCategoryIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -123,7 +131,7 @@ public class LoginActivity extends Activity {
 		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
 				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				5*60*1000, newsfeedRecipiesPIntent);
+				10*60*1000, newsfeedRecipiesPIntent);
 
 		Intent profileRecipiesForFollowingIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
 		final PendingIntent profileRecipiesForFollowingPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,

@@ -48,6 +48,15 @@ public class MyProfileRecipiesContainer {
         }
     }
 
+    public void removeOldRecipies() {
+        Set<Integer> keys = this.profilePageMap.keySet();
+        for(Integer key : keys) {
+            if(key > 4) {
+                this.profilePageMap.remove(key);
+            }
+        }
+    }
+
 
     public ArrayList<RecipeDetails> getRecipesByPage(Integer pageNumber) {
         ArrayList<RecipeDetails> recipes =  (ArrayList<RecipeDetails>)this.profilePageMap.get(pageNumber);

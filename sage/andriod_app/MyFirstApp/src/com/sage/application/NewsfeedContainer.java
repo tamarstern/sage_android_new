@@ -63,8 +63,18 @@ public class NewsfeedContainer {
         this.newsfeedMap.put(pageNumber, new ArrayList<RecipeDetails>(details));
     }
 
+    public void removeOldRecipies() {
+        Set<Integer> keys = this.newsfeedMap.keySet();
+        for(Integer key : keys) {
+            if(key > 4) {
+                this.newsfeedMap.remove(key);
+            }
+        }
+    }
+
     public void addRecipe(RecipeDetails details) {
         if(details.isPublished()) {
+            deleteRecipe(details);
             ArrayList<RecipeDetails> recipes = getRecipesByPage(0);
             if(recipes.contains(details)) {
                 recipes.remove(details);
