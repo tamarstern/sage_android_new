@@ -40,7 +40,6 @@ import java.util.Iterator;
 
 public class ProfilePageActivity extends AppCompatActivity {
 
-	private ArrayList<RecipeDetails> details;
 
 	private boolean currentUserProfile;
 

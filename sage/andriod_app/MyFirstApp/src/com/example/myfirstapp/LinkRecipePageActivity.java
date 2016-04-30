@@ -72,9 +72,9 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 			listeners.add((IInitLinkDetailsListener) fragment);
 		}
 
-		Fragment ownerfragment =  getFragmentManager().findFragmentById(R.id.recipe_owner_panel);
-		if (ownerfragment instanceof IInitLinkDetailsListener) {
-			listeners.add((IInitLinkDetailsListener) ownerfragment);
+		Fragment ownerFragment =  getFragmentManager().findFragmentById(R.id.recipe_owner_panel);
+		if (ownerFragment instanceof IInitLinkDetailsListener) {
+			listeners.add((IInitLinkDetailsListener) ownerFragment);
 		}
 
 		Intent i = getIntent();
@@ -181,14 +181,6 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 		}
 	}
 
-	public void handleUiOnFailure() {
-		if(getLinkDetailsProgress != null) {
-			getLinkDetailsProgress.setVisibility(View.GONE);
-		}
-		if(linkImage != null) {
-			linkImage.setVisibility(View.VISIBLE);
-		}
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

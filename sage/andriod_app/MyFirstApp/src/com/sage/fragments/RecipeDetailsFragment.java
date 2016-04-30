@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.example.myfirstapp.DisplayImageActivity;
@@ -47,6 +48,8 @@ public class RecipeDetailsFragment extends Fragment {
 
 	private ImageView mainPicture;
 
+	private ProgressBar progressBar;
+
 	private boolean cameraOpened = false;
 	private View recipeDetailsPanel;
 
@@ -62,7 +65,8 @@ public class RecipeDetailsFragment extends Fragment {
 
 		recipeDetails = (RecipeDetails) i
 				.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
-
+		progressBar = (ProgressBar) recipeDetailsPanel.findViewById(R.id.get_main_picture_progress);
+		progressBar.setVisibility(View.GONE);
 		addImageButton = (Button) recipeDetailsPanel.findViewById(R.id.add_picture);
 		addImageButton.setOnClickListener(new OnClickListener() {
 
@@ -183,10 +187,11 @@ public class RecipeDetailsFragment extends Fragment {
 	private void initMainRecipePicture() {
 		if(!EntityUtils.isNewRecipe(recipeDetails)) {
 			ImageView mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
+			ProgressBar progressBar = (ProgressBar) recipeDetailsPanel.findViewById(R.id.get_main_picture_progress);
 			String id = ActivityUtils.getRecipeMainPictureId(recipeDetails);
 			String url = ImagesInitializer.getUrl(getActivity(), id, ImageType.RECIPE_PICTURE);
 			TCImageLoader loader = ((GoogleAnalyticsApplication) getActivity().getApplication()).getLoader();
-			loader.display(url, mainPicture, R.drawable.default_recipe_image);
+			loader.display(url, mainPicture,progressBar, R.drawable.default_recipe_image);
 			//ImagesInitializer.initRecipeMainPicture(mainPicture, recipeDetails, getActivity());
 		}
 

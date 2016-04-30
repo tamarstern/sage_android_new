@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
@@ -50,14 +51,12 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 
 	private boolean cameraOpened;
 
-	private TCImageLoader loader;
+	private ProgressBar progressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_picture_recipe_page);
-
-		loader = new TCImageLoader(this);
 
 		Intent i = getIntent();
 
@@ -66,7 +65,8 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 
 		category = (RecipeCategory) i
 				.getSerializableExtra(EntityDataTransferConstants.CATEGORY_DATA_TRANSFER);
-
+		progressBar = (ProgressBar)findViewById(R.id.get_recipe_picture_progress);
+		progressBar.setVisibility(View.GONE);
 		addImageButton = (Button) findViewById(R.id.add_recipe_as_picture);
 		recipeAsPicture = (ImageView) findViewById(R.id.recipe_as_picture_receipt_image);
 		editRecipePictureButton = (Button)findViewById(R.id.edit_recipe_picture_button);
@@ -91,18 +91,11 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		initSupportActionBar();
 
 		initPictureAndPictureButton();
-		initMainRecipePicture(this.recipeAsPicture);
+		initMainRecipePicture();
 		disableLockScreenAndTimeout();
 
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		initMainRecipePicture(this.recipeAsPicture);
-
-	}
 
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
@@ -163,15 +156,26 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 	}
 
 
-	private void initMainRecipePicture(ImageView imageView) {
+	private void initMainRecipePicture() {
 		if(EntityUtils.isNewRecipe(recipeDetails)) {
 			return;
 		}
 		String id = ActivityUtils.getRecipeImagePictureId(recipeDetails);
-		String url = ImagesInitializer.getUrl(this, id, ImageType.IMAGE_RECIPE_PICTURE);
-		TCImageLoader loader = ((GoogleAnalyticsApplication) this.getApplication()).getLoader();
-		loader.display(url, imageView, R.drawable.default_recipe_image);
-		//ImagesInitializer.initImageViewForRecipePicture(imageView, recipeDetails, this);
+		if(!TextUtils.isEmpty(id)) {
+
+			String url = ImagesInitializer.getUrl(this, id, ImageType.IMAGE_RECIPE_PICTURE);
+			TCImageLoader loader = ((GoogleAnalyticsApplication) this.getApplication()).getLoader();
+			loader.display(url, this.recipeAsPicture,this.progressBar, R.drawable.default_recipe_image);
+
+		}
+	}
+
+	private void initImageVisibitliyAfterLoad() {
+		progressBar.setVisibility(View.GONE);
+		recipeAsPicture.setVisibility(View.VISIBLE);
+		if(EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), this)) {
+			editRecipePictureButton.setVisibility(View.VISIBLE);
+		}
 
 	}
 

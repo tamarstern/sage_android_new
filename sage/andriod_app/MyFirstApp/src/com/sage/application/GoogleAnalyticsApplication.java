@@ -39,4 +39,14 @@ public class GoogleAnalyticsApplication extends Application {
 		return loader;
 	}
 
+	  public void clearAllCaches() {
+
+		  MyProfileRecipiesContainer.getInstance().clearAll();
+		  NewsfeedContainer.getInstance().clearAll();
+		  RecipeImageContainer.getInstance().clearAll();
+		  UserCategoriesContainer.getInstance().clearAll();
+		  UserFollowingContainer.getInstance().clearAll();
+
+	  }
+
 }

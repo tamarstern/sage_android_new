@@ -7,7 +7,9 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.LruCache;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -25,13 +27,13 @@ public class TCImageLoader  {
         cache = new TCLruCache(limitKb);
     }
 
-    public void display(String url, ImageView imageview, int defaultResource) {
+    public void display(String url, ImageView imageview, ProgressBar progressBar, int defaultResource) {
         Bitmap image = cache.get(url);
         if (image != null) {
             imageview.setImageBitmap(image);
         }
         else {
-            new SetImageTask(imageview, defaultResource).execute(url);
+            new SetImageTask(imageview,progressBar, defaultResource).execute(url);
         }
     }
 
@@ -52,11 +54,20 @@ public class TCImageLoader  {
         private ImageView imageview;
         private Bitmap bmp;
         private int defaultResource;
+        private ProgressBar progressBar;
 
-        public SetImageTask(ImageView imageview, int defaultResource) {
+
+        public SetImageTask(ImageView imageview, ProgressBar progressBar, int defaultResource) {
 
             this.imageview = imageview;
             this.defaultResource = defaultResource;
+            this.progressBar = progressBar;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            imageview.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -79,12 +90,14 @@ public class TCImageLoader  {
 
         @Override
         protected void onPostExecute(Integer result) {
+            progressBar.setVisibility(View.GONE);
             if(result == 0) {
                 imageview.setImageResource(defaultResource);
             }
             else if (result == 1) {
                 imageview.setImageBitmap(bmp);
             }
+            imageview.setVisibility(View.VISIBLE);
             super.onPostExecute(result);
         }
 

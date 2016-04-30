@@ -30,6 +30,11 @@ public class UserCategoriesContainer {
 
     }
 
+    public void clearAll() {
+        categoriesMap.clear();
+        categoriesInitialized = false;
+    }
+
     public static UserCategoriesContainer getInstance() {
         if (instance == null) {
             synchronized (LOCK) {

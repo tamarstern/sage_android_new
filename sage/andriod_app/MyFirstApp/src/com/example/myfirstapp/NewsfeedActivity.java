@@ -14,6 +14,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
@@ -47,6 +48,8 @@ public class NewsfeedActivity extends AppCompatActivity {
 	private boolean afterStop;
 	private boolean shouldIncreasePage = true;
 
+	private RelativeLayout failedToLoadPanel;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,6 +61,18 @@ public class NewsfeedActivity extends AppCompatActivity {
 		progressBar.setVisibility(View.GONE);
 
 		initializeSupportActionBar();
+
+		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
+		failedToLoadPanel.setVisibility(View.GONE);
+		failedToLoadPanel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				failedToLoadPanel.setVisibility(View.GONE);
+				listView.setVisibility(View.VISIBLE);
+				getNewsFeedRecipiesForUser();
+			}
+		});
+
 
 		listView = (ListView) findViewById(android.R.id.list);
 		listView.addFooterView(footer);
@@ -205,7 +220,11 @@ public class NewsfeedActivity extends AppCompatActivity {
 
 			loadingMore = false;
 			shouldIncreasePage = false;
-			if (listView.getAdapter().getCount()-1 > 0) {
+			if(pageNumber == 0) {
+				super.performCustomActionsOnException();
+				failedToLoadPanel.setVisibility(View.VISIBLE);
+				listView.setVisibility(View.GONE);
+			} else if (listView.getAdapter().getCount()-1 > 0) {
 				progressBar.setVisibility(View.GONE);
 			} else {
 				super.performCustomActionsOnException();

@@ -26,6 +26,7 @@ public class ImageResizeUtils {
             Matrix matrix = new Matrix();
             matrix.postRotate(orientation);
             Bitmap newBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
+            Log.i("successRotate", "succeed rotating image");
             return newBitmap;
         }
         catch (Exception e) {

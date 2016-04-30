@@ -28,6 +28,10 @@ public class UserFollowingContainer {
 
     }
 
+    public void clearAll() {
+        usersMap.clear();
+    }
+
     public static UserFollowingContainer getInstance() {
         if(instance == null) {
             synchronized(LOCK) {

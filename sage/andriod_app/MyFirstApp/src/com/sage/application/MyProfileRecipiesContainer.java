@@ -22,6 +22,11 @@ public class MyProfileRecipiesContainer {
 
     }
 
+    public void clearAll() {
+        profilePageMap.clear();
+        profilePageFollowedByMap.clear();
+    }
+
     public static MyProfileRecipiesContainer getInstance() {
         if (instance == null) {
             synchronized (LOCK) {

@@ -22,6 +22,11 @@ public class NewsfeedContainer {
 
     }
 
+    public void clearAll() {
+        newsfeedMap.clear();
+        newsfeedUsersMap.clear();
+    }
+
     public static NewsfeedContainer getInstance() {
         if (instance == null) {
             synchronized (LOCK) {

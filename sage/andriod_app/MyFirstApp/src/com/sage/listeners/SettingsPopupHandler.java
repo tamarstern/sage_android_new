@@ -1,12 +1,5 @@
 package com.sage.listeners;
 
-import com.example.myfirstapp.ChangeUserDisplayNameActivity;
-import com.example.myfirstapp.LoginActivity;
-import com.example.myfirstapp.R;
-import com.sage.constants.ActivityConstants;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.LoginUtility;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,12 +8,20 @@ import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.PopupWindow;
+
+import com.example.myfirstapp.ChangeUserDisplayNameActivity;
+import com.example.myfirstapp.LoginActivity;
+import com.example.myfirstapp.R;
+import com.sage.application.GoogleAnalyticsApplication;
+import com.sage.constants.ActivityConstants;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.LoginUtility;
 
 public class SettingsPopupHandler {
 
@@ -52,6 +53,8 @@ public class SettingsPopupHandler {
 
 			public void onClick(View popupView) {
 				LoginUtility.cleanAuthenticationDetails(context);
+				GoogleAnalyticsApplication application = ((GoogleAnalyticsApplication)context.getApplication());
+				application.clearAllCaches();
 				Intent intent = new Intent(context, LoginActivity.class);
 				context.startActivity(intent);
 			}
