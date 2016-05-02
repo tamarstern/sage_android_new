@@ -86,6 +86,7 @@ public class MyProfileRecipiesContainer {
 
     public void addRecipe(RecipeDetails details) {
         if(details.isPublished()) {
+            deleteRecipe(details);
             ArrayList<RecipeDetails> recipes = getRecipesByPage(0);
             recipes.add(0, details);
             putRecipesForPage(0, recipes);

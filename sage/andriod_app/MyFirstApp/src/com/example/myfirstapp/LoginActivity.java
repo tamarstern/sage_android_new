@@ -31,6 +31,7 @@ import com.sage.backgroundServices.CategoriesReceiver;
 import com.sage.backgroundServices.DeleteRecipesReceiver;
 import com.sage.backgroundServices.GetFollowingReceiver;
 import com.sage.backgroundServices.GetProfileRecipiesReceiver;
+import com.sage.backgroundServices.SaveRecipesReceiver;
 import com.sage.backgroundServices.SyncFollowUsersReceiver;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
@@ -70,20 +71,24 @@ public class LoginActivity extends Activity {
 
 
 		} else {
-			initLoginFormVisibility(View.VISIBLE);
-
-			usernameEditText = (EditText) findViewById(R.id.email);
-			passwordEditText = (EditText) findViewById(R.id.password);
-
-			initFacebookLoginButton();
-
-			initDirectAuthenticationLoginButton();
-
-			initRegisterLoginButton();
-
-			initForgotPasswordLink();
+			initLoginFormUi();
 
 		}
+	}
+
+	private void initLoginFormUi() {
+		initLoginFormVisibility(View.VISIBLE);
+
+		usernameEditText = (EditText) findViewById(R.id.email);
+		passwordEditText = (EditText) findViewById(R.id.password);
+
+		initFacebookLoginButton();
+
+		initDirectAuthenticationLoginButton();
+
+		initRegisterLoginButton();
+
+		initForgotPasswordLink();
 	}
 
 	public void scheduleAlarmBackgroundServices() {
@@ -119,6 +124,15 @@ public class LoginActivity extends Activity {
 				deleteRecipesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
 				3*60*1000, deleteRecipesPIntent);
+
+
+		Intent saveRecipesIntent = new Intent(getApplicationContext(), SaveRecipesReceiver.class);
+		final PendingIntent saveRecipesPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
+				saveRecipesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				5*60*1000, saveRecipesPIntent);
+
+
 
 
 		/*Intent recipesForCategoryIntent = new Intent(getApplicationContext(), RecipesForCategoryReceiver.class);
@@ -353,6 +367,7 @@ public class LoginActivity extends Activity {
 			container.dismissProgress();
 			if (result == null) {
 				initLoginFormVisibility(View.VISIBLE);
+				initLoginFormUi();
 				return;
 			}
 

@@ -4,7 +4,7 @@ public class ServicesConstants {
 	
 	//public static String APP_SERVER_URL = "http://10.0.2.2:1337";
 	
-	//public static String APP_SERVER_URL = "https://192.168.0.180:1337";	
+	//public static String APP_SERVER_URL = "https://192.168.0.180:1337";
 	public static String APP_SERVER_URL = "https://sageproductionservice.azurewebsites.net/";
 	public static final String UTF_8 = "UTF-8";
 	public static final String POST_REQUEST_TYPE = "POST";

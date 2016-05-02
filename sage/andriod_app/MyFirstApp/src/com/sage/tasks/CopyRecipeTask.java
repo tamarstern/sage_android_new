@@ -3,17 +3,19 @@ package com.sage.tasks;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.myfirstapp.ProgressDialogContainer;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
+import com.sage.entities.User;
 import com.sage.services.CopyExistingRecipeService;
 import com.sage.utils.ActivityUtils;
+import com.sage.utils.CacheUtils;
 import com.sage.utils.ServicesUtils;
 
 public class CopyRecipeTask extends AsyncTask<Object, Void, JsonElement> {	
@@ -23,11 +25,13 @@ public class CopyRecipeTask extends AsyncTask<Object, Void, JsonElement> {
 	private String recipeId;
 	private Activity context;
 	protected ProgressDialogContainer container;
+	private RecipeDetails details;
 	
 	
-	public CopyRecipeTask (Activity context) {
+	public CopyRecipeTask (Activity context, RecipeDetails details) {
 		this.context = context;
 		container = new ProgressDialogContainer(context);
+		this.details = details;
 	}
 	@Override
 	protected void onPreExecute() {
@@ -68,12 +72,23 @@ public class CopyRecipeTask extends AsyncTask<Object, Void, JsonElement> {
 
 			RecipeDetails recipeDetails = ServicesUtils.createRecipeDetailsFromResponse(gson, dataElement);
 
-			MyProfileRecipiesContainer.getInstance().addRecipe(recipeDetails);
+			User user = createOwnerObject(details);
+
+			CacheUtils.updateRecipeUserTouchUps(recipeDetails, context, user);
 
 			ActivityUtils.openCategoriesPage(recipeDetails, context);
 
 		}
 
+	}
+
+	@NonNull
+	private User createOwnerObject(RecipeDetails recipeDetails) {
+		User user = new User();
+		user.set_id(recipeDetails.getOwnerObjectId());
+		user.setUsername(recipeDetails.getOwnerUserName());
+		user.setUserDisplayName(recipeDetails.getOwnerDisplayName());
+		return user;
 	}
 
 

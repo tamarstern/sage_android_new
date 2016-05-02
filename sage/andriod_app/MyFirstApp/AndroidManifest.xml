@@ -71,6 +71,15 @@
 
 
         <receiver
+            android:name="com.sage.backgroundServices.SaveRecipesReceiver"
+            android:process=":remote">
+        </receiver>
+        <service
+            android:name="com.sage.backgroundServices.SaveRecipesService"
+            android:exported="false"/>
+
+
+        <receiver
             android:name="com.sage.backgroundServices.SyncFollowUsersReceiver"
             android:process=":remote">
         </receiver>

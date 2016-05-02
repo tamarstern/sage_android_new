@@ -84,15 +84,11 @@ public class ImagesInitializer {
 	}
 
 	public static void initRecipeMainPicture(ImageView image, RecipeDetails details, Activity context) {
-		String id = ActivityUtils.getRecipeMainPictureId(details);
+		String id = CacheUtils.getRecipeMainPictureId(details);
 		ImagesInitializer.initialRecipeImage(context, id, image, ImageType.RECIPE_PICTURE);
 	}
 
 
-	public static void initImageViewForRecipePicture(ImageView image, RecipeDetails details, Activity context) {
-		String id = ActivityUtils.getRecipeImagePictureId(details);
-		ImagesInitializer.initialRecipeImage(context, id, image, ImageType.IMAGE_RECIPE_PICTURE);
-	}
 
 
 

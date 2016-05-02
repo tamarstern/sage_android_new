@@ -30,7 +30,6 @@ public class RecipeOwnerFragment extends Fragment implements IInitLinkDetailsLis
 
 	private TextView ownerDisplayName;
 
-	static final int REQUEST_IMAGE_CAPTURE = 1;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +77,7 @@ public class RecipeOwnerFragment extends Fragment implements IInitLinkDetailsLis
 	}
 
 	private void initLinkOwnerName(final Activity activity) {
-		final RecipeDetails linkDetails = (RecipeDetails) receiptDetails;
+		final RecipeDetails linkDetails = receiptDetails;
 		String ownerName = RecipeOwnerContext.getOwner(linkDetails.getUrl());
 		if (!TextUtils.isEmpty(ownerName)) {
             ownerDisplayName.setText(ownerName);

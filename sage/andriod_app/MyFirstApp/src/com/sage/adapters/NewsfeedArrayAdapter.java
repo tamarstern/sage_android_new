@@ -96,7 +96,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 			public void onClick(View v) {
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(context,
 						recipeUserBasicData.get_id());
-				new CopyRecipeTask(context).execute(params);
+				new CopyRecipeTask(context, recipeUserBasicData).execute(params);
 			}
 
 		});

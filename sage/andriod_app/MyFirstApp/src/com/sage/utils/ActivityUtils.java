@@ -28,6 +28,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
+import com.sage.entities.User;
 import com.sage.listeners.ExitRecipeWithoutSavingPopupHandler;
 
 public class ActivityUtils {
@@ -141,40 +142,6 @@ public class ActivityUtils {
         return params;
     }
 
-    public static String getRecipeImagePictureId(RecipeDetails recipeDetails) {
-        String recipeAsPictureId = RecipeImageContainer.getInstance().getRecipeAsPictureId(recipeDetails);
-        if (!TextUtils.isEmpty(recipeAsPictureId)) {
-            return recipeAsPictureId;
-        }
-        return recipeDetails.getImageRecipe_pictureId();
-    }
-
-    public static void updateRecipeUserTouchUps(RecipeDetails details, Activity context, boolean updateOwner) {
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        String userDisplayName = sharedPref.getString(ActivityConstants.USER_DISPLAY_NAME, null);
-        details.setUserDisplayName(userDisplayName);
-
-        String userObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
-        details.setUserObjectId(userObjectId);
-
-        String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
-        details.setUserId(userName);
-
-        if (!details.getRecipeType().equals(RecipeType.LINK) && updateOwner && TextUtils.isEmpty(details.getOwnerObjectId())) {
-            details.setOwnerDisplayName(userDisplayName);
-            details.setOwnerObjectId(userObjectId);
-            details.setOwnerUserName(userName);
-        }
-    }
-
-    public static String getRecipeMainPictureId(RecipeDetails recipeDetails) {
-        String recipePictureId = RecipeImageContainer.getInstance().getRecipeMainPictureId(recipeDetails);
-        if (!TextUtils.isEmpty(recipePictureId)) {
-            return recipePictureId;
-        }
-        return recipeDetails.getPictureId();
-    }
 
 
 

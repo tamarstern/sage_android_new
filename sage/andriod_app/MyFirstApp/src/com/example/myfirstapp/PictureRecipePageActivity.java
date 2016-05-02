@@ -34,6 +34,7 @@ import com.sage.fragments.ToolbarFragment;
 import com.sage.listeners.SaveRecipeHandler;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.CacheUtils;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ImageSelectorUtils;
 import com.sage.utils.ImagesInitializer;
@@ -160,7 +161,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		if(EntityUtils.isNewRecipe(recipeDetails)) {
 			return;
 		}
-		String id = ActivityUtils.getRecipeImagePictureId(recipeDetails);
+		String id = CacheUtils.getRecipeImagePictureId(recipeDetails);
 		if(!TextUtils.isEmpty(id)) {
 
 			String url = ImagesInitializer.getUrl(this, id, ImageType.IMAGE_RECIPE_PICTURE);
@@ -170,14 +171,6 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		}
 	}
 
-	private void initImageVisibitliyAfterLoad() {
-		progressBar.setVisibility(View.GONE);
-		recipeAsPicture.setVisibility(View.VISIBLE);
-		if(EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), this)) {
-			editRecipePictureButton.setVisibility(View.VISIBLE);
-		}
-
-	}
 
 	private void makePictureEditPanleInvisible() {
 		RelativeLayout mainPictureEditPanel = (RelativeLayout)findViewById(R.id.recipe_picture_edit_panel);
@@ -188,7 +181,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 	private void initPictureAndPictureButton() {
 
 		if (!EntityUtils.isNewRecipe(recipeDetails)) {
-			String recipeImagePictureId = ActivityUtils.getRecipeImagePictureId(recipeDetails);
+			String recipeImagePictureId = CacheUtils.getRecipeImagePictureId(recipeDetails);
 			if (TextUtils.isEmpty(recipeImagePictureId)) {
 				if (!EntityUtils.isLoggedInUserRecipe(recipeDetails.getUserId(), this)) {
 					addImageButton.setVisibility(View.GONE);

@@ -13,7 +13,7 @@ public class NewsfeedContainer {
 
     private ConcurrentHashMap<Integer, Object> newsfeedMap = new ConcurrentHashMap<Integer, Object>();
 
-    private ConcurrentHashMap<String, Object> newsfeedUsersMap = new ConcurrentHashMap<String, Object>();
+    private ConcurrentHashMap<String, Object> profileUsersMap = new ConcurrentHashMap<String, Object>();
 
     private static volatile NewsfeedContainer instance;
 
@@ -25,7 +25,7 @@ public class NewsfeedContainer {
 
     public void clearAll() {
         newsfeedMap.clear();
-        newsfeedUsersMap.clear();
+        profileUsersMap.clear();
     }
 
     public static NewsfeedContainer getInstance() {
@@ -76,21 +76,35 @@ public class NewsfeedContainer {
         if(details.isPublished()) {
             deleteRecipe(details);
             ArrayList<RecipeDetails> recipes = getRecipesByPage(0);
-            if(recipes.contains(details)) {
-                recipes.remove(details);
-            }
             recipes.add(0, details);
             putRecipesForPage(0, recipes);
         }
     }
 
-    public void addNewsfeedRecipesForUser(String userId, ArrayList<RecipeDetails> newsfeedRecipes) {
-        this.newsfeedUsersMap.put(userId, newsfeedRecipes);
+    public void addProfileRecipesForUser(String userId, ArrayList<RecipeDetails> newsfeedRecipes) {
+        this.profileUsersMap.put(userId, newsfeedRecipes);
     }
 
-    public ArrayList<RecipeDetails> getRecipesForUser(String userId) {
-        ArrayList<RecipeDetails> details = (ArrayList<RecipeDetails>)newsfeedUsersMap.get(userId);
+    public ArrayList<RecipeDetails> getProfileForUser(String userId) {
+        ArrayList<RecipeDetails> details = (ArrayList<RecipeDetails>) profileUsersMap.get(userId);
         return details;
     }
+
+    public void clearProfileRecipes() {
+        profileUsersMap.clear();
+    }
+
+    public void updateRecipeInNewsfeed(RecipeDetails recipeDetails) {
+        if(!recipeDetails.isPublished()) {
+            for(Integer key : newsfeedMap.keySet()) {
+                ArrayList<RecipeDetails> recipes = getRecipesByPage(key);
+                recipes.remove(recipeDetails);
+                putRecipesForPage(key, recipes);
+            }
+        } else {
+            addRecipe(recipeDetails);
+        }
+    }
+
 
 }

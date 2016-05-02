@@ -237,7 +237,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 		if(!currentUserProfile && pageNumber == 0) {
 			Intent i = getIntent();
 			String recipeAuthor = (String) i.getSerializableExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER);
-			ArrayList<RecipeDetails> recipesForUser = NewsfeedContainer.getInstance().getRecipesForUser(recipeAuthor);
+			ArrayList<RecipeDetails> recipesForUser = NewsfeedContainer.getInstance().getProfileForUser(recipeAuthor);
 			if(recipesForUser != null && recipesForUser.size() > 0 ) {
 				initAdaptor(recipesForUser);
 				pageNumber +=1;
@@ -389,7 +389,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 					MyProfileRecipiesContainer.getInstance().putRecipesForPage(pageNumber, details);
 				}
 				if(!currentUserProfile && pageNumber == 0) {
-					NewsfeedContainer.getInstance().addNewsfeedRecipesForUser(recipeAuthor, details);
+					NewsfeedContainer.getInstance().addProfileRecipesForUser(recipeAuthor, details);
 				}
 
 				initAdaptor(details);

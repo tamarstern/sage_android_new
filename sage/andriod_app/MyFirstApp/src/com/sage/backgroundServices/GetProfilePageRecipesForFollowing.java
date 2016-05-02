@@ -34,6 +34,7 @@ public class GetProfilePageRecipesForFollowing extends IntentService {
             String loggedInUserObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 
             if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(loggedInUserObjectId)) {
+                NewsfeedContainer.getInstance().clearProfileRecipes();
                 fetchProfilePageInBackground(token, loggedInUserObjectId);
             }
 
@@ -67,7 +68,7 @@ public class GetProfilePageRecipesForFollowing extends IntentService {
         Log.e("process for user", "process for user " + userId);
         ArrayList<RecipeDetails> firstPage = BackgroundServicesUtils.getProfilePageRecipiesForPage(token, userId, 0);
         if(firstPage != null) {
-            NewsfeedContainer.getInstance().addNewsfeedRecipesForUser(userId, firstPage);
+            NewsfeedContainer.getInstance().addProfileRecipesForUser(userId, firstPage);
             processedUsers.add(userId);
         }
     }

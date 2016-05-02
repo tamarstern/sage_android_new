@@ -1,8 +1,5 @@
 package com.example.myfirstapp;
 
-//import com.google.android.gms.analytics.GoogleAnalytics;
-//import com.google.android.gms.analytics.HitBuilders;
-//import com.google.android.gms.analytics.Tracker;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;

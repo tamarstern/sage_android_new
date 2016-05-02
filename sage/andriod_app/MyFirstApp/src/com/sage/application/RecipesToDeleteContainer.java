@@ -11,7 +11,6 @@ public class RecipesToDeleteContainer {
 
     private HashSet<RecipeDetails> recipesToDelete = new HashSet<RecipeDetails>();
 
-
     private static volatile RecipesToDeleteContainer instance;
 
     private static final Object LOCK = new Object();
@@ -32,16 +31,17 @@ public class RecipesToDeleteContainer {
         return instance;
     }
 
-    public void addRecipeToDelete(RecipeDetails recipe) {
+    public synchronized void addRecipeToDelete(RecipeDetails recipe) {
         this.getRecipesToDelete().add(recipe);
     }
 
 
-    public HashSet<RecipeDetails> getRecipesToDelete() {
-        return recipesToDelete;
+    public synchronized HashSet<RecipeDetails> getRecipesToDelete() {
+
+        return new HashSet<RecipeDetails>(recipesToDelete);
     }
 
-    public void removeRecipeFromList(RecipeDetails recipe) {
+    public synchronized void removeRecipeFromList(RecipeDetails recipe) {
         recipesToDelete.remove(recipe);
     }
 }
