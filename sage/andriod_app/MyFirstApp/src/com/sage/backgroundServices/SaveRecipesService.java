@@ -43,7 +43,7 @@ public class SaveRecipesService extends IntentService {
 
 
         } catch (Exception e) {
-            Log.e("failedDeleteRecipes", "failed delete recipes", e);
+            Log.e("failedSaveRecipes", "failed save recipes", e);
         } finally {
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
@@ -68,7 +68,7 @@ public class SaveRecipesService extends IntentService {
                     }
                 }
             for(RecipeDetails details  : savedRecipes) {
-                RecipesToDeleteContainer.getInstance().removeRecipeFromList(details);
+                RecipesToSaveContainer.getInstance().removeRecipeFromList(details);
             }
         }
     }

@@ -297,6 +297,13 @@ public class LoginActivity extends Activity {
 				return service.login(username, password);
 			} catch (Exception e) {
 				ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
+				final String message = getResources().getString(R.string.login_failed_no_connection);
+				activity.runOnUiThread(new Runnable() {
+					public void run() {
+						Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+
+					}
+				});
 				return null;
 			}
 		}
@@ -305,7 +312,7 @@ public class LoginActivity extends Activity {
 		protected void onPostExecute(JsonElement result) {
 			
 			container.dismissProgress();
-			
+
 			if (result == null) {
 				return;
 			}

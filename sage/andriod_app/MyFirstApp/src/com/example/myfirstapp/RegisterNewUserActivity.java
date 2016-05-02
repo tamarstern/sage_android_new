@@ -72,8 +72,8 @@ public class RegisterNewUserActivity extends Activity {
 		try {
 			startActivity(Intent.createChooser(i, "Send mail..."));
 		} catch (android.content.ActivityNotFoundException ex) {
-			Toast.makeText(RegisterNewUserActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT)
-					.show();
+			//Toast.makeText(RegisterNewUserActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT)
+			//		.show();
 		}
 	}
 

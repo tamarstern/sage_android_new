@@ -165,6 +165,7 @@ public class SaveRecipeHandler {
                     RecipesToSaveContainer.getInstance().addExsitingRecipeToSave(this.recipeDetails);
                     CacheUtils.updateRecipeUserTouchUps(recipeDetails, context);
                     CacheUtils.updateCacheAfterSaveExistingRecipe(recipeDetails);
+                    NavigationUtils.openNewsfeed(context);
                 }
                 return;
             }

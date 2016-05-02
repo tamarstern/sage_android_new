@@ -47,9 +47,7 @@ public class RecipesToSaveContainer {
     }
 
 
-
-
-
-
-
+    public void removeRecipeFromList(RecipeDetails details) {
+        existingRecipesToSave.remove(details);
+    }
 }

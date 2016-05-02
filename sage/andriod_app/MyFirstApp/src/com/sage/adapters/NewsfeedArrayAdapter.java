@@ -447,16 +447,16 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 
 			recipeBasicData.setLinkDataInitialized(true);
 			details.set(position, recipeBasicData);
-
 			notifyDataSetChanged();
 
 		}
 
 		@Override
 		protected void handleFailure() {
-			if(getLinkDetailsProgress != null) {
-				getLinkDetailsProgress.setVisibility(View.GONE);
-			}
+			recipeBasicData.setLinkDataInitialized(true);
+			details.set(position, recipeBasicData);
+			notifyDataSetChanged();
+
 		}
 	}
 
