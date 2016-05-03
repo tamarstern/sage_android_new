@@ -2,7 +2,6 @@ package com.sage.listeners;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
-import com.example.myfirstapp.ActivityRecipiesInCategoryPage;
 import com.example.myfirstapp.ProgressDialogContainer;
 import com.example.myfirstapp.R;
 import com.google.gson.Gson;
@@ -26,7 +24,6 @@ import com.sage.application.NewsfeedContainer;
 import com.sage.application.RecipesToSaveContainer;
 import com.sage.application.UserCategoriesContainer;
 import com.sage.constants.ActivityConstants;
-import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
 import com.sage.services.BaseSaveRecipeService;
@@ -113,6 +110,13 @@ public class SaveRecipeHandler {
         });
     }
 
+    private void updateCacheAndOpenRecipeCategoriesPage() {
+        UserCategoriesContainer.getInstance().
+                updateRecipeForCategoryInCache(recipeDetails, recipeDetails.getCategoryId(), category.get_id());
+        NavigationUtils.openRecipesPerCategoryPage(context, category);
+    }
+
+
     private class SaveRecipeTask extends AsyncTask<Object, Void, JsonElement> {
 
         private boolean isNewRecipe;
@@ -157,16 +161,12 @@ public class SaveRecipeHandler {
             container.showProgress();
         }
 
+
         @Override
         protected void onPostExecute(JsonElement result) {
             container.dismissProgress();
             if(result == null) {
-                if(!isNewRecipe) {
-                    RecipesToSaveContainer.getInstance().addExsitingRecipeToSave(this.recipeDetails);
-                    CacheUtils.updateRecipeUserTouchUps(recipeDetails, context);
-                    CacheUtils.updateCacheAfterSaveExistingRecipe(recipeDetails);
-                    NavigationUtils.openNewsfeed(context);
-                }
+                handleSaveRecipeOnFailure();
                 return;
             }
             JsonObject resultJsonObject = result.getAsJsonObject();
@@ -193,6 +193,24 @@ public class SaveRecipeHandler {
             }
         }
 
+        private void handleSaveRecipeOnFailure() {
+            recipeDetails.setExceptionOnSave(true);
+            if(isNewRecipe) {
+                if(category != null) {
+                    RecipesToSaveContainer.getInstance().addNewRecipeToSave(recipeDetails, category);
+                    updateCacheAndOpenRecipeCategoriesPage();
+                } else {
+                    ActivityUtils.openCategoriesPage(recipeDetails, context);
+                }
+            } else {
+                RecipesToSaveContainer.getInstance().addExsitingRecipeToSave(this.recipeDetails);
+                CacheUtils.updateRecipeUserTouchUps(recipeDetails, context);
+                CacheUtils.updateCacheAfterSaveExistingRecipe(recipeDetails);
+                NavigationUtils.openNewsfeed(context);
+            }
+        }
+
+
         private void attachRecipeToCategory(RecipeDetails recipeDetails) {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             String userObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
@@ -214,13 +232,15 @@ public class SaveRecipeHandler {
         }
 
         @Override
-        protected void doHandleSuccess() {
-            UserCategoriesContainer.getInstance().
-                    updateRecipeForCategoryInCache(recipeDetails, recipeDetails.getCategoryId(), categoryToSave.get_id());
-            Intent intent = new Intent(context, ActivityRecipiesInCategoryPage.class)
-                    .putExtra(EntityDataTransferConstants.CATEGORY_DATA_TRANSFER, categoryToSave);
-            context.startActivity(intent);
+        protected void doHandleFailure() {
+            recipeDetails.setExceptionOnSave(true);
+            RecipesToSaveContainer.getInstance().addNewRecipeToSave(recipeDetails, categoryToSave);
+            updateCacheAndOpenRecipeCategoriesPage();
+        }
 
+        @Override
+        protected void doHandleSuccess() {
+            updateCacheAndOpenRecipeCategoriesPage();
         }
 
     }

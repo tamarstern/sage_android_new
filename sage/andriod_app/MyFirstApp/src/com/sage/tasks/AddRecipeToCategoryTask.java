@@ -49,6 +49,7 @@ public abstract class AddRecipeToCategoryTask extends AsyncTask<Object, Void, Js
 	protected void onPostExecute(JsonElement result) {
 		container.dismissProgress();
 		if (result == null) {
+			doHandleFailure();
 			return;
 		}
 		JsonObject resultJsonObject = result.getAsJsonObject();
@@ -59,6 +60,8 @@ public abstract class AddRecipeToCategoryTask extends AsyncTask<Object, Void, Js
 		}
 
 	}
+
+	protected abstract void doHandleFailure();
 
 	protected abstract void doHandleSuccess();
 

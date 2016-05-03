@@ -52,7 +52,7 @@ public class RecipeCategoryBase implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return (int) _id.hashCode();
+		return _id != null ? (int) _id.hashCode() : 0;
 	}
 
 }

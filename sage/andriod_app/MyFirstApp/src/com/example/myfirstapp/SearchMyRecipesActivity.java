@@ -24,7 +24,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.sage.adapters.SubCategoriesArrayAdapter;
+import com.sage.adapters.RecipesForCategoriesArrayAdapter;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.services.GetSearchMyRecipes;
@@ -93,7 +93,7 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 	}
 
 	private void initListAdaptor(ArrayList<RecipeDetails> recipes) {
-		SubCategoriesArrayAdapter adapter = new SubCategoriesArrayAdapter(this, recipes);
+		RecipesForCategoriesArrayAdapter adapter = new RecipesForCategoriesArrayAdapter(this, recipes);
 		listView.setAdapter(adapter);
 	}
 

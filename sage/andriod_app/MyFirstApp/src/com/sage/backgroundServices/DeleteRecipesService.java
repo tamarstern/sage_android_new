@@ -33,7 +33,7 @@ public class DeleteRecipesService extends IntentService {
             Log.i("deleteRecipes", "start delete recipes backgroundService");
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-            String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
+            String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
             if(!TextUtils.isEmpty(token) && !TextUtils.isEmpty(userName)) {
                 deleteRecipes(token, userName);
             }

@@ -66,6 +66,7 @@ public class RecipeDetails implements Serializable, Comparable<RecipeDetails> {
 
 	private boolean linkUiInitialized;
 
+	private boolean exceptionOnSave = false;
 
 	public RecipeDetails() {
 
@@ -157,7 +158,7 @@ public class RecipeDetails implements Serializable, Comparable<RecipeDetails> {
 
 	@Override
 	public int hashCode() {
-		  return _id.hashCode();
+		  return _id != null ? _id.hashCode() : 0;
 	}
 
 	public Bitmap getImage() {
@@ -332,5 +333,13 @@ public class RecipeDetails implements Serializable, Comparable<RecipeDetails> {
 	@Override
 	public int compareTo(RecipeDetails another) {
 		return this.getHeader().compareTo(another.getHeader());
+	}
+
+	public boolean isExceptionOnSave() {
+		return exceptionOnSave;
+	}
+
+	public void setExceptionOnSave(boolean exceptionOnSave) {
+		this.exceptionOnSave = exceptionOnSave;
 	}
 }

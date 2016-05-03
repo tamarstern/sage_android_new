@@ -188,7 +188,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 			@Override
 			public void onClick(View v) {
 
-				recipeUserBasicData.setLikes_count(recipeUserBasicData.getLikes_count()-1);
+				recipeUserBasicData.setLikes_count(recipeUserBasicData.getLikes_count() - 1);
 				recipeUserBasicData.setUserLikeRecipe(false);
 				details.set(position, recipeUserBasicData);
 				notifyDataSetChanged();
@@ -334,7 +334,8 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 	}
 
 	private void initLinkOwnerName(final RecipeDetails recipeBasicData) {
-		String ownerDislayNameText = MessageFormat.format("{0}'\'s", recipeBasicData.getLinkSiteName());
+		String ownerDislayNameText =TextUtils.isEmpty(recipeBasicData.getLinkSiteName()) ?
+				context.getResources().getString(R.string.a_lbl)  : MessageFormat.format("{0}'\'s", recipeBasicData.getLinkSiteName());
 		ownerTextView.setText(ownerDislayNameText);
 		ownerTextView.setOnClickListener(new OnClickListener() {
 
@@ -348,7 +349,9 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 			}
 
 		});
-		ownerTextView.setTypeface(null, Typeface.BOLD);
+		if(!TextUtils.isEmpty(recipeBasicData.getLinkSiteName())) {
+			ownerTextView.setTypeface(null, Typeface.BOLD);
+		}
 	}
 
 	private RecipeDetails createNewRecipeDetailsObject(final RecipeDetails recipeBasicData) {

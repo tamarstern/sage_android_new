@@ -60,6 +60,10 @@ public class CopyRecipeTask extends AsyncTask<Object, Void, JsonElement> {
 	protected void onPostExecute(JsonElement result) {
 		container.dismissProgress();
 		if(result == null) {
+			User user = createOwnerObject(details);
+			CacheUtils.updateRecipeUserTouchUps(details, context, user);
+			details.setExceptionOnSave(true);
+			ActivityUtils.openCategoriesPage(details, context);
 			return;
 		}
 		JsonObject resultJsonObject = result.getAsJsonObject();

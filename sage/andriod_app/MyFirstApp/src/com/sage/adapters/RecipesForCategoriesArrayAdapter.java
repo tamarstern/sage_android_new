@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myfirstapp.R;
 import com.google.gson.JsonElement;
@@ -19,18 +20,19 @@ import com.sage.entities.RecipeType;
 import com.sage.listeners.RecipeDetailsClickListener;
 import com.sage.tasks.GetRecipeUrlDetailsTask;
 import com.sage.utils.ActivityUtils;
+import com.sage.utils.EntityUtils;
 import com.sage.utils.RecipeOwnerContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubCategoriesArrayAdapter extends ArrayAdapter<RecipeDetails> {
+public class RecipesForCategoriesArrayAdapter extends ArrayAdapter<RecipeDetails> {
 
 	private final Activity context;
 	private List<RecipeDetails> recipes;
 	private LayoutInflater inflater;
 
-	public SubCategoriesArrayAdapter(Activity context, ArrayList<RecipeDetails> recipes) {
+	public RecipesForCategoriesArrayAdapter(Activity context, ArrayList<RecipeDetails> recipes) {
 		super(context, 0, recipes);
 		this.context = context;
 		this.recipes = new ArrayList<RecipeDetails>(recipes);
@@ -49,7 +51,18 @@ public class SubCategoriesArrayAdapter extends ArrayAdapter<RecipeDetails> {
 		categoryName.setText(recipeNameValue);
 		
 		RelativeLayout recipeLine = (RelativeLayout)rowView.findViewById(R.id.recipe_line);
-		recipeLine.setOnClickListener(new RecipeDetailsClickListener(context, recipePublished));
+		if(!EntityUtils.isNewRecipe(recipePublished)) {
+			recipeLine.setOnClickListener(new RecipeDetailsClickListener(context, recipePublished));
+		} else {
+			recipeLine.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					String message = context.getResources().getString(R.string.recipe_being_saved);
+					Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+				}
+			});
+		}
+
 
 		ImageView recipePublishedIcon = (ImageView) rowView.findViewById(R.id.recipe_published);
 

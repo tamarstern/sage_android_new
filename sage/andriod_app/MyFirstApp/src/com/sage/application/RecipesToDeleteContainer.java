@@ -31,17 +31,17 @@ public class RecipesToDeleteContainer {
         return instance;
     }
 
-    public synchronized void addRecipeToDelete(RecipeDetails recipe) {
-        this.getRecipesToDelete().add(recipe);
+    public void addRecipeToDelete(RecipeDetails recipe) {
+        this.recipesToDelete.add(recipe);
     }
 
 
-    public synchronized HashSet<RecipeDetails> getRecipesToDelete() {
+    public HashSet<RecipeDetails> getRecipesToDelete() {
 
         return new HashSet<RecipeDetails>(recipesToDelete);
     }
 
-    public synchronized void removeRecipeFromList(RecipeDetails recipe) {
+    public void removeRecipeFromList(RecipeDetails recipe) {
         recipesToDelete.remove(recipe);
     }
 }

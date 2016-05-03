@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.example.myfirstapp.ActivityRecipiesInCategoryPage;
+import com.sage.application.RecipesToSaveContainer;
 import com.sage.application.UserCategoriesContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
@@ -15,6 +16,7 @@ import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
 import com.sage.tasks.AddRecipeToCategoryTask;
 import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.NavigationUtils;
 
 public class ChooseCategoryClickListener implements OnClickListener {
 
@@ -33,24 +35,41 @@ public class ChooseCategoryClickListener implements OnClickListener {
 
 	}
 
+	private void handleSaveRecipeFailure() {
+		RecipesToSaveContainer.getInstance().addNewRecipeToSave(recipeDetails, recipeCategory);
+		UserCategoriesContainer.getInstance().
+				updateRecipeForCategoryInCache(recipeDetails, null, recipeCategory.get_id());
+		NavigationUtils.openRecipesPerCategoryPage(context, recipeCategory);
+	}
+
+
 	@Override
 	public void onClick(View v) {
 
 		if (recipeDetails != null) {
-			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-			String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-
-			String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
-
-			Object[] params = new Object[] { recipeCategory, token, userName, recipeDetails };
-
-			new AddToSubCategoryTask().execute(params);
-			
-			AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.ADD_RECIPE_TO_SUB_CATEGORY);
+			if(recipeDetails.isExceptionOnSave()) {
+				handleSaveRecipeFailure();
+			} else {
+				attacheRecipeToCategory();
+			}
 		} else {
 			openCategoryPage();
 		}
 
+	}
+
+
+	private void attacheRecipeToCategory() {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
+
+		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+
+		Object[] params = new Object[] { recipeCategory, token, userName, recipeDetails };
+
+		new AddToSubCategoryTask().execute(params);
+
+		AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.ADD_RECIPE_TO_SUB_CATEGORY);
 	}
 
 	private void openCategoryPage() {
@@ -63,6 +82,12 @@ public class ChooseCategoryClickListener implements OnClickListener {
 
 		public AddToSubCategoryTask() {
 			super(context);
+		}
+
+		@Override
+		protected void doHandleFailure() {
+			recipeDetails.setExceptionOnSave(true);
+			handleSaveRecipeFailure();
 		}
 
 		@Override

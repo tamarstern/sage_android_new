@@ -1,5 +1,6 @@
 package com.sage.application;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.sage.entities.RecipeCategory;
@@ -57,23 +58,29 @@ public class UserCategoriesContainer {
     }
 
     public ArrayList<RecipeCategory> getCategories() {
-        HashSet<RecipeCategory> categories = (HashSet<RecipeCategory>) this.categoriesMap.get(CATEGORIES_KEY);
-        if(categories == null) {
-            categories = new HashSet<RecipeCategory>();
-            putCategories(categories);
-        }
+        HashSet<RecipeCategory> categories = getRecipeCategoriesAndInit();
         return new ArrayList<RecipeCategory>(categories);
     }
 
-    public void putCategory(RecipeCategory category) {
+    @NonNull
+    private HashSet<RecipeCategory> getRecipeCategoriesAndInit() {
         HashSet<RecipeCategory> categories = (HashSet<RecipeCategory>) this.categoriesMap.get(CATEGORIES_KEY);
+        if (categories == null) {
+            categories = new HashSet<RecipeCategory>();
+            putCategories(categories);
+        }
+        return categories;
+    }
+
+    public void putCategory(RecipeCategory category) {
+        HashSet<RecipeCategory> categories = getRecipeCategoriesAndInit();
         boolean categoryExist = categories.contains(category);
-        if(categoryExist) {
+        if (categoryExist) {
             categories.remove(category);
         }
         categories.add(category);
         putCategories(categories);
-        if(!categoryExist) {
+        if (!categoryExist) {
             putRecipesForCategory(category, new HashSet<RecipeDetails>());
         }
     }
@@ -116,7 +123,9 @@ public class UserCategoriesContainer {
     public void deleteRecipe(RecipeDetails recipe) {
         String key = generateKey(recipe.getCategoryId());
         HashSet<RecipeDetails> recipeSet = (HashSet<RecipeDetails>) this.categoriesMap.get(key);
-        recipeSet.remove(recipe);
+        if (recipeSet != null) {
+            recipeSet.remove(recipe);
+        }
     }
 
 
@@ -125,15 +134,15 @@ public class UserCategoriesContainer {
         if (!TextUtils.isEmpty(oldCategoryId)) {
             String oldKey = generateKey(oldCategoryId);
             HashSet<RecipeDetails> recipeSet = (HashSet<RecipeDetails>) this.categoriesMap.get(oldKey);
-            if(recipeSet != null && recipeSet.contains(recipe)) {
+            if (recipeSet != null && recipeSet.contains(recipe)) {
                 recipeSet.remove(recipe);
             }
         }
-        if(!TextUtils.isEmpty(newCategoryId)) {
+        if (!TextUtils.isEmpty(newCategoryId)) {
             String newKey = generateKey(newCategoryId);
             HashSet<RecipeDetails> recipeSet = (HashSet<RecipeDetails>) this.categoriesMap.get(newKey);
-            if(recipeSet != null) {
-                if(recipeSet.contains(recipe)) {
+            if (recipeSet != null) {
+                if (recipeSet.contains(recipe)) {
                     recipeSet.remove(recipe);
                 }
                 recipeSet.add(recipe);
@@ -141,3 +150,4 @@ public class UserCategoriesContainer {
         }
     }
 }
+
