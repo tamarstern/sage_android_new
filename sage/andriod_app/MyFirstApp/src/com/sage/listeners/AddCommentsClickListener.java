@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -39,8 +40,8 @@ import com.sage.utils.AnalyticsUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class AddCommentsClickListener implements OnClickListener {
 
@@ -125,8 +126,30 @@ public class AddCommentsClickListener implements OnClickListener {
 
 	}
 
+	private void initCommentUserTouchUps(RecipeComment comment) {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+		String userDisplayName = sharedPref.getString(ActivityConstants.USER_DISPLAY_NAME, null);
+		comment.setUserDisplayName(userDisplayName);
+
+		String userObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+		comment.setUserObjectId(userObjectId);
+
+		String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
+		comment.setUserId(userName);
+
+	}
+
 	private void addComment(String commentText) {
+		addNewCommentToAdapter(commentText);
+
 		AnalyticsUtils.sendAnalyticsTrackingEvent(activity, AnalyticsUtils.ADD_COMMENT);
+
+		commentTextBox.getText().clear();
+
+		saveCommentInServer(commentText);
+	}
+
+	private void saveCommentInServer(String commentText) {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 
@@ -134,7 +157,16 @@ public class AddCommentsClickListener implements OnClickListener {
 
 		Object[] params = new Object[] { token, userName, recipeId, commentText };
 
-		new AddCommentTask(popupWindowContext).execute(params);
+		new AddCommentTask().execute(params);
+	}
+
+	private void addNewCommentToAdapter(String commentText) {
+		RecipeComment comment = new RecipeComment();
+		comment.set_id(UUID.randomUUID().toString());
+		comment.setText(commentText);
+		initCommentUserTouchUps(comment);
+		ArrayAdapter<RecipeComment> adapter = (ArrayAdapter<RecipeComment>)listView.getAdapter();
+		adapter.insert(comment, 0);
 	}
 
 	private void getCommentsForRecipe(Context context) {
@@ -146,18 +178,6 @@ public class AddCommentsClickListener implements OnClickListener {
 		new GetCommentsTask(context).execute(params);
 	}
 
-	private String[] getCommentsHeaders(ArrayList<RecipeComment> comments) {
-
-		List<String> commentsheaders = new ArrayList<String>();
-
-		for (RecipeComment comment : comments) {
-			commentsheaders.add(comment.getText());
-		}
-
-		String[] namesArray = commentsheaders.toArray(new String[commentsheaders.size()]);
-		return namesArray;
-
-	}
 
 	public void notifyCommentsPopupClosed() {
 		for (IClosePopupCommentListener listener : listeners) {
@@ -224,9 +244,7 @@ public class AddCommentsClickListener implements OnClickListener {
 						new TypeToken<ArrayList<RecipeComment>>() {
 						}.getType());
 
-				String[] headers = getCommentsHeaders(comments);
-
-				CommentsArrayAdapter adapter = new CommentsArrayAdapter(activity, comments, headers);
+				CommentsArrayAdapter adapter = new CommentsArrayAdapter(activity, comments);
 				listView.setAdapter(adapter);
 				ActivityUtils.InitPopupWindowWithEventHandler(popupWindow, activity);
 
@@ -238,15 +256,14 @@ public class AddCommentsClickListener implements OnClickListener {
 
 	private class AddCommentTask extends AsyncTask<Object, Void, JsonElement> {
 
-		private ProgressDialogContainer container;
 
-		public AddCommentTask(Context context) {
-			container = new ProgressDialogContainer(context);
+		public AddCommentTask() {
+
 		}
 
 		@Override
 		protected void onPreExecute() {
-			container.showProgress();
+
 		}
 
 		@Override
@@ -270,17 +287,6 @@ public class AddCommentsClickListener implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(JsonElement result) {
-			container.dismissProgress();
-			if (result == null) {
-				return;
-			}
-			JsonObject resultJsonObject = result.getAsJsonObject();
-			boolean success = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
-			if (success) {
-				getCommentsForRecipe(popupWindowContext);
-				commentTextBox.getText().clear();
-				ActivityUtils.InitPopupWindowWithEventHandler(popupWindow, activity);
-			}
 
 		}
 

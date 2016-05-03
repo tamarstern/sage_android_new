@@ -141,5 +141,6 @@
     <string name="failed_load_search_results_tap_to_retry">Cannot load search results, tap to retry</string>
     <string name="login_failed_no_connection">Login failed, please retry.</string>
     <string name="recipe_being_saved">Recipe is being saved.</string>
+    <string name="already_registered_please_login">Already Registered? \n Please Login</string>
 
 </resources>

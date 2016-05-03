@@ -14,19 +14,18 @@ import com.sage.listeners.ProfilePageClickListener;
 import com.sage.utils.EntityUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-public class CommentsArrayAdapter extends ArrayAdapter<String> {
+public class CommentsArrayAdapter extends ArrayAdapter<RecipeComment> {
 
 	private final Activity context;
 	private List<RecipeComment> comments;
 	private LayoutInflater inflater;
 
-	public CommentsArrayAdapter(Activity context, Collection<RecipeComment> recipes, String[] headers) {
-		super(context, -1, headers);
+	public CommentsArrayAdapter(Activity context, ArrayList<RecipeComment> recipes) {
+		super(context, 0, recipes);
 		this.context = context;
-		this.comments = new ArrayList<RecipeComment>(recipes);
+		this.comments = recipes;
 	}
 
 	@Override

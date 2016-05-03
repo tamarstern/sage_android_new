@@ -165,8 +165,8 @@ public class LoginActivity extends Activity {
 
 	private void initFacebookLoginButton() {
 		
-		TextView orLabel = (TextView)findViewById(R.id.label_or);
-		orLabel.setVisibility(View.GONE);
+		//TextView orLabel = (TextView)findViewById(R.id.label_or);
+		//orLabel.setVisibility(View.GONE);
 		
 		
 		LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);

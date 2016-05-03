@@ -39,6 +39,27 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/sage" />
 
+            <Button
+                android:id="@+id/register_now_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="#d6ebf2"
+                android:text="@string/action_register_now"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/label_or"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="@string/already_registered_please_login"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -100,27 +121,6 @@
                     android:textColor="#FFFFFF"
                     android:textStyle="bold" />
             </RelativeLayout>
-
-            <Button
-                android:id="@+id/register_now_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="#d6ebf2"
-                android:text="@string/action_register_now"
-                android:textAllCaps="false"
-                android:textColor="#000000"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/label_or"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:text="@string/label_or"
-                android:textColor="#000000"
-                android:textSize="20sp" />
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/facebook_login_button"

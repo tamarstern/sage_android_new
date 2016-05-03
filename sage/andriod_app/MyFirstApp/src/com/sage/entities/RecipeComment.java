@@ -54,7 +54,7 @@ public class RecipeComment {
 
 	@Override
 	public int hashCode() {
-		return (int) _id.hashCode();
+		return _id == null ? 0 : (int) _id.hashCode();
 	}
 
 	public String getUserObjectId() {
