@@ -174,23 +174,32 @@ public class SaveRecipeHandler {
             if (saveSucceed) {
                 Gson gson = new Gson();
                 JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
-                RecipeDetails recipeDetails = ServicesUtils.createRecipeDetailsFromResponse(gson, dataElement);
-                CacheUtils.updateRecipeUserTouchUps(recipeDetails, context);
+                RecipeDetails detailsFromResponse = ServicesUtils.createRecipeDetailsFromResponse(gson, dataElement);
+
+                updateBitmapFromExistingRecipeObject(detailsFromResponse);
+
+                CacheUtils.updateRecipeUserTouchUps(detailsFromResponse, context);
                 if (isNewRecipe) {
-                    MyProfileRecipiesContainer.getInstance().addRecipe(recipeDetails);
-                    NewsfeedContainer.getInstance().addRecipe(recipeDetails);
+                    MyProfileRecipiesContainer.getInstance().addRecipe(detailsFromResponse);
+                    NewsfeedContainer.getInstance().addRecipe(detailsFromResponse);
                     if (category == null) {
-                        ActivityUtils.openCategoriesPage(recipeDetails, context);
+                        ActivityUtils.openCategoriesPage(detailsFromResponse, context);
                     } else {
-                        attachRecipeToCategory(recipeDetails);
+                        attachRecipeToCategory(detailsFromResponse);
                     }
                 } else {
-                    CacheUtils.updateCacheAfterSaveExistingRecipe(recipeDetails);
+                    CacheUtils.updateCacheAfterSaveExistingRecipe(detailsFromResponse);
                     NavigationUtils.openNewsfeed(context);
 
                 }
-                ServicesUtils.saveRecipeImage(recipeDetails, token, context);
+
+                ServicesUtils.saveRecipeImage(detailsFromResponse, token, context);
             }
+        }
+
+        private void updateBitmapFromExistingRecipeObject(RecipeDetails detailsFromResponse) {
+            detailsFromResponse.setImage(this.recipeDetails.getImage());
+            detailsFromResponse.setRecipeAsPictureImage(this.recipeDetails.getRecipeAsPictureImage());
         }
 
         private void handleSaveRecipeOnFailure() {
