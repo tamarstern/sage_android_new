@@ -61,10 +61,10 @@ public class LoginActivity extends Activity {
 		callbackManager = CallbackManager.Factory.create();
 		setContentView(R.layout.activity_login);
 
-		scheduleAlarmBackgroundServices();
 
 		String token = getDirectAuthenticationToken();
 		if (!TextUtils.isEmpty(token)) {
+			scheduleAlarmBackgroundServices();
 			initLoginFormVisibility(View.GONE);
 			AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.ENTER_APP_WHEN_ALREADY_LOGGED_IN);
 			new AuthenticateWithTokenTask(this).execute(token);
@@ -77,6 +77,8 @@ public class LoginActivity extends Activity {
 	}
 
 	private void initLoginFormUi() {
+
+		scheduleAlarmBackgroundServices();
 		initLoginFormVisibility(View.VISIBLE);
 
 		usernameEditText = (EditText) findViewById(R.id.email);

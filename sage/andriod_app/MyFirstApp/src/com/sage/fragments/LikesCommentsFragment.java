@@ -1,29 +1,8 @@
 package com.sage.fragments;
 
-import java.io.IOException;
-import java.text.MessageFormat;
-
-import com.example.myfirstapp.R;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.sage.activity.interfaces.IClosePopupCommentListener;
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeDetails;
-import com.sage.listeners.AddCommentsClickListener;
-import com.sage.services.RemoveLikeService;
-import com.sage.services.SaveNewLikeService;
-import com.sage.tasks.AddLikeTask;
-import com.sage.tasks.RemoveLikeTask;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.AnalyticsUtils;
-import com.sage.utils.EntityUtils;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +10,20 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.myfirstapp.R;
+import com.google.gson.JsonObject;
+import com.sage.activity.interfaces.IClosePopupCommentListener;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeDetails;
+import com.sage.listeners.AddCommentsClickListener;
+import com.sage.tasks.AddLikeTask;
+import com.sage.tasks.RemoveLikeTask;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.EntityUtils;
+
+import java.text.MessageFormat;
 
 public class LikesCommentsFragment extends Fragment implements IClosePopupCommentListener {
 
@@ -49,8 +42,10 @@ public class LikesCommentsFragment extends Fragment implements IClosePopupCommen
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		this.inflater = inflater;
+		final LayoutInflater currentInflater = inflater;
 
 		this.container = container;
+		final ViewGroup currentContainer = container;
 
 		likesCommentsPanel = inflater.inflate(R.layout.likes_comments_fragment, container, false);
 
@@ -77,7 +72,12 @@ public class LikesCommentsFragment extends Fragment implements IClosePopupCommen
 
 			@Override
 			public void onClick(View v) {
-				
+
+				receiptDetails.setLikes_count(receiptDetails.getLikes_count()+1);
+				receiptDetails.setUserLikeRecipe(true);
+				initLikeButtonsVisibility(receiptDetails.isUserLikeRecipe());
+				initCommentsLikesPanel(currentInflater, currentContainer, likesCommentsPanel, receiptDetails);
+
 				AnalyticsUtils.sendAnalyticsTrackingEvent(activity, AnalyticsUtils.ADD_LIKE_RECIPE_PAGE);
 				
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(activity, receiptDetails.get_id());
@@ -91,6 +91,13 @@ public class LikesCommentsFragment extends Fragment implements IClosePopupCommen
 
 			@Override
 			public void onClick(View v) {
+
+				receiptDetails.setLikes_count(receiptDetails.getLikes_count()-1);
+				receiptDetails.setUserLikeRecipe(false);
+
+				initLikeButtonsVisibility(receiptDetails.isUserLikeRecipe());
+				initCommentsLikesPanel(currentInflater, currentContainer, likesCommentsPanel, receiptDetails);
+
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(activity, receiptDetails.get_id());
 				new RemoveLikeFragmentTask(activity, false).execute(params);
 			}
@@ -129,17 +136,6 @@ public class LikesCommentsFragment extends Fragment implements IClosePopupCommen
 
 	}
 
-	private void updateExistingRecipeDetailsWithLikesData(JsonObject resultJsonObject) {
-		Gson gson = new Gson();
-
-		JsonObject dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME).getAsJsonObject();
-
-		RecipeDetails currentDetails = gson.fromJson(dataElement, RecipeDetails.class);
-
-		receiptDetails.setLikes_count(currentDetails.getLikes_count());
-
-		receiptDetails.setUserLikeRecipe(currentDetails.isUserLikeRecipe());
-	}
 
 	@Override
 	public void onClosePopupComment(int numOfComments, String recipeId) {
@@ -156,11 +152,6 @@ public class LikesCommentsFragment extends Fragment implements IClosePopupCommen
 
 		@Override
 		protected void handleSuccess(JsonObject resultJsonObject) {
-			updateExistingRecipeDetailsWithLikesData(resultJsonObject);
-
-			initLikeButtonsVisibility(receiptDetails.isUserLikeRecipe());
-
-			initCommentsLikesPanel(inflater, container, likesCommentsPanel, receiptDetails);
 
 		}
 
@@ -175,11 +166,6 @@ public class LikesCommentsFragment extends Fragment implements IClosePopupCommen
 
 		@Override
 		public void handleSuccess(JsonObject resultJsonObject) {
-			updateExistingRecipeDetailsWithLikesData(resultJsonObject);
-
-			initLikeButtonsVisibility(receiptDetails.isUserLikeRecipe());
-
-			initCommentsLikesPanel(inflater, container, likesCommentsPanel, receiptDetails);
 
 		}
 

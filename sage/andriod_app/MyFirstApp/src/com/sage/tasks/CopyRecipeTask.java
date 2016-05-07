@@ -10,12 +10,14 @@ import com.example.myfirstapp.ProgressDialogContainer;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sage.application.RecipesToSaveContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.User;
 import com.sage.services.CopyExistingRecipeService;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.CacheUtils;
+import com.sage.utils.EntityUtils;
 import com.sage.utils.ServicesUtils;
 
 public class CopyRecipeTask extends AsyncTask<Object, Void, JsonElement> {	
@@ -60,10 +62,10 @@ public class CopyRecipeTask extends AsyncTask<Object, Void, JsonElement> {
 	protected void onPostExecute(JsonElement result) {
 		container.dismissProgress();
 		if(result == null) {
-			User user = createOwnerObject(details);
-			CacheUtils.updateRecipeUserTouchUps(details, context, user);
-			details.setExceptionOnSave(true);
-			ActivityUtils.openCategoriesPage(details, context);
+			RecipeDetails clonedDetails = generateClonedRecipeObject();
+			RecipesToSaveContainer.getInstance().addNewRecipeToSave(clonedDetails, null,
+					clonedDetails.getImage(), clonedDetails.getRecipeAsPictureImage());
+			ActivityUtils.openCategoriesPage(clonedDetails, context);
 			return;
 		}
 		JsonObject resultJsonObject = result.getAsJsonObject();
@@ -84,6 +86,16 @@ public class CopyRecipeTask extends AsyncTask<Object, Void, JsonElement> {
 
 		}
 
+	}
+
+	@NonNull
+	private RecipeDetails generateClonedRecipeObject() {
+		RecipeDetails clonedDetails = details.clone();
+		CacheUtils.updateRecipeUserTouchUps(clonedDetails, context);
+		clonedDetails.setExceptionOnSave(true);
+		EntityUtils.generateRecipeFakeId(clonedDetails);
+		clonedDetails.setPublished(false);
+		return clonedDetails;
 	}
 
 	@NonNull

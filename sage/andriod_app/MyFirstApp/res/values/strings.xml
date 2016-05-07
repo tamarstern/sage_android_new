@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Sage</string>
+    <string name="app_name">Sage Recipe Box</string>
     <string name="description">description</string>
     <string name="done">done</string>
     <string name="action_settings">Settings</string>

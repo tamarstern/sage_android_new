@@ -17,6 +17,8 @@ public class UserCategoriesContainer {
 
     private ConcurrentHashMap<String, Object> categoriesMap = new ConcurrentHashMap<String, Object>();
 
+    private ConcurrentHashMap<String, Boolean> hasRecipesForCategory = new ConcurrentHashMap<String, Boolean>();
+
     private static volatile UserCategoriesContainer instance;
 
     private static final Object LOCK = new Object();
@@ -98,6 +100,7 @@ public class UserCategoriesContainer {
     public void putRecipesForCategory(RecipeCategory category, HashSet<RecipeDetails> recipesSet) {
         String key = generateKey(category.get_id());
         this.categoriesMap.put(key, recipesSet);
+        this.hasRecipesForCategory.put(key, true);
     }
 
     private String generateKey(String categoryId) {
@@ -106,7 +109,11 @@ public class UserCategoriesContainer {
 
     public boolean hasRecipesForCategory(RecipeCategory category) {
         String key = generateKey(category.get_id());
-        return this.categoriesMap.containsKey(key);
+        Boolean hasRecipes = this.hasRecipesForCategory.containsKey(key);
+        if(hasRecipes == null || !hasRecipes) {
+            return false;
+        }
+        return true;
     }
 
     public HashSet<RecipeDetails> getRecipesForCategory(RecipeCategory category) {
@@ -114,7 +121,7 @@ public class UserCategoriesContainer {
         HashSet<RecipeDetails> recipesSet = (HashSet<RecipeDetails>) this.categoriesMap.get(key);
         if (recipesSet == null) {
             recipesSet = new HashSet<RecipeDetails>();
-            putRecipesForCategory(category, recipesSet);
+            this.categoriesMap.put(key, recipesSet);
         }
         return recipesSet;
 
@@ -141,6 +148,10 @@ public class UserCategoriesContainer {
         if (!TextUtils.isEmpty(newCategoryId)) {
             String newKey = generateKey(newCategoryId);
             HashSet<RecipeDetails> recipeSet = (HashSet<RecipeDetails>) this.categoriesMap.get(newKey);
+            if(recipeSet == null) {
+                recipeSet = new HashSet<RecipeDetails>();
+                this.categoriesMap.put(newKey, recipeSet);
+            }
             if (recipeSet != null) {
                 if (recipeSet.contains(recipe)) {
                     recipeSet.remove(recipe);

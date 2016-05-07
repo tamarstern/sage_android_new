@@ -13,9 +13,9 @@ public class RecipeImageContainer {
 
     private static final Object LOCK = new Object();
 
-    private ConcurrentHashMap<RecipeDetails, String> mainPictureMap = new ConcurrentHashMap<RecipeDetails, String>();
+    private ConcurrentHashMap<String, String> mainPictureMap = new ConcurrentHashMap<String, String>();
 
-    private ConcurrentHashMap<RecipeDetails, String> recipeAsPictureMap = new ConcurrentHashMap<RecipeDetails, String>();
+    private ConcurrentHashMap<String, String> recipeAsPictureMap = new ConcurrentHashMap<String, String>();
 
     private RecipeImageContainer() {
 
@@ -37,20 +37,20 @@ public class RecipeImageContainer {
         return instance;
     }
 
-    public void putRecipeMainPicture(RecipeDetails details, String imageId){
-        mainPictureMap.put(details,imageId);
+    public void putRecipeMainPicture(String detailsId, String imageId){
+        mainPictureMap.put(detailsId,imageId);
     }
 
-    public String getRecipeMainPictureId(RecipeDetails details) {
-        return mainPictureMap.get(details);
+    public String getRecipeMainPictureId(String detailsId) {
+        return mainPictureMap.get(detailsId);
     }
 
-    public void putRecipeAsPicture(RecipeDetails details, String imageId){
-        recipeAsPictureMap.put(details,imageId);
+    public void putRecipeAsPicture(String detailsId, String imageId){
+        recipeAsPictureMap.put(detailsId,imageId);
     }
 
-    public String getRecipeAsPictureId(RecipeDetails details) {
-        return recipeAsPictureMap.get(details);
+    public String getRecipeAsPictureId(String detailsId) {
+        return recipeAsPictureMap.get(detailsId);
     }
 
 

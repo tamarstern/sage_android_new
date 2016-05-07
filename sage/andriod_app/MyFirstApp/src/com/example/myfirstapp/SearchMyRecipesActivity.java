@@ -59,7 +59,6 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 			}
 		});
 
-
 		initSupportActionBar();
 
 	}
@@ -97,12 +96,13 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 		listView.setAdapter(adapter);
 	}
 
-
 	private void getSearchRecipies() {
 		if (searchEditText.getEditableText() == null || TextUtils.isEmpty(searchEditText.getEditableText().toString())) {
 			Toast.makeText(this, R.string.did_not_enter_search_text, Toast.LENGTH_SHORT).show();
 			return;
 		}
+
+		initListAdaptor(new ArrayList<RecipeDetails>());
 
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);

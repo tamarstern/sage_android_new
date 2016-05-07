@@ -111,6 +111,7 @@ public class SaveRecipeHandler {
     }
 
     private void updateCacheAndOpenRecipeCategoriesPage() {
+        CacheUtils.updateRecipeUserTouchUps(recipeDetails, context);
         UserCategoriesContainer.getInstance().
                 updateRecipeForCategoryInCache(recipeDetails, recipeDetails.getCategoryId(), category.get_id());
         NavigationUtils.openRecipesPerCategoryPage(context, category);
@@ -205,8 +206,10 @@ public class SaveRecipeHandler {
         private void handleSaveRecipeOnFailure() {
             recipeDetails.setExceptionOnSave(true);
             if(isNewRecipe) {
+                EntityUtils.generateRecipeFakeId(recipeDetails);
+                RecipesToSaveContainer.getInstance().addNewRecipeToSave(recipeDetails, category,
+                        recipeDetails.getImage(), recipeDetails.getRecipeAsPictureImage());
                 if(category != null) {
-                    RecipesToSaveContainer.getInstance().addNewRecipeToSave(recipeDetails, category);
                     updateCacheAndOpenRecipeCategoriesPage();
                 } else {
                     ActivityUtils.openCategoriesPage(recipeDetails, context);
@@ -218,6 +221,7 @@ public class SaveRecipeHandler {
                 NavigationUtils.openNewsfeed(context);
             }
         }
+
 
 
         private void attachRecipeToCategory(RecipeDetails recipeDetails) {
@@ -243,7 +247,7 @@ public class SaveRecipeHandler {
         @Override
         protected void doHandleFailure() {
             recipeDetails.setExceptionOnSave(true);
-            RecipesToSaveContainer.getInstance().addNewRecipeToSave(recipeDetails, categoryToSave);
+            RecipesToSaveContainer.getInstance().addAttachCategoryToSave(recipeDetails, categoryToSave);
             updateCacheAndOpenRecipeCategoriesPage();
         }
 

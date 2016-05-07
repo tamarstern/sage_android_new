@@ -37,6 +37,10 @@ public abstract class BaseSaveRecipeService extends BaseService {
 		if (!TextUtils.isEmpty(preparationDescription)) {
 			builder.appendQueryParameter("preparationDescription", preparationDescription);
 		}
+		String pictureId = recipeDetails.getPictureId();
+		if(!TextUtils.isEmpty(pictureId)) {
+			builder.appendQueryParameter("pictureId", pictureId);
+		}
 
 	}
 
@@ -51,8 +55,22 @@ public abstract class BaseSaveRecipeService extends BaseService {
 			AddTextRecipeParameters(builder, recipeDetails);
 		}
 
+		if (recipeDetails.getRecipeType().equals(RecipeType.PICTURE)) {
+
+			AddPictureRecipeParameters(builder, recipeDetails);
+		}
+
+
 		if (recipeDetails.getRecipeType().equals(RecipeType.LINK)) {
 			builder.appendQueryParameter("url", recipeDetails.getUrl());
+		}
+
+	}
+
+	private void AddPictureRecipeParameters(Builder builder, RecipeDetails recipeDetails) {
+		String pictureId = recipeDetails.getImageRecipe_pictureId();
+		if(!TextUtils.isEmpty(pictureId)) {
+			builder.appendQueryParameter("imageRecipe_pictureId", pictureId);
 		}
 
 	}

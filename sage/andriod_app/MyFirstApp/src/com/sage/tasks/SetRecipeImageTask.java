@@ -10,7 +10,6 @@ import com.google.gson.JsonObject;
 import com.sage.application.RecipeImageContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.constants.ImageType;
-import com.sage.entities.RecipeDetails;
 import com.sage.services.PostRecipeImage;
 
 /**
@@ -19,12 +18,12 @@ import com.sage.services.PostRecipeImage;
 public class SetRecipeImageTask extends AsyncTask<Object, Void, JsonElement> {
 
     private ImageType type;
-    private RecipeDetails details;
+    private String detailsId;
     private Bitmap bitmap;
 
-    public SetRecipeImageTask(ImageType type, RecipeDetails details, Bitmap bitmap) {
+    public SetRecipeImageTask(ImageType type, String detailsId, Bitmap bitmap) {
         this.type = type;
-        this.details = details;
+        this.detailsId = detailsId;
         this.bitmap = bitmap;
     }
 
@@ -34,7 +33,7 @@ public class SetRecipeImageTask extends AsyncTask<Object, Void, JsonElement> {
         try {
             String token = (String) params[0];
             String path = (String) params[1];
-            PostRecipeImage service = new PostRecipeImage(bitmap, token, details.get_id(), path, this.type);
+            PostRecipeImage service = new PostRecipeImage(bitmap, token, detailsId, path, this.type);
             return service.sendImage();
         } catch (Exception e) {
             Log.e("failedSavePicture", "fail to save picture", e);
@@ -54,9 +53,9 @@ public class SetRecipeImageTask extends AsyncTask<Object, Void, JsonElement> {
             String recipeImageId = resultJsonObject.get(ActivityConstants.MESSAGE_ELEMENT_NAME).getAsString();
             if (!TextUtils.isEmpty(recipeImageId)) {
                 if (type.equals(ImageType.RECIPE_PICTURE)) {
-                    RecipeImageContainer.getInstance().putRecipeMainPicture(this.details, recipeImageId);
+                    RecipeImageContainer.getInstance().putRecipeMainPicture(this.detailsId, recipeImageId);
                 } else if (type.equals(ImageType.IMAGE_RECIPE_PICTURE)) {
-                    RecipeImageContainer.getInstance().putRecipeAsPicture(this.details, recipeImageId);
+                    RecipeImageContainer.getInstance().putRecipeAsPicture(this.detailsId, recipeImageId);
                 }
             }
         }

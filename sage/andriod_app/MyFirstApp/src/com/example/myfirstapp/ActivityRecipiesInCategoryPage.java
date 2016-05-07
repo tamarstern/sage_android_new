@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.RecipesForCategoriesArrayAdapter;
 import com.sage.application.UserCategoriesContainer;
@@ -171,17 +172,28 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 				failedToLoadPanel.setVisibility(View.VISIBLE);
 				return;
 			}
-			JsonArray resultJsonObject = result.getAsJsonArray();
+			JsonObject resultJsonObject = result.getAsJsonObject();
 
-			Gson gson = new GsonBuilder().create();
+			boolean recipiesFound = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
 
-			ArrayList<RecipeDetails> recipes = gson.fromJson(resultJsonObject,
-					new TypeToken<ArrayList<RecipeDetails>>() {
-					}.getType());
+			if (recipiesFound) {
+				JsonElement dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME);
+				JsonArray resultDataObject = dataElement.getAsJsonArray();
 
-			UserCategoriesContainer.getInstance().putRecipesForCategory(category, new HashSet<RecipeDetails>(recipes));
-			initAdapter(recipes);
 
+				Gson gson = new GsonBuilder().create();
+
+				ArrayList<RecipeDetails> recipes = gson.fromJson(resultDataObject,
+						new TypeToken<ArrayList<RecipeDetails>>() {
+						}.getType());
+				HashSet<RecipeDetails> recipesForCategory = UserCategoriesContainer.getInstance().getRecipesForCategory(category);
+				if (recipesForCategory != null) {
+					recipes.addAll(recipesForCategory);
+				}
+				UserCategoriesContainer.getInstance().putRecipesForCategory(category, new HashSet<RecipeDetails>(recipes));
+				Collections.sort(recipes);
+				initAdapter(recipes);
+			}
 		}
 
 

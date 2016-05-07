@@ -1,13 +1,15 @@
 package com.sage.utils;
 
-import com.sage.constants.ActivityConstants;
-import com.sage.entities.RecipeCategoryBase;
-import com.sage.entities.RecipeDetails;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+
+import com.sage.constants.ActivityConstants;
+import com.sage.entities.RecipeCategoryBase;
+import com.sage.entities.RecipeDetails;
+
+import java.util.UUID;
 
 public class EntityUtils {
 
@@ -39,5 +41,10 @@ public class EntityUtils {
 	public static boolean isNewCategory(RecipeCategoryBase category) {
 		return category == null || TextUtils.isEmpty(category.get_id());
 	}
+
+	public static void generateRecipeFakeId(RecipeDetails details) {
+		details.set_id(UUID.randomUUID().toString());
+	}
+
 
 }

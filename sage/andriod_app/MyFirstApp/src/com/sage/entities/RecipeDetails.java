@@ -1,10 +1,11 @@
 package com.sage.entities;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.io.Serializable;
 
-public class RecipeDetails implements Serializable, Comparable<RecipeDetails> {
+public class RecipeDetails implements Serializable, Comparable<RecipeDetails>, Cloneable {
 
 	private static final long serialVersionUID = 672748343523798530L;
 
@@ -67,6 +68,34 @@ public class RecipeDetails implements Serializable, Comparable<RecipeDetails> {
 	private boolean linkUiInitialized;
 
 	private boolean exceptionOnSave = false;
+
+	@Override
+	public RecipeDetails clone()  {
+		try {
+			RecipeDetails details =  (RecipeDetails)super.clone();
+			details.url = this.url;
+			details.linkSiteName = linkSiteName;
+			details.linkImageUrl = linkImageUrl;
+			details.linkTitle = linkTitle;
+			details.imageRecipe_pictureId = imageRecipe_pictureId;
+			details.featuredRecipe = this.featuredRecipe;
+			details.linkDataInitialized = this.linkDataInitialized;
+			details.pictureId = this.pictureId;
+			details.preparationDescription = this.preparationDescription;
+			details.ingredients = this.ingredients;
+			details.ownerUserName = this.ownerUserName;
+			details.ownerObjectId = this.ownerObjectId;
+			details.ownerDisplayName = this.ownerDisplayName;
+			details.recipeType = this.recipeType;
+			details.preparationComments = this.preparationComments;
+			details.header = this.header;
+			return details;
+		} catch (CloneNotSupportedException e) {
+			Log.e("failCloneDetails", "failed to clone details", e);
+			return null;
+		}
+
+	}
 
 	public RecipeDetails() {
 

@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sage.application.UserCategoriesContainer;
 import com.sage.constants.ActivityConstants;
@@ -64,21 +65,29 @@ public class GetRecipesForCategoriesService extends IntentService {
         JsonElement recipes = service.getRecipes();
 
         if (recipes != null) {
-            JsonArray resultJsonObject = recipes.getAsJsonArray();
 
-            Gson gson = new GsonBuilder().create();
+            JsonObject resultJsonObject = recipes.getAsJsonObject();
 
-            ArrayList<RecipeDetails> recipesToSave = gson.fromJson(resultJsonObject,
-                    new TypeToken<ArrayList<RecipeDetails>>() {
-                    }.getType());
+            boolean recipiesFound = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
 
-            HashSet<RecipeDetails> recipesSetToSave = new HashSet<RecipeDetails>(recipesToSave);
-            for (RecipeDetails recipe : recipesSetToSave) {
-                if(recipe.getRecipeType().equals(RecipeType.LINK) && !TextUtils.isEmpty(recipe.getUrl())) {
-                    BackgroundServicesUtils.GetRecipeLinkDetails(token, userName, recipe);
+            if (recipiesFound) {
+                JsonElement dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME);
+                JsonArray resultDataObject = dataElement.getAsJsonArray();
+
+                Gson gson = new GsonBuilder().create();
+
+                ArrayList<RecipeDetails> recipesToSave = gson.fromJson(resultDataObject,
+                        new TypeToken<ArrayList<RecipeDetails>>() {
+                        }.getType());
+
+                HashSet<RecipeDetails> recipesSetToSave = new HashSet<RecipeDetails>(recipesToSave);
+                for (RecipeDetails recipe : recipesSetToSave) {
+                    if (recipe.getRecipeType().equals(RecipeType.LINK) && !TextUtils.isEmpty(recipe.getUrl())) {
+                        BackgroundServicesUtils.GetRecipeLinkDetails(token, userName, recipe);
+                    }
                 }
+                UserCategoriesContainer.getInstance().putRecipesForCategory(category, recipesSetToSave);
             }
-            UserCategoriesContainer.getInstance().putRecipesForCategory(category, recipesSetToSave);
         }
     }
 }

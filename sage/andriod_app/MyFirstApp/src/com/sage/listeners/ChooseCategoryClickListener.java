@@ -36,7 +36,6 @@ public class ChooseCategoryClickListener implements OnClickListener {
 	}
 
 	private void handleSaveRecipeFailure() {
-		RecipesToSaveContainer.getInstance().addNewRecipeToSave(recipeDetails, recipeCategory);
 		UserCategoriesContainer.getInstance().
 				updateRecipeForCategoryInCache(recipeDetails, null, recipeCategory.get_id());
 		NavigationUtils.openRecipesPerCategoryPage(context, recipeCategory);
@@ -48,6 +47,7 @@ public class ChooseCategoryClickListener implements OnClickListener {
 
 		if (recipeDetails != null) {
 			if(recipeDetails.isExceptionOnSave()) {
+				RecipesToSaveContainer.getInstance().updateNewRecipeToSaveWithCategory(recipeDetails, recipeCategory);
 				handleSaveRecipeFailure();
 			} else {
 				attacheRecipeToCategory();
@@ -87,6 +87,7 @@ public class ChooseCategoryClickListener implements OnClickListener {
 		@Override
 		protected void doHandleFailure() {
 			recipeDetails.setExceptionOnSave(true);
+			RecipesToSaveContainer.getInstance().addAttachCategoryToSave(recipeDetails, recipeCategory);
 			handleSaveRecipeFailure();
 		}
 

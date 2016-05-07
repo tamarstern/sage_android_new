@@ -20,7 +20,6 @@ import com.sage.entities.RecipeType;
 import com.sage.listeners.RecipeDetailsClickListener;
 import com.sage.tasks.GetRecipeUrlDetailsTask;
 import com.sage.utils.ActivityUtils;
-import com.sage.utils.EntityUtils;
 import com.sage.utils.RecipeOwnerContext;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class RecipesForCategoriesArrayAdapter extends ArrayAdapter<RecipeDetails
 		categoryName.setText(recipeNameValue);
 		
 		RelativeLayout recipeLine = (RelativeLayout)rowView.findViewById(R.id.recipe_line);
-		if(!EntityUtils.isNewRecipe(recipePublished)) {
+		if(!recipePublished.isExceptionOnSave()) {
 			recipeLine.setOnClickListener(new RecipeDetailsClickListener(context, recipePublished));
 		} else {
 			recipeLine.setOnClickListener(new View.OnClickListener() {

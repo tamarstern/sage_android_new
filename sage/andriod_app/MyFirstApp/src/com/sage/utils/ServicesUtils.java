@@ -17,30 +17,39 @@ public class ServicesUtils {
 	private static final String RECIPE_TYPE = "recipeType";
 	
 	public static RecipeDetails createRecipeDetailsFromResponse(Gson gson, JsonObject dataElement) {
-		String type = dataElement.get(RECIPE_TYPE).getAsString();
 
 		RecipeDetails recipeDetails = gson.fromJson(dataElement, RecipeDetails.class);
 
 		return recipeDetails;
 	}
 
-	public static void saveRecipeImage(RecipeDetails recipe, String token, Context context) {
-		Bitmap recipeMainImage = recipe.getImage();
+	public static void saveRecipeMainPicture(String recipeId, Bitmap recipeMainImage, Context context, String token) {
 		if (recipeMainImage != null) {
 			Object[] mainImageParams = new Object[]{ token,
-					context.getFilesDir().getPath().toString() + File.separator + recipe.get_id()};
-			new SetRecipeImageTask(ImageType.RECIPE_PICTURE, recipe, recipeMainImage).execute(mainImageParams);
+					context.getFilesDir().getPath().toString() + File.separator + recipeId};
+			new SetRecipeImageTask(ImageType.RECIPE_PICTURE, recipeId, recipeMainImage).execute(mainImageParams);
 		}
+	}
+
+	public static void saveRecipeImagePicture(String recipeId, Bitmap recipeAsPictureImage, Context context, String token) {
+		if (recipeAsPictureImage != null) {
+			Object[] recipePictureParams = new Object[]{token,
+					context.getFilesDir().getPath().toString() + File.separator + recipeId};
+			new SetRecipeImageTask(ImageType.IMAGE_RECIPE_PICTURE, recipeId, recipeAsPictureImage)
+					.execute(recipePictureParams);
+		}
+	}
+
+
+
+	public static void saveRecipeImage(RecipeDetails recipe, String token, Context context) {
+		Bitmap recipeMainImage = recipe.getImage();
+		saveRecipeMainPicture(recipe.get_id(), recipeMainImage, context, token);
 		if (!(recipe.getRecipeType().equals(RecipeType.PICTURE))) {
 			return;
 		}
 		Bitmap recipeAsPictureImage = (recipe).getRecipeAsPictureImage();
-		if (recipeAsPictureImage != null) {
-			Object[] recipePictureParams = new Object[]{token,
-					context.getFilesDir().getPath().toString() + File.separator + recipe.get_id()};
-			new SetRecipeImageTask(ImageType.IMAGE_RECIPE_PICTURE, recipe, recipeAsPictureImage)
-					.execute(recipePictureParams);
-		}
+		saveRecipeImagePicture(recipe.get_id(), recipeAsPictureImage, context, token);
 	}
 
 

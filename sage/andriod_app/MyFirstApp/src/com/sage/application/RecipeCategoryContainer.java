@@ -1,5 +1,7 @@
 package com.sage.application;
 
+import android.graphics.Bitmap;
+
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
 
@@ -16,9 +18,14 @@ public class RecipeCategoryContainer {
         id = UUID.randomUUID();
     }
 
+
     private RecipeDetails details;
 
     private RecipeCategory category;
+
+    private Bitmap mainRecipePicture;
+
+    private Bitmap recipeImagePicture;
 
 
     public RecipeDetails getDetails() {
@@ -60,4 +67,19 @@ public class RecipeCategoryContainer {
         return (int) id.hashCode();
     }
 
+    public Bitmap getMainRecipePicture() {
+        return mainRecipePicture;
+    }
+
+    public void setMainRecipePicture(Bitmap mainRecipePicture) {
+        this.mainRecipePicture = mainRecipePicture;
+    }
+
+    public Bitmap getRecipeImagePicture() {
+        return recipeImagePicture;
+    }
+
+    public void setRecipeImagePicture(Bitmap recipeImagePicture) {
+        this.recipeImagePicture = recipeImagePicture;
+    }
 }
