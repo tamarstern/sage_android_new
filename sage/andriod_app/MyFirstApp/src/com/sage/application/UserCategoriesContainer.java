@@ -160,5 +160,40 @@ public class UserCategoriesContainer {
             }
         }
     }
+
+    public void addLike(RecipeDetails details) {
+        ArrayList<RecipeCategory> categories = getCategories();
+        for(RecipeCategory category : categories) {
+            RecipeDetails recipe = getRecipeForCategory(details, category);
+            if(recipe != null && !recipe.isUserLikeRecipe()) {
+                recipe.setLikes_count(recipe.getLikes_count() + 1);
+                recipe.setUserLikeRecipe(true);
+            }
+        }
+    }
+
+    private RecipeDetails getRecipeForCategory(RecipeDetails details, RecipeCategory category) {
+        HashSet<RecipeDetails> recipes = getRecipesForCategory(category);
+        if( recipes != null && recipes.contains(details)) {
+           for(RecipeDetails recipe : recipes) {
+               if(recipe.equals(details)) {
+                   return recipe;
+               }
+           }
+        }
+        return null;
+    }
+
+
+    public void removeLike(RecipeDetails details) {
+        ArrayList<RecipeCategory> categories = getCategories();
+        for(RecipeCategory category : categories) {
+            RecipeDetails recipe = getRecipeForCategory(details, category);
+            if(recipe != null && recipe.isUserLikeRecipe()) {
+                recipe.setLikes_count(recipe.getLikes_count() - 1);
+                recipe.setUserLikeRecipe(false);
+            }
+        }
+    }
 }
 

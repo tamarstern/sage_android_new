@@ -109,4 +109,40 @@ public class MyProfileRecipiesContainer {
     }
 
 
+    private void addLike(RecipeDetails details, ArrayList<RecipeDetails> recipes) {
+        if( recipes != null && recipes.contains(details)) {
+            int index = recipes.indexOf(details);
+            RecipeDetails currentDetails = recipes.get(index);
+            if(!currentDetails.isUserLikeRecipe()) {
+                currentDetails.setLikes_count(currentDetails.getLikes_count()+1);
+                currentDetails.setUserLikeRecipe(true);
+            }
+        }
+    }
+
+    private void removeLike(RecipeDetails details, ArrayList<RecipeDetails> recipes) {
+        if( recipes != null && recipes.contains(details)) {
+            int index = recipes.indexOf(details);
+            RecipeDetails currentDetails = recipes.get(index);
+            if(currentDetails.isUserLikeRecipe()) {
+                currentDetails.setLikes_count(currentDetails.getLikes_count()-1);
+                currentDetails.setUserLikeRecipe(false);
+            }
+        }
+    }
+
+
+    public void addLike(RecipeDetails details) {
+        for(Integer page : profilePageMap.keySet()) {
+            ArrayList<RecipeDetails> recipesByPage = getRecipesByPage(page);
+            addLike(details, recipesByPage);
+        }
+    }
+
+    public void removeLike(RecipeDetails details) {
+        for(Integer page : profilePageMap.keySet()) {
+            ArrayList<RecipeDetails> recipesByPage = getRecipesByPage(page);
+            removeLike(details, recipesByPage);
+        }
+    }
 }

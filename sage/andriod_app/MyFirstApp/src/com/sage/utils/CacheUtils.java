@@ -84,4 +84,17 @@ public class CacheUtils {
         return recipeDetails.getPictureId();
     }
 
+    public static void addLike(RecipeDetails details) {
+        NewsfeedContainer.getInstance().addLike(details);
+        MyProfileRecipiesContainer.getInstance().addLike(details);
+        UserCategoriesContainer.getInstance().addLike(details);
+    }
+
+    public static void removeLike(RecipeDetails details) {
+        NewsfeedContainer.getInstance().removeLike(details);
+        MyProfileRecipiesContainer.getInstance().removeLike(details);
+        UserCategoriesContainer.getInstance().removeLike(details);
+    }
+
+
 }

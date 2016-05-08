@@ -107,4 +107,51 @@ public class NewsfeedContainer {
     }
 
 
+    public void addLike(RecipeDetails details) {
+        for(Integer key : newsfeedMap.keySet()) {
+            ArrayList<RecipeDetails> recipes = getRecipesByPage(key);
+            addLike(details, recipes);
+
+        }
+        for(String key : profileUsersMap.keySet()) {
+            ArrayList<RecipeDetails> profileForUser = getProfileForUser(key);
+            addLike(details, profileForUser);
+        }
+    }
+
+    private void addLike(RecipeDetails details, ArrayList<RecipeDetails> recipes) {
+        if(recipes != null && recipes.contains(details)) {
+            int index = recipes.indexOf(details);
+            RecipeDetails currentDetails = recipes.get(index);
+            if(!currentDetails.isUserLikeRecipe()) {
+                currentDetails.setLikes_count(currentDetails.getLikes_count()+1);
+                currentDetails.setUserLikeRecipe(true);
+            }
+        }
+    }
+
+    private void removeLike(RecipeDetails details, ArrayList<RecipeDetails> recipes) {
+        if(recipes != null && recipes.contains(details)) {
+            int index = recipes.indexOf(details);
+            RecipeDetails currentDetails = recipes.get(index);
+            if(currentDetails.isUserLikeRecipe()) {
+                currentDetails.setLikes_count(currentDetails.getLikes_count()-1);
+                currentDetails.setUserLikeRecipe(false);
+            }
+        }
+    }
+
+
+    public void removeLike(RecipeDetails details) {
+        for(Integer key : newsfeedMap.keySet()) {
+            ArrayList<RecipeDetails> recipes = getRecipesByPage(key);
+            removeLike(details, recipes);
+
+        }
+        for(String key : profileUsersMap.keySet()) {
+            ArrayList<RecipeDetails> profileForUser = getProfileForUser(key);
+            removeLike(details, profileForUser);
+        }
+
+    }
 }

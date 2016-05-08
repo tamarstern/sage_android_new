@@ -31,6 +31,7 @@ import com.sage.tasks.GetRecipeUrlDetailsTask;
 import com.sage.tasks.RemoveLikeTask;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.CacheUtils;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ImagesInitializer;
 import com.sage.utils.RecipeOwnerContext;
@@ -54,6 +55,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 		super(context, 0, details);
 		this.context = context;
 		this.details = details;
+
 	}
 
 	@Override
@@ -174,6 +176,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 				recipeUserBasicData.setUserLikeRecipe(true);
 				details.set(position, recipeUserBasicData);
 				notifyDataSetChanged();
+				CacheUtils.addLike(recipeUserBasicData);
 
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(context,
 						recipeUserBasicData.get_id());
@@ -193,6 +196,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 				details.set(position, recipeUserBasicData);
 				notifyDataSetChanged();
 
+				CacheUtils.removeLike(recipeUserBasicData);
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(context,
 						recipeUserBasicData.get_id());
 				new RemoveAdaptorLikeTask(recipeUserBasicData.isFeaturedRecipe()).execute(params);

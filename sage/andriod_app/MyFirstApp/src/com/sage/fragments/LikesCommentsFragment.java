@@ -21,6 +21,7 @@ import com.sage.tasks.AddLikeTask;
 import com.sage.tasks.RemoveLikeTask;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.CacheUtils;
 import com.sage.utils.EntityUtils;
 
 import java.text.MessageFormat;
@@ -77,6 +78,7 @@ public class LikesCommentsFragment extends Fragment implements IClosePopupCommen
 				receiptDetails.setUserLikeRecipe(true);
 				initLikeButtonsVisibility(receiptDetails.isUserLikeRecipe());
 				initCommentsLikesPanel(currentInflater, currentContainer, likesCommentsPanel, receiptDetails);
+				CacheUtils.addLike(receiptDetails);
 
 				AnalyticsUtils.sendAnalyticsTrackingEvent(activity, AnalyticsUtils.ADD_LIKE_RECIPE_PAGE);
 				
@@ -97,6 +99,8 @@ public class LikesCommentsFragment extends Fragment implements IClosePopupCommen
 
 				initLikeButtonsVisibility(receiptDetails.isUserLikeRecipe());
 				initCommentsLikesPanel(currentInflater, currentContainer, likesCommentsPanel, receiptDetails);
+
+				CacheUtils.removeLike(receiptDetails);
 
 				Object[] params = ActivityUtils.generateServiceParamObjectWithUserId(activity, receiptDetails.get_id());
 				new RemoveLikeFragmentTask(activity, false).execute(params);
