@@ -22,11 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
 import com.sage.activity.interfaces.IInitLinkDetailsListener;
-import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
@@ -37,7 +35,6 @@ import com.sage.utils.ActivityUtils;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ImagesInitializer;
 import com.sage.utils.RecipeDetailsBinder;
-import com.sage.utils.RecipeOwnerContext;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -273,28 +270,12 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 		@Override
 		protected void handleSuccess(JsonObject resultJsonObject) {
 			getLinkDetailsProgress.setVisibility(View.GONE);
-			JsonElement urlTitleElement = resultJsonObject.get(ActivityConstants.URL_TITLE_ELEMENT_NAME);
-			if (urlTitleElement != null) {
-				String urlTitle = urlTitleElement.getAsString();
-				linkDetails.setLinkTitle(urlTitle);
-			}
-
-			JsonElement urlImageElement = resultJsonObject.get(ActivityConstants.URL_IMAGE_ELEMENT_NAME);
-			if (urlImageElement != null) {
-				String urlImage = urlImageElement.getAsString();
-				linkDetails.setLinkImageUrl(urlImage);
-
-			}
-			JsonElement urlSiteJson = resultJsonObject.get(ActivityConstants.URL_SITE_ELEMENT_NAME);
-			if (urlSiteJson != null) {
-				String siteName = urlSiteJson.getAsString();
-				RecipeOwnerContext.setOwnerForUrl(linkDetails.getUrl(), siteName);
-				linkDetails.setLinkSiteName(siteName);
-			}
+			initLinkDataFromResponse(resultJsonObject, linkDetails);
 
 			initLinkRecipeUi(linkDetails);
 
 		}
+
 
 		@Override
 		protected void handleFailure() {

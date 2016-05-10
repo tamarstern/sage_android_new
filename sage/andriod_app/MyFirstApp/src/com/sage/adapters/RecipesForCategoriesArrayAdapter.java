@@ -12,15 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myfirstapp.R;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.sage.constants.ActivityConstants;
+import com.sage.application.RecipeUrlDataContainer;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
 import com.sage.listeners.RecipeDetailsClickListener;
 import com.sage.tasks.GetRecipeUrlDetailsTask;
 import com.sage.utils.ActivityUtils;
-import com.sage.utils.RecipeOwnerContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,9 +68,19 @@ public class RecipesForCategoriesArrayAdapter extends ArrayAdapter<RecipeDetails
 		}
 
 		if(recipePublished.getRecipeType().equals(RecipeType.LINK)) {
-			Object[] params = ActivityUtils.generateServiceParamObject(context, recipePublished.getUrl());
+			RecipeUrlDataContainer instance = RecipeUrlDataContainer.getInstance();
+			boolean hasDataForRecipe = instance.hasDataForRecipe(recipePublished);
+			if(hasDataForRecipe) {
+				recipePublished.setLinkSiteName(instance.getSiteName(recipePublished));
+				recipePublished.setLinkTitle(instance.getTitle(recipePublished));
+				recipePublished.setLinkImageUrl(instance.getLinkImageUrl(recipePublished));
+				recipePublished.setLinkDataInitialized(true);
+				notifyDataSetChanged();
+			} else {
+				Object[] params = ActivityUtils.generateServiceParamObject(context, recipePublished.getUrl());
 
-			new GetRecipeUrlDetails(recipePublished, position).execute(params);
+				new GetRecipeUrlDetails(recipePublished, position).execute(params);
+			}
 
 		}
 
@@ -95,30 +103,7 @@ public class RecipesForCategoriesArrayAdapter extends ArrayAdapter<RecipeDetails
 
 		@Override
 		protected void handleSuccess(JsonObject resultJsonObject) {
-			String urlTitle;
-			JsonElement urlTitleJson = resultJsonObject.get(ActivityConstants.URL_TITLE_ELEMENT_NAME);
-			if (urlTitleJson != null) {
-				urlTitle = urlTitleJson.getAsString();
-				recipeBasicData.setLinkTitle(urlTitle);
-			}
-
-			String urlImage;
-			JsonElement urlImageJson = resultJsonObject.get(ActivityConstants.URL_IMAGE_ELEMENT_NAME);
-			if (urlImageJson != null) {
-				urlImage = urlImageJson.getAsString();
-				recipeBasicData.setLinkImageUrl(urlImage);
-			}
-
-			String siteName;
-			JsonElement urlSiteJson = resultJsonObject.get(ActivityConstants.URL_SITE_ELEMENT_NAME);
-			if (urlSiteJson != null) {
-				siteName = urlSiteJson.getAsString();
-				RecipeOwnerContext.setOwnerForUrl(recipeBasicData.getUrl(), siteName);
-				recipeBasicData.setLinkSiteName(siteName);
-			}
-
-			recipeBasicData.setLinkDataInitialized(true);
-
+			initLinkDataFromResponse(resultJsonObject, recipeBasicData);
 		}
 	}
 

@@ -9,6 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.sage.application.RecipeUrlDataContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
@@ -42,12 +43,25 @@ public class BackgroundServicesUtils {
             }.getType());
             for (RecipeDetails recipe : details) {
                 if(recipe.getRecipeType().equals(RecipeType.LINK) && !TextUtils.isEmpty(recipe.getUrl())) {
-                    BackgroundServicesUtils.GetRecipeLinkDetails(token, userName, recipe);
+                    initRecipeUrlData(token, userName, recipe);
                 }
             }
             return details;
         }
         return new ArrayList<RecipeDetails>();
+    }
+
+    public static void initRecipeUrlData(String token, String userName, RecipeDetails recipe) {
+        RecipeUrlDataContainer instance = RecipeUrlDataContainer.getInstance();
+        boolean hasDataForRecipe = instance.hasDataForRecipe(recipe);
+        if(hasDataForRecipe) {
+            recipe.setLinkSiteName(instance.getSiteName(recipe));
+            recipe.setLinkTitle(instance.getTitle(recipe));
+            recipe.setLinkImageUrl(instance.getLinkImageUrl(recipe));
+            recipe.setLinkDataInitialized(true);
+        } else {
+            BackgroundServicesUtils.GetRecipeLinkDetails(token, userName, recipe);
+        }
     }
 
     public static ArrayList<RecipeDetails> getProfilePageRecipiesForPage(String token, String userName, int i) throws Exception {
@@ -65,7 +79,7 @@ public class BackgroundServicesUtils {
             }.getType());
             for (RecipeDetails recipe : details) {
                 if (recipe.getRecipeType().equals(RecipeType.LINK) && !TextUtils.isEmpty(recipe.getUrl())) {
-                    BackgroundServicesUtils.GetRecipeLinkDetails(token, userName, recipe);
+                    initRecipeUrlData(token, userName, recipe);
                 }
             }
             return details;
@@ -82,15 +96,18 @@ public class BackgroundServicesUtils {
             boolean saveSucceed = linkResultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
             if (saveSucceed) {
                 JsonElement urlTitleJson = linkResultJsonObject.get(ActivityConstants.URL_TITLE_ELEMENT_NAME);
+                RecipeUrlDataContainer instance = RecipeUrlDataContainer.getInstance();
                 if (urlTitleJson != null) {
                     String urlTitle = urlTitleJson.getAsString();
                     recipe.setLinkTitle(urlTitle);
+                    instance.setTtileForLinkDetails(recipe, urlTitle);
                 }
                 String urlImage;
                 JsonElement urlImageJson = linkResultJsonObject.get(ActivityConstants.URL_IMAGE_ELEMENT_NAME);
                 if (urlImageJson != null) {
                     urlImage = urlImageJson.getAsString();
                     recipe.setLinkImageUrl(urlImage);
+                    instance.setLinkImageUrl(recipe, urlImage);
                 }
                 String siteName;
                 JsonElement urlSiteJson = linkResultJsonObject.get(ActivityConstants.URL_SITE_ELEMENT_NAME);
@@ -98,6 +115,7 @@ public class BackgroundServicesUtils {
                     siteName = urlSiteJson.getAsString();
                     RecipeOwnerContext.setOwnerForUrl(recipe.getUrl(), siteName);
                     recipe.setLinkSiteName(siteName);
+                    instance.setSiteNameForLinkDetails(recipe, siteName);
                 }
                 recipe.setLinkDataInitialized(true);
 

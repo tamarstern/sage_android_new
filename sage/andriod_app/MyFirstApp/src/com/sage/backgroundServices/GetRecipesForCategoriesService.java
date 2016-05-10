@@ -79,11 +79,10 @@ public class GetRecipesForCategoriesService extends IntentService {
                 ArrayList<RecipeDetails> recipesToSave = gson.fromJson(resultDataObject,
                         new TypeToken<ArrayList<RecipeDetails>>() {
                         }.getType());
-
                 HashSet<RecipeDetails> recipesSetToSave = new HashSet<RecipeDetails>(recipesToSave);
                 for (RecipeDetails recipe : recipesSetToSave) {
                     if (recipe.getRecipeType().equals(RecipeType.LINK) && !TextUtils.isEmpty(recipe.getUrl())) {
-                        BackgroundServicesUtils.GetRecipeLinkDetails(token, userName, recipe);
+                        BackgroundServicesUtils.initRecipeUrlData(token, userName, recipe);
                     }
                 }
                 UserCategoriesContainer.getInstance().putRecipesForCategory(category, recipesSetToSave);

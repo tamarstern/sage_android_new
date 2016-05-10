@@ -78,7 +78,6 @@ public class LoginActivity extends Activity {
 
 	private void initLoginFormUi() {
 
-		scheduleAlarmBackgroundServices();
 		initLoginFormVisibility(View.VISIBLE);
 
 		usernameEditText = (EditText) findViewById(R.id.email);
@@ -328,6 +327,7 @@ public class LoginActivity extends Activity {
 				userObjectId = resultJsonObject.get(ActivityConstants.USER_OBJECT_ID).getAsString();
 				saveAuthDetails();
 				startNewsfeedActivity();
+				scheduleAlarmBackgroundServices();
 			} else {
 				Toast.makeText(getApplicationContext(), "Login failed. Incorrect username or password",
 						Toast.LENGTH_LONG).show();

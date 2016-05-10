@@ -16,10 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myfirstapp.R;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.activity.interfaces.IClosePopupCommentListener;
-import com.sage.constants.ActivityConstants;
+import com.sage.application.RecipeUrlDataContainer;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
 import com.sage.listeners.AddCommentsClickListener;
@@ -158,9 +157,21 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 	}
 
 	private void InitLinkRecipeData(RecipeDetails recipeUserBasicData, int position) {
-		Object[] params = ActivityUtils.generateServiceParamObject(context, recipeUserBasicData.getUrl());
 
-		new GetRecipeUrlDetails(recipeUserBasicData, position).execute(params);
+		RecipeUrlDataContainer instance = RecipeUrlDataContainer.getInstance();
+		boolean hasDataForRecipe = instance.hasDataForRecipe(recipeUserBasicData);
+		if(hasDataForRecipe) {
+			recipeUserBasicData.setLinkSiteName(instance.getSiteName(recipeUserBasicData));
+			recipeUserBasicData.setLinkTitle(instance.getTitle(recipeUserBasicData));
+			recipeUserBasicData.setLinkImageUrl(instance.getLinkImageUrl(recipeUserBasicData));
+			recipeUserBasicData.setLinkDataInitialized(true);
+			notifyDataSetChanged();
+		} else {
+
+			Object[] params = ActivityUtils.generateServiceParamObject(context, recipeUserBasicData.getUrl());
+
+			new GetRecipeUrlDetails(recipeUserBasicData, position).execute(params);
+		}
 
 	}
 
@@ -430,29 +441,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 
 		@Override
 		protected void handleSuccess(JsonObject resultJsonObject) {
-			String urlTitle;
-			JsonElement urlTitleJson = resultJsonObject.get(ActivityConstants.URL_TITLE_ELEMENT_NAME);
-			if (urlTitleJson != null) {
-				urlTitle = urlTitleJson.getAsString();
-				recipeBasicData.setLinkTitle(urlTitle);
-			}
-
-			String urlImage;
-			JsonElement urlImageJson = resultJsonObject.get(ActivityConstants.URL_IMAGE_ELEMENT_NAME);
-			if (urlImageJson != null) {
-				urlImage = urlImageJson.getAsString();
-				recipeBasicData.setLinkImageUrl(urlImage);
-			}
-
-			String siteName;
-			JsonElement urlSiteJson = resultJsonObject.get(ActivityConstants.URL_SITE_ELEMENT_NAME);
-			if (urlSiteJson != null) {
-				siteName = urlSiteJson.getAsString();
-				RecipeOwnerContext.setOwnerForUrl(recipeBasicData.getUrl(), siteName);
-				recipeBasicData.setLinkSiteName(siteName);
-			}
-
-			recipeBasicData.setLinkDataInitialized(true);
+			initLinkDataFromResponse(resultJsonObject, recipeBasicData);
 			details.set(position, recipeBasicData);
 			notifyDataSetChanged();
 
