@@ -3,6 +3,7 @@ package com.sage.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,8 +115,6 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 	}
 
 	private void initLinkAndMainPictureVisibility(final int position, final RecipeDetails recipeUserBasicData) {
-		getLinkDetailsProgress.setVisibility(View.VISIBLE);
-		recipeMainPicture.setVisibility(View.GONE);
 		if (!recipeUserBasicData.getRecipeType().equals(RecipeType.LINK)) {
 				initRecipeMainPicture(recipeUserBasicData);
 		} else {
@@ -217,14 +218,17 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 
 	private void initRecipeMainPicture(final RecipeDetails recipeUserBasicData) {
 
-	//	String id = ActivityUtils.getRecipeMainPictureId(recipeUserBasicData);
+
+		recipeMainPicture.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.MATCH_PARENT));
+
+	//	String id = CacheUtils.getRecipeMainPictureId(recipeUserBasicData);
 	//	String url = ImagesInitializer.getUrl(context, id, ImageType.RECIPE_PICTURE);
 	//	TCImageLoader loader = ((GoogleAnalyticsApplication) context.getApplication()).getLoader();
-	//	loader.display(url, recipeMainPicture, R.drawable.default_recipe_image);
+	//	loader.display(url, recipeMainPicture,getLinkDetailsProgress, R.drawable.default_recipe_image);
 
 
-		ImagesInitializer.initRecipeMainPicture(recipeMainPicture, recipeUserBasicData, context);
-		getLinkDetailsProgress.setVisibility(View.GONE);
+		ImagesInitializer.initRecipeMainPicture(recipeMainPicture, getLinkDetailsProgress, recipeUserBasicData, context);
+
 
 	}
 
@@ -336,13 +340,13 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 
 		String linkImageUrl = recipeBasicData.getLinkImageUrl();
 		if (!TextUtils.isEmpty(linkImageUrl)) {
-			ImagesInitializer.initImage(this.context, recipeMainPicture, linkImageUrl);
+			ImagesInitializer.initImage(this.context, recipeMainPicture,getLinkDetailsProgress, linkImageUrl);
+		} else {
+			getLinkDetailsProgress.setVisibility(View.GONE);
+			recipeMainPicture.setVisibility(View.VISIBLE);
+			Drawable defaultDrawable = context.getDrawable(R.drawable.default_recipe_image);
+			recipeMainPicture.setImageDrawable(defaultDrawable);
 		}
-
-		getLinkDetailsProgress.setVisibility(View.GONE);
-		recipeMainPicture.setVisibility(View.VISIBLE);
-
-
 		initLinkOwnerName(recipeBasicData);
 
 		recipeBasicData.setLinkUiInitialized(true);

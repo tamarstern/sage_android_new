@@ -39,7 +39,7 @@ public class GetNewsfeedRecipesService extends IntentService {
             }
 
         } catch (Exception e) {
-            Log.e("failed fetch profile", "failed fetch profile", e);
+            Log.e("failed fetch newsfeed", "failed fetch newsfeed", e);
         } finally {
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }

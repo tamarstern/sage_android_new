@@ -239,7 +239,7 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 
 		String linkImageUrl = linkDetails.getLinkImageUrl();
 		if (!TextUtils.isEmpty(linkImageUrl)) {
-			ImagesInitializer.initImage(this, linkImage, linkImageUrl);
+			ImagesInitializer.initImage(this, linkImage, getLinkDetailsProgress,linkImageUrl);
 		}
 
 		getLinkDetailsProgress.setVisibility(View.GONE);

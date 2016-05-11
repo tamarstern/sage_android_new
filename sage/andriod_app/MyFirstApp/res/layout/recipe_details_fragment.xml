@@ -30,7 +30,6 @@
                 android:indeterminate="true"
                 android:indeterminateDrawable="@drawable/progress" />
 
-
             <ImageView
                 android:id="@+id/receipt_main_pic"
                 android:layout_width="match_parent"

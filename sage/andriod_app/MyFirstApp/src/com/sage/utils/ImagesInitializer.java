@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.myfirstapp.R;
 import com.sage.constants.ActivityConstants;
@@ -25,14 +26,14 @@ public class ImagesInitializer {
 
 	private static CachedMap<String, Drawable> drawablesMap = new CachedMap<String, Drawable>(50);
 
-	public static void initialRecipeImage(final Context context, String pictureID, ImageView imageView, ImageType imageType) {
+	public static void initialRecipeImage(final Context context, String pictureID, ImageView imageView, ProgressBar progressBar, ImageType imageType) {
 		if (pictureID == null) {
 			imageView.setImageResource(R.drawable.default_recipe_image);
 			imageView.setVisibility(View.VISIBLE);
 			// use default picture
 		} else {
 			String url = getUrl(context, pictureID, imageType);
-			initImage(context, imageView, url);
+			initImage(context, imageView, progressBar,url);
 			imageView.setVisibility(View.VISIBLE);
 
 		}
@@ -46,16 +47,19 @@ public class ImagesInitializer {
 		return MessageFormat.format(ServicesConstants.PICTURE_URL, pictureID, imageType, token);
 	}
 
-	public static void initImage(final Context context, final ImageView imageView, final String url) {
+	public static void initImage(final Context context, final ImageView imageView,final ProgressBar progressBar, final String url) {
 		if (drawablesMap.containsKey(url)) {
 			Drawable drawable = drawablesMap.get(url);
 			if (drawable != null) {
 				Drawable clone = drawable.getConstantState().newDrawable();
 				imageView.setImageDrawable(clone);
+				progressBar.setVisibility(View.GONE);
 				return;
 			}
 		}
 
+		progressBar.setVisibility(View.VISIBLE);
+		imageView.setVisibility(View.GONE);
 
 		Picasso.Builder builder = new Picasso.Builder(context);
 
@@ -71,21 +75,26 @@ public class ImagesInitializer {
 		load.into(imageView, new com.squareup.picasso.Callback() {
 					@Override
 					public void onSuccess() {
+
+						progressBar.setVisibility(View.GONE);
+						imageView.setVisibility(View.VISIBLE);
+
 						Drawable drawable = imageView.getDrawable();
 						drawablesMap.put(url, drawable);
 					}
 
 					@Override
 					public void onError() {
-
+						progressBar.setVisibility(View.GONE);
+						imageView.setVisibility(View.VISIBLE);
 						Log.e("failed to load image", "failed to load image");
 					}
 				});
 	}
 
-	public static void initRecipeMainPicture(ImageView image, RecipeDetails details, Activity context) {
+	public static void initRecipeMainPicture(ImageView image,ProgressBar progressBar, RecipeDetails details, Activity context) {
 		String id = CacheUtils.getRecipeMainPictureId(details);
-		ImagesInitializer.initialRecipeImage(context, id, image, ImageType.RECIPE_PICTURE);
+		ImagesInitializer.initialRecipeImage(context, id, image, progressBar, ImageType.RECIPE_PICTURE);
 	}
 
 

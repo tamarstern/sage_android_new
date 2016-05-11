@@ -1,9 +1,6 @@
 package com.example.myfirstapp;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -27,12 +24,6 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.sage.backgroundServices.CategoriesReceiver;
-import com.sage.backgroundServices.DeleteRecipesReceiver;
-import com.sage.backgroundServices.GetFollowingReceiver;
-import com.sage.backgroundServices.GetProfileRecipiesReceiver;
-import com.sage.backgroundServices.SaveRecipesReceiver;
-import com.sage.backgroundServices.SyncFollowUsersReceiver;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.services.AuthenticateWithTokenService;
@@ -64,7 +55,6 @@ public class LoginActivity extends Activity {
 
 		String token = getDirectAuthenticationToken();
 		if (!TextUtils.isEmpty(token)) {
-			scheduleAlarmBackgroundServices();
 			initLoginFormVisibility(View.GONE);
 			AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.ENTER_APP_WHEN_ALREADY_LOGGED_IN);
 			new AuthenticateWithTokenTask(this).execute(token);
@@ -92,71 +82,6 @@ public class LoginActivity extends Activity {
 		initForgotPasswordLink();
 	}
 
-	public void scheduleAlarmBackgroundServices() {
-		long firstMillis = System.currentTimeMillis();
-		AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-
-		Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesReceiver.class);
-		final PendingIntent categoriesPIntent = PendingIntent.getBroadcast(this, CategoriesReceiver.REQUEST_CODE,
-				categoriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				8*60*1000, categoriesPIntent);
-
-		Intent profileRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
-		final PendingIntent profileRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
-				profileRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				10*60*1000, profileRecipiesPIntent);
-
-		Intent followingIntent = new Intent(getApplicationContext(), GetFollowingReceiver.class);
-		final PendingIntent followingPIntent = PendingIntent.getBroadcast(this, GetFollowingReceiver.REQUEST_CODE,
-				followingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				5*60*1000, followingPIntent);
-
-		Intent syncFollowingIntent = new Intent(getApplicationContext(), SyncFollowUsersReceiver.class);
-		final PendingIntent syncFollowingPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
-				syncFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				3*60*1000, syncFollowingPIntent);
-
-		Intent deleteRecipesIntent = new Intent(getApplicationContext(), DeleteRecipesReceiver.class);
-		final PendingIntent deleteRecipesPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
-				deleteRecipesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				3*60*1000, deleteRecipesPIntent);
-
-
-		Intent saveRecipesIntent = new Intent(getApplicationContext(), SaveRecipesReceiver.class);
-		final PendingIntent saveRecipesPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
-				saveRecipesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				5*60*1000, saveRecipesPIntent);
-
-
-
-
-		/*Intent recipesForCategoryIntent = new Intent(getApplicationContext(), RecipesForCategoryReceiver.class);
-		final PendingIntent recipesForCategoryPIntent = PendingIntent.getBroadcast(this, RecipesForCategoryReceiver.REQUEST_CODE,
-				recipesForCategoryIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				5*60*1000, recipesForCategoryPIntent);*/
-
-		Intent newsfeedRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
-		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
-				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				10*60*1000, newsfeedRecipiesPIntent);
-
-		Intent profileRecipiesForFollowingIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
-		final PendingIntent profileRecipiesForFollowingPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
-				profileRecipiesForFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis + 5*60*10,
-				30*60*1000, profileRecipiesForFollowingPIntent);
-
-
-
-	}
 
 
 	private String getDirectAuthenticationToken() {
@@ -327,7 +252,6 @@ public class LoginActivity extends Activity {
 				userObjectId = resultJsonObject.get(ActivityConstants.USER_OBJECT_ID).getAsString();
 				saveAuthDetails();
 				startNewsfeedActivity();
-				scheduleAlarmBackgroundServices();
 			} else {
 				Toast.makeText(getApplicationContext(), "Login failed. Incorrect username or password",
 						Toast.LENGTH_LONG).show();
