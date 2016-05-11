@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,8 @@ import com.sage.entities.RecipeType;
 public class AddRecipeAsLinkActivity extends AppCompatActivity {
 
 	private static final String GOOGLE_URL = "https://www.google.com/";
+
+	private String lastUrlBeforeFail;
 
 	private ViewHolder holder;
 
@@ -69,12 +72,18 @@ public class AddRecipeAsLinkActivity extends AppCompatActivity {
 		holder.webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 		holder.webView.setWebViewClient(new WebViewClient());
 		progressbar.setVisibility(View.VISIBLE);
-		holder.webView.loadUrl(GOOGLE_URL);
+		if(!TextUtils.isEmpty(this.lastUrlBeforeFail)) {
+			holder.webView.loadUrl(lastUrlBeforeFail);
+			lastUrlBeforeFail = null;
+		} else {
+			holder.webView.loadUrl(GOOGLE_URL);
+		}
 		holder.webView.setWebViewClient(new WebViewClient() {
 
 			@Override
 			public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
 				super.onReceivedError(view, request, error);
+				lastUrlBeforeFail = holder.webView.getUrl();
 				holder.webView.setVisibility(View.GONE);
 				holder.setFailedToLoad(true);
 				progressbar.setVisibility(View.GONE);
