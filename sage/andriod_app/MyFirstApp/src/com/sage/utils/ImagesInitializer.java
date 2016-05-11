@@ -30,7 +30,7 @@ public class ImagesInitializer {
 		if (pictureID == null) {
 			imageView.setImageResource(R.drawable.default_recipe_image);
 			imageView.setVisibility(View.VISIBLE);
-			// use default picture
+			progressBar.setVisibility(View.GONE);
 		} else {
 			String url = getUrl(context, pictureID, imageType);
 			initImage(context, imageView, progressBar,url);
