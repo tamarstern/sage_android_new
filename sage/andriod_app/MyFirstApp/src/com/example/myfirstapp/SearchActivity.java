@@ -114,7 +114,7 @@ public class SearchActivity extends AppCompatActivity {
 				}
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 				if ((lastInScreen == totalItemCount)) {
-					if (preLast == 0 || preLast != lastInScreen) {
+					if (preLast != lastInScreen && !shouldIncreasePage) {
 						preLast = lastInScreen;
 						getSearchRecipies();
 					}
@@ -155,6 +155,7 @@ public class SearchActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				pageNumber = 0;
+				initListAdaptor();
 				getSearchRecipies();
 			}
 		});
@@ -181,9 +182,6 @@ public class SearchActivity extends AppCompatActivity {
 			Toast.makeText(this, R.string.did_not_enter_search_text, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if(pageNumber == 0) {
-			initListAdaptor();
-		}
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
@@ -208,9 +206,10 @@ public class SearchActivity extends AppCompatActivity {
 
 		@Override
 		protected void performCustomActionsOnPreExecute() {
+			loadingMore = true;
 			shouldIncreasePage = true;
 			if(pageNumber == 0) {
-				super.performCustomActionsOnPostExecute();
+				super.performCustomActionsOnPreExecute();
 			}else if (listView.getAdapter().getCount()-1 > 0) {
 				progressBar.setVisibility(View.VISIBLE);
 			} else {
@@ -248,7 +247,6 @@ public class SearchActivity extends AppCompatActivity {
 
 		@Override
 		protected JsonElement doInBackground(Object... token) {
-			loadingMore = true;
 			return super.doInBackground(token);
 		}
 
@@ -256,9 +254,6 @@ public class SearchActivity extends AppCompatActivity {
 		protected void onPostExecute(JsonElement result) {
 			super.onPostExecute(result);
 			if (details != null) {
-				if(pageNumber == 0) {
-					initListAdaptor();
-				}
 				Iterator iterator = details.iterator();
 				while (iterator.hasNext()) {
 					adapter.add((RecipeDetails) iterator.next());
@@ -266,6 +261,7 @@ public class SearchActivity extends AppCompatActivity {
 				adapter.notifyDataSetChanged();
 				if(shouldIncreasePage) {
 					pageNumber += 1;
+					shouldIncreasePage = false;
 				}				
 				loadingMore = false;
 

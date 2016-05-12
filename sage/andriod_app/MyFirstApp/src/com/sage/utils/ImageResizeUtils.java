@@ -121,24 +121,7 @@ public class ImageResizeUtils {
         canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
 
 //      check the rotation of the image and display it properly
-        rotateBitmap(filePath, scaledBitmap);
-      /*  ExifInterface exif;
-        try {
-            exif = new ExifInterface(filePath);
-
-            int orientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION, 0);
-            Log.d("EXIF", "Exif: " + orientation);
-            int rotation = exifToDegrees(orientation);
-            Matrix matrix = new Matrix();
-            matrix.postRotate(rotation);
-            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
-                    scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
-                    true);
-        } catch (Exception e) {
-            Log.e("failedRotateBitmap", "failed to rotate bitmap", e);
-        }*/
-
+        scaledBitmap =  rotateBitmap(filePath, scaledBitmap);
 
         return scaledBitmap;
 
