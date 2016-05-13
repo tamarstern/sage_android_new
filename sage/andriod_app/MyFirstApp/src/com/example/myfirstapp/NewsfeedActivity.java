@@ -27,6 +27,7 @@ import com.sage.backgroundServices.CategoriesReceiver;
 import com.sage.backgroundServices.DeleteRecipesReceiver;
 import com.sage.backgroundServices.GetFollowingReceiver;
 import com.sage.backgroundServices.GetNewsfeedRecipiesReceiver;
+import com.sage.backgroundServices.GetProfilePageRecipiesForFollowingReceiver;
 import com.sage.backgroundServices.GetProfileRecipiesReceiver;
 import com.sage.backgroundServices.SaveRecipesReceiver;
 import com.sage.backgroundServices.SyncFollowUsersReceiver;
@@ -150,11 +151,11 @@ public class NewsfeedActivity extends AppCompatActivity {
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
 				8*60*1000, newsfeedRecipiesPIntent);
 
-		Intent profileRecipiesForFollowingIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
-		final PendingIntent profileRecipiesForFollowingPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
+		Intent profileRecipiesForFollowingIntent = new Intent(getApplicationContext(), GetProfilePageRecipiesForFollowingReceiver.class);
+		final PendingIntent profileRecipiesForFollowingPIntent = PendingIntent.getBroadcast(this, GetProfilePageRecipiesForFollowingReceiver.REQUEST_CODE,
 				profileRecipiesForFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis + 5*60*10,
-				30*60*1000, profileRecipiesForFollowingPIntent);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				10*60*1000, profileRecipiesForFollowingPIntent);
 
 
 

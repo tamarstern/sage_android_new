@@ -112,6 +112,13 @@
             android:name="com.sage.backgroundServices.GetProfilePageRecipesService"
             android:exported="false"/>
 
+        <receiver
+            android:name="com.sage.backgroundServices.GetProfilePageRecipiesForFollowingReceiver"
+            android:process=":remote">
+        </receiver>
+        <service
+            android:name="com.sage.backgroundServices.GetProfilePageRecipesForFollowing"
+            android:exported="false"/>
 
 
         <meta-data

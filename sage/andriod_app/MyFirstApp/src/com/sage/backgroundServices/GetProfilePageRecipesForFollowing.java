@@ -29,6 +29,7 @@ public class GetProfilePageRecipesForFollowing extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         try {
+            Log.i("startProcessUsers", "start process for user");
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String loggedInUserObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
@@ -39,7 +40,7 @@ public class GetProfilePageRecipesForFollowing extends IntentService {
             }
 
         } catch (Exception e) {
-            Log.e("failed fetch newsfeed", "failed fetch newsffeed for user", e);
+            Log.e("failed fetch profile", "failed fetch profile for users", e);
         } finally {
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
@@ -65,7 +66,7 @@ public class GetProfilePageRecipesForFollowing extends IntentService {
     }
 
     private void addProfileRecipesForUser(String token, HashSet<String> processedUsers, String userId) throws Exception {
-        Log.e("process for user", "process for user " + userId);
+        Log.i("process for user", "process for user " + userId);
         ArrayList<RecipeDetails> firstPage = BackgroundServicesUtils.getProfilePageRecipiesForPage(token, userId, 0);
         if(firstPage != null) {
             NewsfeedContainer.getInstance().addProfileRecipesForUser(userId, firstPage);
