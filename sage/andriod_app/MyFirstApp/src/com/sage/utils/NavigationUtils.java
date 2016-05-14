@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.myfirstapp.ActivityRecipiesInCategoryPage;
-import com.example.myfirstapp.NewsfeedActivity;
+import com.sage.activities.ActivityRecipiesInCategoryPage;
+import com.sage.activities.NewsfeedActivity;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 

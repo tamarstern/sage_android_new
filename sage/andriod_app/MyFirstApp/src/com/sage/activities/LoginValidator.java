@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.sage.activities;
 
 import android.content.Context;
 import android.text.TextUtils;

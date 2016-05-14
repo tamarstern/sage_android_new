@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.sage.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.myfirstapp.R;
 import com.google.gson.JsonObject;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
 import com.sage.activity.interfaces.IInitLinkDetailsListener;

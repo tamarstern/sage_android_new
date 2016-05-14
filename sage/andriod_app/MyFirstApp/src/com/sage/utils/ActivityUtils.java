@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,19 +15,16 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import com.example.myfirstapp.ActivityCategoriesPage;
-import com.example.myfirstapp.DisplayLinkWebPageActivity;
-import com.example.myfirstapp.LinkRecipePageActivity;
-import com.example.myfirstapp.PictureRecipePageActivity;
-import com.example.myfirstapp.ResetPasswordActivity;
-import com.example.myfirstapp.TextReciptPageActivity;
+import com.sage.activities.ActivityCategoriesPage;
+import com.sage.activities.DisplayLinkWebPageActivity;
+import com.sage.activities.LinkRecipePageActivity;
+import com.sage.activities.PictureRecipePageActivity;
+import com.sage.activities.ResetPasswordActivity;
+import com.sage.activities.TextReciptPageActivity;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
-import com.sage.application.RecipeImageContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
-import com.sage.entities.RecipeType;
-import com.sage.entities.User;
 import com.sage.listeners.ExitRecipeWithoutSavingPopupHandler;
 
 public class ActivityUtils {

@@ -1,6 +1,5 @@
 package com.sage.adapters;
 
-import com.example.myfirstapp.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +8,8 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
+
+import com.example.myfirstapp.R;
 
 public class SeachResultsAdaptor extends ArrayAdapter<String> {
 	private final Context context;

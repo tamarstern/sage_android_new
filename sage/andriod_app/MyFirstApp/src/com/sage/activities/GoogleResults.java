@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.sage.activities;
 
 import java.util.List;
 

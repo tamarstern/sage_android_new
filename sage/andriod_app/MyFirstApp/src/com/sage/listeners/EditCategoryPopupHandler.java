@@ -18,11 +18,11 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.example.myfirstapp.ProgressDialogContainer;
 import com.example.myfirstapp.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sage.activities.ProgressDialogContainer;
 import com.sage.activity.interfaces.ICategoryEditListener;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeCategory;

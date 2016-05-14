@@ -7,8 +7,8 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.example.myfirstapp.ProfilePageActivity;
-import com.example.myfirstapp.ProgressDialogContainer;
+import com.sage.activities.ProfilePageActivity;
+import com.sage.activities.ProgressDialogContainer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.application.MyProfileRecipiesContainer;

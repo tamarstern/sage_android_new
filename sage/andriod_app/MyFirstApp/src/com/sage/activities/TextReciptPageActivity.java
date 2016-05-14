@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.sage.activities;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.example.myfirstapp.R;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
 import com.sage.activity.interfaces.IOnWindowFocusChanged;
 import com.sage.entities.EntityDataTransferConstants;

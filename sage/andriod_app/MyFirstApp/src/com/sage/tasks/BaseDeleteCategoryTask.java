@@ -3,7 +3,7 @@ package com.sage.tasks;
 import android.app.Activity;
 import android.os.AsyncTask;
 
-import com.example.myfirstapp.ProgressDialogContainer;
+import com.sage.activities.ProgressDialogContainer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;

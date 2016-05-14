@@ -13,8 +13,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
-import com.example.myfirstapp.NewsfeedActivity;
 import com.example.myfirstapp.R;
+import com.sage.activities.NewsfeedActivity;
 import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.application.NewsfeedContainer;
 import com.sage.application.RecipesToDeleteContainer;

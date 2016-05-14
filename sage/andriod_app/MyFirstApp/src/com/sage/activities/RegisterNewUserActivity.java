@@ -1,13 +1,4 @@
-package com.example.myfirstapp;
-
-import java.io.IOException;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.sage.constants.ActivityConstants;
-import com.sage.services.RegisterNewService;
-import com.sage.utils.ActivityUtils;
-import com.sage.utils.AnalyticsUtils;
+package com.sage.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,7 +8,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.example.myfirstapp.R;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.sage.constants.ActivityConstants;
+import com.sage.services.RegisterNewService;
+import com.sage.utils.ActivityUtils;
+import com.sage.utils.AnalyticsUtils;
 
 public class RegisterNewUserActivity extends Activity {
 	private EditText usernameEditText;

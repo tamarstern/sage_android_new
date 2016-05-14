@@ -1,13 +1,5 @@
 package com.sage.fragments;
 
-import com.example.myfirstapp.ActivityCategoriesPage;
-import com.example.myfirstapp.R;
-import com.sage.entities.EntityDataTransferConstants;
-import com.sage.entities.RecipeDetails;
-import com.sage.listeners.DeletePopupClickListener;
-import com.sage.utils.AnalyticsUtils;
-import com.sage.utils.EntityUtils;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -16,6 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+
+import com.example.myfirstapp.R;
+import com.sage.activities.ActivityCategoriesPage;
+import com.sage.entities.EntityDataTransferConstants;
+import com.sage.entities.RecipeDetails;
+import com.sage.listeners.DeletePopupClickListener;
+import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.EntityUtils;
 
 public class DeleteMoveRecipeFragment extends Fragment {
 

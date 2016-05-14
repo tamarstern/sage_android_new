@@ -18,15 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.example.myfirstapp.DisplayImageActivity;
 import com.example.myfirstapp.R;
+import com.sage.activities.DisplayImageActivity;
 import com.sage.application.GoogleAnalyticsApplication;
 import com.sage.application.TCImageLoader;
 import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
-import com.sage.utils.ActivityUtils;
 import com.sage.utils.CacheUtils;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ImageSelectorUtils;

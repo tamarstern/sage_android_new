@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.sage.activities;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,7 +8,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.myfirstapp.GoogleResults.Result;
+import com.sage.activities.GoogleResults.Result;
 import com.google.gson.Gson;
 import com.sage.adapters.SeachResultsAdaptor;
 

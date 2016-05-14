@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.sage.activities;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.myfirstapp.R;
 import com.google.gson.JsonElement;
 import com.sage.adapters.UsersArrayAdapter;
 import com.sage.constants.ActivityConstants;

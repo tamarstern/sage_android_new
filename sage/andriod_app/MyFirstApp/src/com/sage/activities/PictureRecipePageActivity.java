@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.sage.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.example.myfirstapp.R;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
 import com.sage.application.GoogleAnalyticsApplication;
 import com.sage.application.TCImageLoader;

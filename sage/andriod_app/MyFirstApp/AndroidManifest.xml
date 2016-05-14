@@ -38,6 +38,10 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <permission android:name="com.example.activities.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.example.myfirstapp.permission.C2D_MESSAGE" />
+
     <application
         android:name="com.sage.application.GoogleAnalyticsApplication"
         android:allowBackup="true"
@@ -121,6 +125,31 @@
             android:exported="false"/>
 
 
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.example.gcm" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.sage.backgroundServices.GcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.sage.backgroundServices.IntanceIdRefreshService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -129,7 +158,7 @@
             android:resource="@xml/searchable" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name="com.sage.activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -144,18 +173,18 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".TextReciptPageActivity"
+            android:name="com.sage.activities.TextReciptPageActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_personal_page"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".NewsfeedActivity"
+            android:name="com.sage.activities.NewsfeedActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".SearchLinkResultsActivity"
+            android:name="com.sage.activities.SearchLinkResultsActivity"
             android:label="@string/title_activity_search_link"
             android:launchMode="singleTop">
             <intent-filter>
@@ -169,78 +198,78 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".ProfilePageActivity"
+            android:name="com.sage.activities.ProfilePageActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_profile_page"></activity>
         <activity
-            android:name=".PictureRecipePageActivity"
+            android:name="com.sage.activities.PictureRecipePageActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_picture_recipe_page"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".RegisterNewUserActivity"
+            android:name="com.sage.activities.RegisterNewUserActivity"
             android:label="@string/title_activity_register_new_user"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".LinkRecipePageActivity"
+            android:name="com.sage.activities.LinkRecipePageActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_link_recipe_page"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".ActivityCategoriesPage"
+            android:name="com.sage.activities.ActivityCategoriesPage"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_activity_categories_page"
             android:launchMode="singleTop"></activity>
         <activity
-            android:name=".ActivityRecipiesInCategoryPage"
+            android:name="com.sage.activities.ActivityRecipiesInCategoryPage"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_activity_sub_category_page"></activity>
         <activity
-            android:name=".AddRecipeAsLinkActivity"
+            android:name="com.sage.activities.AddRecipeAsLinkActivity"
             android:label="@string/title_activity_add_recipe_as_link"></activity>
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name="com.sage.activities.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".ResetPasswordActivity"
+            android:name="com.sage.activities.ResetPasswordActivity"
             android:label="@string/title_activity_reset_password"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".DisplayLinkWebPageActivity"
+            android:name="com.sage.activities.DisplayLinkWebPageActivity"
             android:label="@string/title_activity_display_link_web_page"
             android:configChanges="orientation|screenSize"></activity>
         <activity
-            android:name=".SearchActivity"
+            android:name="com.sage.activities.SearchActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_search"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".SearchMyRecipesActivity"
+            android:name="com.sage.activities.SearchMyRecipesActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_search_my_recipes"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".DisplayFollowingActivity"
+            android:name="com.sage.activities.DisplayFollowingActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_display_who_ifollow"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".SearchUserActivity"
+            android:name="com.sage.activities.SearchUserActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_search_user"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".ChangeUserDisplayNameActivity"
+            android:name="com.sage.activities.ChangeUserDisplayNameActivity"
             android:label="@string/title_activity_change_user_display_name"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".SearchMyFollowActivity"
+            android:name="com.sage.activities.SearchMyFollowActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_search_my_follow"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".DisplayImageActivity"
+            android:name="com.sage.activities.DisplayImageActivity"
             android:label="@string/title_activity_display_image"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 

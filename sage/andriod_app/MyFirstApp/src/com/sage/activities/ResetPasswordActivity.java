@@ -1,8 +1,4 @@
-package com.example.myfirstapp;
-
-import com.sage.constants.ActivityConstants;
-import com.sage.tasks.UpdateUserTask;
-import com.sage.utils.LoginUtility;
+package com.sage.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +9,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.myfirstapp.R;
+import com.sage.constants.ActivityConstants;
+import com.sage.tasks.UpdateUserTask;
+import com.sage.utils.LoginUtility;
 
 public class ResetPasswordActivity extends Activity {
 

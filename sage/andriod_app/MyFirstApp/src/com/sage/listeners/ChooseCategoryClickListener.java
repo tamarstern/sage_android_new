@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.example.myfirstapp.ActivityRecipiesInCategoryPage;
+import com.sage.activities.ActivityRecipiesInCategoryPage;
 import com.sage.application.RecipesToSaveContainer;
 import com.sage.application.UserCategoriesContainer;
 import com.sage.constants.ActivityConstants;

@@ -1,15 +1,14 @@
 package com.sage.services;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
+import android.app.Activity;
+import android.net.Uri.Builder;
+import android.text.TextUtils;
 
 import com.google.gson.JsonElement;
 import com.sage.constants.ServicesConstants;
 
-import android.app.Activity;
-import android.net.Uri.Builder;
-import android.text.TextUtils;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 
 public class UpdateUserService extends BaseService {
 
@@ -18,8 +17,9 @@ public class UpdateUserService extends BaseService {
 	private String username;
 	private String password;
 	private String userDisplayName;
+	private String gcmToken;
 	
-	public UpdateUserService(String username, String password, String userDisplayName, Activity activity) {
+	public UpdateUserService(String username, String password, String userDisplayName, String gcmToken, Activity activity) {
 		super(activity);
 		this.password = password;
 		this.username = username;
@@ -38,6 +38,9 @@ public class UpdateUserService extends BaseService {
 		}
 		if(!TextUtils.isEmpty(userDisplayName)) {
 			builder.appendQueryParameter("userDisplayName", userDisplayName);
+		}
+		if(!TextUtils.isEmpty(gcmToken)) {
+			builder.appendQueryParameter("newGcmToken", gcmToken);
 		}
 		
 	}

@@ -12,10 +12,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
-import com.example.myfirstapp.AddRecipeAsLinkActivity;
-import com.example.myfirstapp.PictureRecipePageActivity;
 import com.example.myfirstapp.R;
-import com.example.myfirstapp.TextReciptPageActivity;
+import com.sage.activities.AddRecipeAsLinkActivity;
+import com.sage.activities.PictureRecipePageActivity;
+import com.sage.activities.TextReciptPageActivity;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
