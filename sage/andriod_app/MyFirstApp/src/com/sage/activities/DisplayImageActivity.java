@@ -14,7 +14,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.example.myfirstapp.R;
 import com.sage.application.GoogleAnalyticsApplication;
 import com.sage.application.TCImageLoader;
 import com.sage.constants.ImageType;

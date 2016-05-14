@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myfirstapp.R;
 import com.google.gson.JsonObject;
+import com.sage.activities.R;
 import com.sage.application.RecipeUrlDataContainer;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;

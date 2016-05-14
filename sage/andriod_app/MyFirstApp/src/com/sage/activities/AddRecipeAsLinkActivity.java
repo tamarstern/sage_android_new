@@ -17,7 +17,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import com.example.myfirstapp.R;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;

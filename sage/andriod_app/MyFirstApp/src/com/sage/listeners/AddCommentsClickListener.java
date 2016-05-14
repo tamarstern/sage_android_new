@@ -21,7 +21,6 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-import com.example.myfirstapp.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -29,6 +28,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sage.activities.ProgressDialogContainer;
+import com.sage.activities.R;
 import com.sage.activity.interfaces.IClosePopupCommentListener;
 import com.sage.adapters.CommentsArrayAdapter;
 import com.sage.constants.ActivityConstants;

@@ -18,8 +18,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myfirstapp.R;
 import com.google.gson.JsonObject;
+import com.sage.activities.R;
 import com.sage.activity.interfaces.IClosePopupCommentListener;
 import com.sage.application.RecipeUrlDataContainer;
 import com.sage.entities.RecipeDetails;

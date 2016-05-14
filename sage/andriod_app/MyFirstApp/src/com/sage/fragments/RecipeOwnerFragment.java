@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.myfirstapp.R;
+import com.sage.activities.R;
 import com.sage.activity.interfaces.IInitLinkDetailsListener;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;

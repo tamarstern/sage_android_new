@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
-import com.example.myfirstapp.R;
+import com.sage.activities.R;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
 import com.sage.utils.ActivityUtils;
 

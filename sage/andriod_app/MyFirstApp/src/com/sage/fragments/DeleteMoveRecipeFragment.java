@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.example.myfirstapp.R;
 import com.sage.activities.ActivityCategoriesPage;
+import com.sage.activities.R;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.listeners.DeletePopupClickListener;

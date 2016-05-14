@@ -8,10 +8,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.myfirstapp.R;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.google.gson.JsonElement;
+import com.sage.activities.R;
 import com.sage.constants.ActivityConstants;
 import com.sage.constants.ServicesConstants;
 import com.sage.services.UpdateUserService;

@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.myfirstapp.R;
+import com.sage.activities.R;
 import com.sage.activity.interfaces.ICategoryEditListener;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;

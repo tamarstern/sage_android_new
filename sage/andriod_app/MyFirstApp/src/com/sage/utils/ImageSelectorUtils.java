@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.myfirstapp.R;
+import com.sage.activities.R;
 
 
 public class ImageSelectorUtils {

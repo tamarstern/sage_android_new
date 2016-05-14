@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.example.myfirstapp.R;
+import com.sage.activities.R;
 import com.sage.constants.ActivityConstants;
 import com.sage.constants.ImageType;
 import com.sage.constants.ServicesConstants;

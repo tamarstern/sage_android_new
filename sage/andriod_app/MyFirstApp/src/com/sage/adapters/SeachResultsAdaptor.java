@@ -9,7 +9,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 
-import com.example.myfirstapp.R;
+import com.sage.activities.R;
+
 
 public class SeachResultsAdaptor extends ArrayAdapter<String> {
 	private final Context context;

@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.myfirstapp.R;
-
 public class ProgressDialogContainer {
 
 	private ProgressDialog progressDialog;

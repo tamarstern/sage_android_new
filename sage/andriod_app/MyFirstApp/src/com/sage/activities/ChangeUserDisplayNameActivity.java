@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.myfirstapp.R;
 import com.sage.constants.ActivityConstants;
 import com.sage.tasks.UpdateUserTask;
 import com.sage.utils.LoginUtility;

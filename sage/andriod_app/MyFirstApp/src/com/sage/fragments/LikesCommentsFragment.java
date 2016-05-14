@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.myfirstapp.R;
 import com.google.gson.JsonObject;
+import com.sage.activities.R;
 import com.sage.activity.interfaces.IClosePopupCommentListener;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;

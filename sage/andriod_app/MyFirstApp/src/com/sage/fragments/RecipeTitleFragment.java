@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.myfirstapp.R;
+import com.sage.activities.R;
 import com.sage.activity.interfaces.IInitLinkDetailsListener;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;

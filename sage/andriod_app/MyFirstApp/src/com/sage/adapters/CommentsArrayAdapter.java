@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.myfirstapp.R;
+import com.sage.activities.R;
 import com.sage.entities.RecipeComment;
 import com.sage.listeners.ProfilePageClickListener;
 import com.sage.utils.EntityUtils;

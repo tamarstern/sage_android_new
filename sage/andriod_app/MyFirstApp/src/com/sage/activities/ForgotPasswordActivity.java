@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.myfirstapp.R;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;

@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.example.myfirstapp.R;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;

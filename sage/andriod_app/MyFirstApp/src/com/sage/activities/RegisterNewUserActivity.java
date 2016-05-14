@@ -9,7 +9,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.myfirstapp.R;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;

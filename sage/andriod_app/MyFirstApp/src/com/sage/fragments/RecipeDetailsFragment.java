@@ -18,8 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.example.myfirstapp.R;
 import com.sage.activities.DisplayImageActivity;
+import com.sage.activities.R;
 import com.sage.application.GoogleAnalyticsApplication;
 import com.sage.application.TCImageLoader;
 import com.sage.constants.ImageType;

@@ -10,7 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 
-import com.example.myfirstapp.R;
+import com.sage.activities.R;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.utils.EntityUtils;

@@ -15,9 +15,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
-import com.example.myfirstapp.R;
 import com.sage.activities.ChangeUserDisplayNameActivity;
 import com.sage.activities.LoginActivity;
+import com.sage.activities.R;
 import com.sage.application.GoogleAnalyticsApplication;
 import com.sage.constants.ActivityConstants;
 import com.sage.utils.ActivityUtils;

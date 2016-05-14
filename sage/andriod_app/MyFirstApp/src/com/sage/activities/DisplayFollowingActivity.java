@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.example.myfirstapp.R;
 import com.google.gson.JsonElement;
 import com.sage.adapters.UsersArrayAdapter;
 import com.sage.application.UserFollowingContainer;
