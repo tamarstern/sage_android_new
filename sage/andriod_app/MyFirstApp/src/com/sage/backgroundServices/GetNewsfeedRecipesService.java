@@ -48,8 +48,10 @@ public class GetNewsfeedRecipesService extends IntentService {
     }
 
     private void fetchNewsfeedInBackground(String token, String userName) throws Exception {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
+            Log.i("startNewsfeedBackground", "get newsfeed recipes for page : " + i);
             ArrayList<RecipeDetails> details = BackgroundServicesUtils.getNewsfeedRecipiesForPage(token, userName, i);
+            Log.i("startNewsfeedBackground", "for page : " + i + " length is : " + details.size());
             NewsfeedContainer.getInstance().putRecipesForPage(i, details);
         }
     }

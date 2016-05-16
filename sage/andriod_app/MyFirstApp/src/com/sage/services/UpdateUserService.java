@@ -24,6 +24,7 @@ public class UpdateUserService extends BaseService {
 		this.password = password;
 		this.username = username;
 		this.userDisplayName = userDisplayName;
+		this.gcmToken = gcmToken;
 	}
 
 	public JsonElement updateUser() throws Exception {	

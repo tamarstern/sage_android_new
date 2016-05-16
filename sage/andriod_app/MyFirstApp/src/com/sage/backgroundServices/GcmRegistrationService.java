@@ -8,6 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.google.gson.JsonElement;
@@ -16,25 +17,29 @@ import com.sage.constants.ActivityConstants;
 import com.sage.constants.ServicesConstants;
 import com.sage.services.UpdateUserService;
 
+import java.io.IOException;
+
 /**
  * Created by tamar.twena on 4/17/2016.
  */
 public class GcmRegistrationService extends IntentService {
+
+    private static final String[] TOPICS = {"publishRecipeByFollowing"};
 
     public GcmRegistrationService(String name) {
         super(name);
     }
 
     public GcmRegistrationService() {
+
         super("GcmRegistrationService");
     }
 
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
+        Log.i("startGcmRegistration", "start GCM Registration service ");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
         try {
             InstanceID instanceID = InstanceID.getInstance(this);
             String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
@@ -55,8 +60,11 @@ public class GcmRegistrationService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
-    private void subscribeTopics(String token)  {
-
+    private void subscribeTopics(String token) throws IOException {
+        GcmPubSub pubSub = GcmPubSub.getInstance(this);
+        for (String topic : TOPICS) {
+            pubSub.subscribe(token, "/topics/" + topic, null);
+        }
 
     }
 

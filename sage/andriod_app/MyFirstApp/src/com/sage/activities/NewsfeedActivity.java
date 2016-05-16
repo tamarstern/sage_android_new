@@ -3,13 +3,17 @@ package com.sage.activities;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,12 +23,15 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;
 import com.sage.application.NewsfeedContainer;
 import com.sage.backgroundServices.CategoriesReceiver;
 import com.sage.backgroundServices.DeleteRecipesReceiver;
+import com.sage.backgroundServices.GcmRegistrationService;
 import com.sage.backgroundServices.GetFollowingReceiver;
 import com.sage.backgroundServices.GetNewsfeedRecipiesReceiver;
 import com.sage.backgroundServices.GetProfilePageRecipiesForFollowingReceiver;
@@ -32,6 +39,7 @@ import com.sage.backgroundServices.GetProfileRecipiesReceiver;
 import com.sage.backgroundServices.SaveRecipesReceiver;
 import com.sage.backgroundServices.SyncFollowUsersReceiver;
 import com.sage.constants.ActivityConstants;
+import com.sage.constants.ServicesConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.services.GetNewsFeedRecipesForUser;
@@ -53,13 +61,18 @@ public class NewsfeedActivity extends AppCompatActivity {
 	private ProgressBar progressBar;
 
 	private int pageNumber = 0;
-	private int preLast = 0;;
+	private int preLast = 0;
 	private volatile boolean loadingMore = false;
 
 	private boolean afterStop;
 	private boolean shouldIncreasePage = true;
 
 	private RelativeLayout failedToLoadPanel;
+
+	private BroadcastReceiver mRegistrationBroadcastReceiver;
+	private boolean isReceiverRegistered;
+	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +99,81 @@ public class NewsfeedActivity extends AppCompatActivity {
 			}
 		});
 
+		handleGcmTokenRegistration();
 
 		listView = (ListView) findViewById(android.R.id.list);
 		listView.addFooterView(footer);
 		initListView();
 
 		AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.OPEN_NEWSFEED_ACTIVITY);
+	}
+
+	private void handleGcmTokenRegistration() {
+		final Activity activity = this;
+
+		mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				SharedPreferences sharedPreferences =
+						PreferenceManager.getDefaultSharedPreferences(context);
+				boolean sentToken = sharedPreferences
+						.getBoolean(ServicesConstants.SENT_TOKEN_TO_SERVER, false);
+				if (!sentToken) {
+					startGcmRegistrationService(activity);
+				}
+			}
+		};
+
+		registerReceiver();
+
+		if (checkPlayServices()) {
+			startGcmRegistrationService(this);
+
+
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		registerReceiver();
+	}
+
+	@Override
+	protected void onPause() {
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+		isReceiverRegistered = false;
+		super.onPause();
+	}
+
+
+	private void startGcmRegistrationService(Activity activity) {
+		Intent intent = new Intent(activity, GcmRegistrationService.class);
+		startService(intent);
+	}
+
+	private void registerReceiver(){
+		if(!isReceiverRegistered) {
+			LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+					new IntentFilter(ServicesConstants.REGISTRATION_COMPLETE));
+			isReceiverRegistered = true;
+		}
+	}
+
+	private boolean checkPlayServices() {
+		GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+		int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+		if (resultCode != ConnectionResult.SUCCESS) {
+			if (apiAvailability.isUserResolvableError(resultCode)) {
+				apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+						.show();
+			} else {
+				Log.i("deviceNotSupported", "This device is not supported.");
+				finish();
+			}
+			return false;
+		}
+		return true;
 	}
 
 
