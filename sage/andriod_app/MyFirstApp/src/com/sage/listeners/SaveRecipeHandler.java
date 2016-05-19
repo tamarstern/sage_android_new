@@ -194,7 +194,7 @@ public class SaveRecipeHandler {
 
                 }
 
-                ServicesUtils.saveRecipeImage(detailsFromResponse, token, context);
+                ServicesUtils.saveRecipeImage(detailsFromResponse, token, context, userName);
             }
         }
 

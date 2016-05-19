@@ -35,14 +35,15 @@ public class PostRecipeImage {
 	private final String url = ServicesConstants.PICTURE_URL;
 	private Bitmap image;
 	private String token;
+	String username;
 	private String recipeId;
 	private String path;
 	private ImageType imageType;
 
-	public PostRecipeImage(Bitmap image, String token, String recipeId, String path, ImageType imageType) {
+	public PostRecipeImage(Bitmap image, String token,String username, String recipeId, String path, ImageType imageType) {
 		this.image = image;
-
 		this.token = token;
+		this.username = username;
 		this.recipeId = recipeId;
 		this.path = path;
 		this.imageType = imageType;
@@ -67,7 +68,7 @@ public class PostRecipeImage {
 			// Set verifier     
 			HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
 
-			HttpPost httpPost = new HttpPost(MessageFormat.format(url, recipeId, imageType.getValue(), token));
+			HttpPost httpPost = new HttpPost(MessageFormat.format(url, recipeId, imageType.getValue(), token,username));
 			f = new File(path);
 			f.createNewFile();
 

@@ -43,8 +43,10 @@ public class NewsfeedContainer {
         Set<Integer> keys = newsfeedMap.keySet();
         for(Integer key : keys) {
             ArrayList<RecipeDetails> recipesByPage = getRecipesByPage(key);
-            recipesByPage.remove(details);
-            putRecipesForPage(key, recipesByPage);
+            if(recipesByPage.contains(details)) {
+                recipesByPage.remove(details);
+                putRecipesForPage(key, recipesByPage);
+            }
         }
     }
 
@@ -83,6 +85,16 @@ public class NewsfeedContainer {
 
     public void addProfileRecipesForUser(String userId, ArrayList<RecipeDetails> newsfeedRecipes) {
         this.profileUsersMap.put(userId, newsfeedRecipes);
+    }
+
+    public void addRecipeForUser(String userId, RecipeDetails recipeDetails) {
+        ArrayList<RecipeDetails> profileForUser = getProfileForUser(userId);
+        if(profileForUser != null && profileForUser.size() > 0) {
+            if(profileForUser.contains(recipeDetails)) {
+                profileForUser.remove(recipeDetails);
+                profileForUser.add(0, recipeDetails);
+            }
+        }
     }
 
     public ArrayList<RecipeDetails> getProfileForUser(String userId) {

@@ -116,7 +116,7 @@
     <string name="logout">Logout</string>
     <string name="settings_title">Settings</string>
     <string name="who_i_follow_title">Following</string>
-    <string name="search_my_follow_hint">Search Following</string>
+    <string name="search_my_follow_hint">Search Users I Follow</string>
     <string name="search_recipes_hint">Search Recipes</string>
     <string name="search_users_hint">Search Users</string>
     <string name="search_recipe_box_hint">Search Recipe Box</string>

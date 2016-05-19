@@ -231,7 +231,7 @@ public class NewsfeedActivity extends AppCompatActivity {
 		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetNewsfeedRecipiesReceiver.REQUEST_CODE,
 				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				8*60*1000, newsfeedRecipiesPIntent);
+				15*60*1000, newsfeedRecipiesPIntent);
 
 		Intent profileRecipiesForFollowingIntent = new Intent(getApplicationContext(), GetProfilePageRecipiesForFollowingReceiver.class);
 		final PendingIntent profileRecipiesForFollowingPIntent = PendingIntent.getBroadcast(this, GetProfilePageRecipiesForFollowingReceiver.REQUEST_CODE,

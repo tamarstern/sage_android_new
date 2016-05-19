@@ -32,8 +32,9 @@ public class SetRecipeImageTask extends AsyncTask<Object, Void, JsonElement> {
     protected JsonElement doInBackground(Object... params) {
         try {
             String token = (String) params[0];
-            String path = (String) params[1];
-            PostRecipeImage service = new PostRecipeImage(bitmap, token, detailsId, path, this.type);
+            String username = (String) params[1];
+            String path = (String) params[2];
+            PostRecipeImage service = new PostRecipeImage(bitmap, token,username, detailsId, path, this.type);
             return service.sendImage();
         } catch (Exception e) {
             Log.e("failedSavePicture", "fail to save picture", e);

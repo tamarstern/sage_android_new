@@ -87,12 +87,12 @@ public class SaveRecipesService extends IntentService {
                 JsonObject resultJsonObject = jsonElement.getAsJsonObject();
                 boolean requestSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
                     if (requestSuccess) {
-                        saveRecipeImage(token, recipeToSave.getImage(), recipeToSave.getRecipeAsPictureImage(), recipeToSave);
+                        saveRecipeImage(token, recipeToSave.getImage(), recipeToSave.getRecipeAsPictureImage(), recipeToSave, userName);
                         RecipeDetails recipeDetails = createRecipeDetailsFromResponse(resultJsonObject);
                         Log.i("saveRecipes", "recipe saved : " + recipeDetails.get_id());
                         CacheUtils.updateCacheAfterSaveExistingRecipe(recipeDetails);
                         savedRecipes.add(recipeToSave);
-                        ServicesUtils.saveRecipeImage(recipeToSave, token,getApplicationContext());
+                        ServicesUtils.saveRecipeImage(recipeToSave, token,getApplicationContext(), userName);
                     }
                 }
             for(RecipeDetails details  : savedRecipes) {
@@ -115,7 +115,7 @@ public class SaveRecipesService extends IntentService {
                 if (requestSuccess) {
                     Log.i("saveRecipes", "recipe saved : " + existingMemoryDetails);
                     RecipeDetails detailsFromResponse = createRecipeDetailsFromResponse(resultJsonObject);
-                    saveRecipeImage(token, containerToSave.getMainRecipePicture(), containerToSave.getRecipeImagePicture(), detailsFromResponse);
+                    saveRecipeImage(token, containerToSave.getMainRecipePicture(), containerToSave.getRecipeImagePicture(), detailsFromResponse, userName);
                     //TODO - handle attach recipe to new category
                     boolean saveSucceed = executeSaveCategoryService(token, userName, containerToSave, detailsFromResponse);
                     if (saveSucceed) {
@@ -133,11 +133,11 @@ public class SaveRecipesService extends IntentService {
         }
     }
 
-    private void saveRecipeImage(String token,Bitmap mainPicture, Bitmap recipeImagePicture, RecipeDetails detailsFromResponse) {
+    private void saveRecipeImage(String token,Bitmap mainPicture, Bitmap recipeImagePicture, RecipeDetails detailsFromResponse, String userObjectId) {
         ServicesUtils.saveRecipeMainPicture(detailsFromResponse.get_id(),
-                mainPicture, getApplicationContext(), token);
+                mainPicture, getApplicationContext(), token, userObjectId);
         ServicesUtils.saveRecipeImagePicture(detailsFromResponse.get_id(),
-                recipeImagePicture, getApplicationContext(), token);
+                recipeImagePicture, getApplicationContext(), token, userObjectId);
     }
 
 
