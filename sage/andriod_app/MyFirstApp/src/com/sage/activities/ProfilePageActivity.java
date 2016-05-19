@@ -230,7 +230,6 @@ public class ProfilePageActivity extends AppCompatActivity {
 			ArrayList<RecipeDetails> recipesByPage = MyProfileRecipiesContainer.getInstance().getRecipesByPage(pageNumber);
 			if( recipesByPage!= null && recipesByPage.size() > 0 ) {
 				initAdaptor(recipesByPage);
-				pageNumber +=1;
 				return;
 			}
 		}

@@ -294,7 +294,6 @@ public class NewsfeedActivity extends AppCompatActivity {
 		ArrayList<RecipeDetails> recipesByPage = NewsfeedContainer.getInstance().getRecipesByPage(pageNumber);
 		if(recipesByPage != null && recipesByPage.size() > 0) {
 			initAdaptor(recipesByPage);
-			pageNumber +=1;
 			return;
 		}
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
