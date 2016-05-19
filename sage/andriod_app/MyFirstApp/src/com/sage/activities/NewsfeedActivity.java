@@ -343,7 +343,6 @@ public class NewsfeedActivity extends AppCompatActivity {
 		}
 	}
 
-
 	@Override
 	public void onBackPressed() {
 		Intent intent = getIntent();
@@ -374,12 +373,10 @@ public class NewsfeedActivity extends AppCompatActivity {
 			} else {
 				super.performCustomActionsOnPreExecute();
 			}
-
 		}
 
 		@Override
 		protected void performCustomActionsOnException() {
-
 			loadingMore = false;
 			shouldIncreasePage = false;
 			if(pageNumber == 0) {

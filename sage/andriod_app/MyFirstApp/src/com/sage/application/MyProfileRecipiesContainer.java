@@ -98,7 +98,7 @@ public class MyProfileRecipiesContainer {
     }
 
     public String getFollowedByCountForUser(String userId) {
-        if(profilePageFollowedByMap.contains(userId)) {
+        if(profilePageFollowedByMap.containsKey(userId)) {
             return profilePageFollowedByMap.get(userId);
         }
         return Integer.toString(0);
