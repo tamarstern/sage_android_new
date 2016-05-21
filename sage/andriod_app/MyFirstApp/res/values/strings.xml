@@ -147,4 +147,5 @@
     <string name="title_activity_terms">TermsActivity</string>
     <string name="terms_title">Terms And Conditions</string>
     <string name="terms_not_signed_message">In order to continue, please sign the terms</string>
+    <string name="no_recipes_in_category_lbl">No recipes in category. To start adding recipes, click on the following icon on the menus: </string>
 </resources>

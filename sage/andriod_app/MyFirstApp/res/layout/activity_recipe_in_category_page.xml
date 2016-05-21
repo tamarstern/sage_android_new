@@ -6,7 +6,7 @@
     android:background="#C1CDC1"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="${relativePackage}.${activityClass}" >
+    tools:context="com.sage.activities.ActivityRecipiesInCategoryPage" >
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -47,6 +47,21 @@
             android:text="@string/no_connection_tap_to_retry"/>
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/no_recipes_in_categories_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:drawableBottom="@drawable/plus_black"
+        android:singleLine="false"
+        android:text="@string/no_recipes_in_category_lbl"
+        android:textColor="#6e6e6e"
+        android:textSize="20sp"
+        android:visibility="gone"/>
 
 
 

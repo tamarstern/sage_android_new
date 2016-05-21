@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,6 +50,8 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 
 	private RelativeLayout failedToLoadPanel;
 
+	private TextView noRecipesInCategory;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +59,9 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 
 		listView = (ListView) findViewById(android.R.id.list);
 
+
+		noRecipesInCategory = (TextView)findViewById(R.id.no_recipes_in_categories_lbl);
+		noRecipesInCategory.setVisibility(View.GONE);
 		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
 		failedToLoadPanel.setVisibility(View.GONE);
 		failedToLoadPanel.setOnClickListener(new View.OnClickListener() {
@@ -111,10 +117,22 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 		}
 	}
 
+	private void initRecipesPerCategoryUi(HashSet<RecipeDetails> recipesForCategory) {
+		if(recipesForCategory.size() == 0) {
+			noRecipesInCategory.setVisibility(View.VISIBLE);
+		} else {
+			noRecipesInCategory.setVisibility(View.GONE);
+			ArrayList<RecipeDetails> recipes = new ArrayList<>(recipesForCategory);
+			Collections.sort(recipes);
+			initAdapter(recipes);
+			return;
+		}
+	}
+
 	private void fetchRecipes() {
 		if(UserCategoriesContainer.getInstance().hasRecipesForCategory(this.category)) {
 			HashSet<RecipeDetails> recipesForCategory = UserCategoriesContainer.getInstance().getRecipesForCategory(this.category);
-			initAdapter(new ArrayList<RecipeDetails>(recipesForCategory));
+			initRecipesPerCategoryUi(recipesForCategory);
 			return;
 		}
 
@@ -175,7 +193,7 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 			JsonObject resultJsonObject = result.getAsJsonObject();
 
 			boolean recipiesFound = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
-
+			ArrayList<RecipeDetails> recipes = new ArrayList<RecipeDetails>();
 			if (recipiesFound) {
 				JsonElement dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME);
 				JsonArray resultDataObject = dataElement.getAsJsonArray();
@@ -183,17 +201,11 @@ public class ActivityRecipiesInCategoryPage extends AppCompatActivity {
 
 				Gson gson = new GsonBuilder().create();
 
-				ArrayList<RecipeDetails> recipes = gson.fromJson(resultDataObject,
-						new TypeToken<ArrayList<RecipeDetails>>() {
-						}.getType());
-				HashSet<RecipeDetails> recipesForCategory = UserCategoriesContainer.getInstance().getRecipesForCategory(category);
-				if (recipesForCategory != null) {
-					recipes.addAll(recipesForCategory);
-				}
-				UserCategoriesContainer.getInstance().putRecipesForCategory(category, new HashSet<RecipeDetails>(recipes));
-				Collections.sort(recipes);
-				initAdapter(recipes);
+				recipes = gson.fromJson(resultDataObject, new TypeToken<ArrayList<RecipeDetails>>() {}.getType());
 			}
+			HashSet<RecipeDetails> recipesForCategory = new HashSet<RecipeDetails>(recipes);
+			UserCategoriesContainer.getInstance().putRecipesForCategory(category, recipesForCategory);
+			initRecipesPerCategoryUi(recipesForCategory);
 		}
 
 
