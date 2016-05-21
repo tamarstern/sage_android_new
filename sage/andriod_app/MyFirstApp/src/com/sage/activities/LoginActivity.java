@@ -30,6 +30,7 @@ import com.sage.services.AuthenticateWithTokenService;
 import com.sage.services.LoginService;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
+import com.sage.utils.EntityUtils;
 import com.sage.utils.LoginUtility;
 
 ;
@@ -101,7 +102,7 @@ public class LoginActivity extends Activity {
 		facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 			@Override
 			public void onSuccess(LoginResult loginResult) {
-				startNewsfeedActivity();
+				continueToNextActivity(false);
 			}
 
 			@Override
@@ -120,7 +121,8 @@ public class LoginActivity extends Activity {
 	private void openNewsfeedIfAlreadyLoggedInToFacebook() {
 		AccessToken fb_token = AccessToken.getCurrentAccessToken();
 		if (fb_token != null) {
-			startNewsfeedActivity();
+			boolean termsSigned = EntityUtils.signedTerms(this);
+			continueToNextActivity(termsSigned);
 		}
 	}
 
@@ -186,10 +188,16 @@ public class LoginActivity extends Activity {
 		});
 	}
 
-	private void startNewsfeedActivity() {
-		Intent intent = new Intent(getApplicationContext(), NewsfeedActivity.class);
-		intent.putExtra(EntityDataTransferConstants.AFTER_LOGIN, true);
-		startActivity(intent);
+	private void continueToNextActivity(boolean signedTerms) {
+
+		if(signedTerms) {
+			Intent intent = new Intent(getApplicationContext(), NewsfeedActivity.class);
+			intent.putExtra(EntityDataTransferConstants.AFTER_LOGIN, true);
+			startActivity(intent);
+		} else {
+			Intent intent = new Intent(getApplicationContext(), TermsActivity.class);
+			startActivity(intent);
+		}
 	}
 
 	private class LoginTask extends AsyncTask<Void, Void, JsonElement> {
@@ -250,8 +258,16 @@ public class LoginActivity extends Activity {
 				token = resultJsonObject.get(ActivityConstants.TOKEN_ELEMENT_NAME).getAsString();
 				userDisplayName = resultJsonObject.get(ActivityConstants.USER_DISPLAY_ELEMENT_NAME).getAsString();
 				userObjectId = resultJsonObject.get(ActivityConstants.USER_OBJECT_ID).getAsString();
+				JsonElement termsJsonElement = resultJsonObject.get(ActivityConstants.TERMS_SIGNED_SERVER_INDICATION);
+				boolean signedTerms = false;
+				if(termsJsonElement != null) {
+					signedTerms = termsJsonElement.getAsBoolean();
+				}
+				if(signedTerms) {
+					LoginUtility.signatureSentToServer(getApplicationContext());
+				}
 				saveAuthDetails();
-				startNewsfeedActivity();
+				continueToNextActivity(signedTerms);
 			} else {
 				Toast.makeText(getApplicationContext(), "Login failed. Incorrect username or password",
 						Toast.LENGTH_LONG).show();
@@ -309,7 +325,9 @@ public class LoginActivity extends Activity {
 			loginSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
 
 			if (loginSuccess) {
-				startNewsfeedActivity();
+				LoginUtility.signTermsAndConditions(getApplicationContext());
+				LoginUtility.signatureSentToServer(getApplicationContext());
+				continueToNextActivity(true);
 			} else {
 				Toast.makeText(getApplicationContext(), "Login failed. Incorrect username or password",
 						Toast.LENGTH_LONG).show();

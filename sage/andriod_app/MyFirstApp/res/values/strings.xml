@@ -142,5 +142,9 @@
     <string name="login_failed_no_connection">Login failed, please retry.</string>
     <string name="recipe_being_saved">Recipe is being saved.</string>
     <string name="already_registered_please_login">Already Registered? \n Please Login</string>
-
+    <string name="agree_terms">I Accept</string>
+    <string name="terms_text">Terms and Contiditions text</string>
+    <string name="title_activity_terms">TermsActivity</string>
+    <string name="terms_title">Terms And Conditions</string>
+    <string name="terms_not_signed_message">In order to continue, please sign the terms</string>
 </resources>

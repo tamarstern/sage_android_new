@@ -37,6 +37,7 @@ import com.sage.backgroundServices.GetNewsfeedRecipiesReceiver;
 import com.sage.backgroundServices.GetProfilePageRecipiesForFollowingReceiver;
 import com.sage.backgroundServices.GetProfileRecipiesReceiver;
 import com.sage.backgroundServices.SaveRecipesReceiver;
+import com.sage.backgroundServices.SignTermsReceiver;
 import com.sage.backgroundServices.SyncFollowUsersReceiver;
 import com.sage.constants.ActivityConstants;
 import com.sage.constants.ServicesConstants;
@@ -180,6 +181,12 @@ public class NewsfeedActivity extends AppCompatActivity {
 	public void scheduleAlarmBackgroundServices() {
 		long firstMillis = System.currentTimeMillis();
 		AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+
+		Intent signTermsIntent = new Intent(getApplicationContext(), SignTermsReceiver.class);
+		final PendingIntent signTermsPIntent = PendingIntent.getBroadcast(this, SignTermsReceiver.REQUEST_CODE,
+				signTermsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				20*60*1000, signTermsPIntent);
 
 		Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesReceiver.class);
 		final PendingIntent categoriesPIntent = PendingIntent.getBroadcast(this, CategoriesReceiver.REQUEST_CODE,

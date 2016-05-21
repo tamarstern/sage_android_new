@@ -1,10 +1,10 @@
 package com.sage.utils;
 
-import com.sage.constants.ActivityConstants;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.sage.constants.ActivityConstants;
 
 public class LoginUtility {
 
@@ -42,7 +42,34 @@ public class LoginUtility {
 		editor.putString(ActivityConstants.USER_NAME, "");
 		editor.putString(ActivityConstants.PASSWORD, "");
 		editor.putString(ActivityConstants.USER_OBJECT_ID, "");
+		editor.putBoolean(ActivityConstants.SIGNED_TERMS, false);
+		editor.putBoolean(ActivityConstants.SEND_SIGNATURE_TO_SERVER, false);
 		editor.commit();
 	}
+
+	public static void signTermsAndConditions(Context context) {
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean(ActivityConstants.SIGNED_TERMS, true);
+		editor.putBoolean(ActivityConstants.SEND_SIGNATURE_TO_SERVER, false);
+		editor.commit();
+	}
+
+	public static void unsignTermsAndConditions(Context context) {
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean(ActivityConstants.SIGNED_TERMS, false);
+		editor.putBoolean(ActivityConstants.SEND_SIGNATURE_TO_SERVER, false);
+		editor.commit();
+	}
+
+
+	public static void signatureSentToServer(Context context) {
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean(ActivityConstants.SEND_SIGNATURE_TO_SERVER, true);
+		editor.commit();
+	}
+
 
 }

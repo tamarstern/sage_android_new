@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.application.NewsfeedContainer;
 import com.sage.entities.RecipeDetails;
+import com.sage.entities.User;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ServicesUtils;
 
@@ -18,11 +19,55 @@ import com.sage.utils.ServicesUtils;
  */
 public class MyGcmListenerService extends GcmListenerService {
 
+    private enum MessageType {
+        recipeUpdated,
+        removeFollower,
+        addFollower
+    }
+
     private static final String TAG = "MyGcmListenerService";
 
     @Override
     public void onMessageReceived(String from, Bundle data) {
         Log.i("recieveGcmMessage", "receive new gcm message ");
+        String messageType = data.getString("messageType");
+        if(messageType.equals(MessageType.recipeUpdated.toString())) {
+            Log.i("recipeUpdatedGcm", "receive new gcm message ");
+            handleRecipeSavedMessage(from, data);
+        }
+        if(messageType.equals(MessageType.addFollower.toString())) {
+            Log.i("followGcm", "receive new gcm message ");
+            increaseFollowByCount(data);
+        }
+        if(messageType.equals(MessageType.removeFollower.toString())) {
+            Log.i("unfollowGcm", "receive new gcm message ");
+            decreaseFollowByCount(data);
+        }
+    }
+
+    private void decreaseFollowByCount(Bundle data) {
+        User user = getUserFromMessage(data);
+        if(EntityUtils.isLoggedInUser(user.getUsername(), getApplicationContext())) {
+            MyProfileRecipiesContainer.getInstance().decreaseFollowedByCount(user.get_id());
+        }
+    }
+
+    private void increaseFollowByCount(Bundle data) {
+        User user = getUserFromMessage(data);
+        if(EntityUtils.isLoggedInUser(user.getUsername(), getApplicationContext())) {
+            MyProfileRecipiesContainer.getInstance().increaseFollowedByCount(user.get_id());
+        }
+    }
+
+    private User getUserFromMessage(Bundle data) {
+        String followUserStr = data.getString("followUser");
+        Gson gson = new Gson();
+        JsonElement gcmMessageElement = gson.fromJson(followUserStr, JsonElement.class);
+        JsonObject followUserStrElementAsJsonObject = gcmMessageElement.getAsJsonObject();
+        return gson.fromJson(followUserStrElementAsJsonObject, User.class);
+    }
+
+    private void handleRecipeSavedMessage(String from, Bundle data) {
         String message = data.getString("publishedRecipe");
         Log.i(TAG, "From: " + from);
         Log.i(TAG, "Message: " + message);
@@ -37,7 +82,5 @@ public class MyGcmListenerService extends GcmListenerService {
         } else {
             NewsfeedContainer.getInstance().addRecipeForUser(detailsFromResponse.getUserObjectId(), detailsFromResponse);
         }
-
-
     }
 }

@@ -41,7 +41,7 @@ public abstract class UpdateUserTask extends AsyncTask<String, Void, JsonElement
 			password = (String) params[1];
 			userDisplayName = (String) params[2];
 
-			UpdateUserService service = new UpdateUserService(userName, password, userDisplayName, null,activity);
+			UpdateUserService service = new UpdateUserService(userName, password, userDisplayName, null,null,activity);
 			return service.updateUser();
 		} catch (Exception e) {
 			ActivityUtils.HandleConnectionUnsuccessfullToServer(e);

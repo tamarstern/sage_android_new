@@ -97,6 +97,28 @@ public class MyProfileRecipiesContainer {
         return profilePageFollowedByMap.containsKey(userId);
     }
 
+    public void decreaseFollowedByCount(String userId) {
+        if(profilePageFollowedByMap.containsKey(userId)) {
+            String followCountStr =  profilePageFollowedByMap.get(userId);
+            Integer followCount = Integer.valueOf(followCountStr);
+            if(followCount == 0) {
+                return;
+            }
+            Integer newCount = followCount - 1;
+            profilePageFollowedByMap.put(userId, Integer.toString(newCount));
+        }
+    }
+
+
+
+    public void increaseFollowedByCount(String userId) {
+        if(profilePageFollowedByMap.containsKey(userId)) {
+            String followCountStr =  profilePageFollowedByMap.get(userId);
+            Integer followCount = Integer.valueOf(followCountStr) + 1;
+            profilePageFollowedByMap.put(userId, Integer.toString(followCount));
+        }
+    }
+
     public String getFollowedByCountForUser(String userId) {
         if(profilePageFollowedByMap.containsKey(userId)) {
             return profilePageFollowedByMap.get(userId);

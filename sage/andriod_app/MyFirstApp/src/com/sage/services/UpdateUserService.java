@@ -18,13 +18,15 @@ public class UpdateUserService extends BaseService {
 	private String password;
 	private String userDisplayName;
 	private String gcmToken;
+	private Boolean signTerms;
 	
-	public UpdateUserService(String username, String password, String userDisplayName, String gcmToken, Activity activity) {
+	public UpdateUserService(String username, String password, String userDisplayName, String gcmToken,Boolean signTerms, Activity activity) {
 		super(activity);
 		this.password = password;
 		this.username = username;
 		this.userDisplayName = userDisplayName;
 		this.gcmToken = gcmToken;
+		this.signTerms = signTerms;
 	}
 
 	public JsonElement updateUser() throws Exception {	
@@ -42,6 +44,9 @@ public class UpdateUserService extends BaseService {
 		}
 		if(!TextUtils.isEmpty(gcmToken)) {
 			builder.appendQueryParameter("newGcmToken", gcmToken);
+		}
+		if(signTerms != null) {
+			builder.appendQueryParameter("signedTermsAndConditions", signTerms.toString());
 		}
 		
 	}

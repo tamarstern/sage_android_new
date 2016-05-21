@@ -61,9 +61,9 @@ public class GetProfilePageRecipesService extends IntentService {
         boolean requestSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
 
         if (requestSuccess) {
-            String follwedByCount = NumberFormat.getNumberInstance(Locale.US)
+            String followedByCount = NumberFormat.getNumberInstance(Locale.US)
                     .format(resultJsonObject.get(ActivityConstants.FOLLOEWD_BY_COUNT).getAsInt());
-            MyProfileRecipiesContainer.getInstance().setFollowByCountForUser(userName, follwedByCount);
+            MyProfileRecipiesContainer.getInstance().setFollowByCountForUser(userName, followedByCount);
         }
     }
 
