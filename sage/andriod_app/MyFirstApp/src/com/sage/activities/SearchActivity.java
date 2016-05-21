@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
@@ -54,11 +55,15 @@ public class SearchActivity extends AppCompatActivity {
 	private boolean shouldIncreasePage = true;
 	private volatile boolean loadingMore = false;
 
+	private TextView noRecipesMatchSearchCriteria;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 
+		noRecipesMatchSearchCriteria = (TextView)findViewById(R.id.no_recipes_found_matching_search_criteria);
+		noRecipesMatchSearchCriteria.setVisibility(View.GONE);
 		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
 		failedToLoadPanel.setVisibility(View.GONE);
 		failedToLoadPanel.setOnClickListener(new OnClickListener() {
@@ -155,6 +160,7 @@ public class SearchActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				pageNumber = 0;
+				noRecipesMatchSearchCriteria.setVisibility(View.GONE);
 				initListAdaptor();
 				getSearchRecipies();
 			}
@@ -267,6 +273,13 @@ public class SearchActivity extends AppCompatActivity {
 
 			}
 
+		}
+
+		@Override
+		protected void handleNoRecipesFound() {
+			if(pageNumber == 0) {
+				noRecipesMatchSearchCriteria.setVisibility(View.VISIBLE);
+			}
 		}
 
 		@Override

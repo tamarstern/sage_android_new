@@ -426,6 +426,11 @@ public class NewsfeedActivity extends AppCompatActivity {
 
 		}
 
+		@Override
+		protected void handleNoRecipesFound() {
+
+		}
+
 
 		@Override
 		protected JsonElement CreateAndExecuteService(String currentToken, String userName, int pageNumber)

@@ -18,6 +18,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
@@ -63,11 +64,15 @@ public class ProfilePageActivity extends AppCompatActivity {
 
 	private NewsfeedArrayAdapter adapter;
 
+	private TextView noPublishedRecipesMyProfile;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile_page);
 
+		noPublishedRecipesMyProfile = (TextView)findViewById(R.id.no_published_recipes_my_profile);
+		noPublishedRecipesMyProfile.setVisibility(View.GONE);
 		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
 		failedToLoadPanel.setVisibility(View.GONE);
 		failedToLoadPanel.setOnClickListener(new View.OnClickListener() {
@@ -230,8 +235,12 @@ public class ProfilePageActivity extends AppCompatActivity {
 			ArrayList<RecipeDetails> recipesByPage = MyProfileRecipiesContainer.getInstance().getRecipesByPage(pageNumber);
 			if( recipesByPage!= null && recipesByPage.size() > 0 ) {
 				initAdaptor(recipesByPage);
-				return;
+			} else {
+				if(currentUserProfile && (pageNumber == 0)) {
+					noPublishedRecipesMyProfile.setVisibility(View.VISIBLE);
+				}
 			}
+			return;
 		}
 		if(!currentUserProfile && pageNumber == 0) {
 			Intent i = getIntent();
@@ -386,8 +395,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 			if (details != null) {
 				if((pageNumber == 0 || pageNumber ==1) && currentUserProfile) {
 					MyProfileRecipiesContainer.getInstance().putRecipesForPage(pageNumber, details);
-				}
-				if(!currentUserProfile && pageNumber == 0) {
+				} else if(!currentUserProfile && pageNumber == 0) {
 					NewsfeedContainer.getInstance().addProfileRecipesForUser(recipeAuthor, details);
 				}
 
@@ -397,6 +405,13 @@ public class ProfilePageActivity extends AppCompatActivity {
 
 			}
 
+		}
+
+		@Override
+		protected void handleNoRecipesFound() {
+			if(currentUserProfile) {
+				noPublishedRecipesMyProfile.setVisibility(View.VISIBLE);
+			}
 		}
 
 		@Override

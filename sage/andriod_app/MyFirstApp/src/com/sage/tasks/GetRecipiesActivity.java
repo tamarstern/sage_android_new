@@ -80,9 +80,13 @@ public abstract class GetRecipiesActivity<T extends RecipeDetails> extends Async
 
 			details = gson.fromJson(resultDataObject, type);
 
+		} else {
+			handleNoRecipesFound();
 		}
 
 	}
+
+	protected abstract void handleNoRecipesFound();
 
 	protected void performCustomActionsOnPostExecute() {
 		container.dismissProgress();
