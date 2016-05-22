@@ -60,6 +60,7 @@ public class SyncFollowAndUnfollowUsers extends IntentService {
                 JsonObject resultJsonObject = jsonElement.getAsJsonObject();
                 boolean requestSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
                     if (requestSuccess) {
+                        Log.i("syncFollow", "start follow user " + user.getUsername());
                         followingCompleted.add(user);
 
                     }
@@ -80,6 +81,7 @@ public class SyncFollowAndUnfollowUsers extends IntentService {
                 JsonObject resultJsonObject = jsonElement.getAsJsonObject();
                 boolean requestSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
                 if (requestSuccess) {
+                    Log.i("syncFollow", "start unfollow user " + user.getUsername());
                     followingCompleted.add(user);
 
                 }

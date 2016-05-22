@@ -210,7 +210,7 @@ public class NewsfeedActivity extends AppCompatActivity {
 		final PendingIntent syncFollowingPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
 				syncFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				3*60*1000, syncFollowingPIntent);
+				1*60*1000, syncFollowingPIntent);
 
 		Intent deleteRecipesIntent = new Intent(getApplicationContext(), DeleteRecipesReceiver.class);
 		final PendingIntent deleteRecipesPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,

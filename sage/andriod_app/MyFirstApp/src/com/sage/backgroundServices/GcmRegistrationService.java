@@ -39,7 +39,7 @@ public class GcmRegistrationService extends IntentService {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         try {
             InstanceID instanceID = InstanceID.getInstance(this);
-            instanceID.deleteInstanceID();
+           // instanceID.deleteInstanceID();
 
             String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);

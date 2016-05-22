@@ -60,12 +60,13 @@ public class UserFollowingContainer {
 
     public void follow(User user) {
         HashSet<User> users =  (HashSet<User>)this.usersMap.get(FOLLOWING_KEY);
+        if(users == null) {
+            users = new HashSet<User>();
+        }
         if(!users.contains(user)) {
             users.add(user);
+            this.usersMap.put(FOLLOWING_KEY, users);
         }
-        ArrayList<User> usersArray = new ArrayList<User>(users);
-        putUsers(usersArray);
-
         HashSet<User> usersToFollow = getUsersToFollow();
         usersToFollow.add(user);
         putUsersToFollow(usersToFollow);
@@ -73,10 +74,10 @@ public class UserFollowingContainer {
 
     public void unFollow(User user) {
         HashSet<User> users =  (HashSet<User>)this.usersMap.get(FOLLOWING_KEY);
-        users.remove(user);
-        ArrayList<User> usersArray = new ArrayList<User>(users);
-        putUsers(usersArray);
-
+        if(users != null) {
+            users.remove(user);
+            this.usersMap.put(FOLLOWING_KEY, users);
+        }
         HashSet<User> usersToUnfollow = getUsersToUnfollow();
         usersToUnfollow.add(user);
         putUsersToUnfollow(usersToUnfollow);

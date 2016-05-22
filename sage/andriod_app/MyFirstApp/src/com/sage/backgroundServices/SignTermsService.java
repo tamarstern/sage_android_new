@@ -40,6 +40,9 @@ public class SignTermsService extends IntentService {
             if(EntityUtils.termsSignatureSentToServer(this)) {
                 return;
             }
+            if(!EntityUtils.signedTerms(this)) {
+                return;
+            }
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
             String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
