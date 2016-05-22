@@ -72,6 +72,7 @@ public class GetProfilePageRecipesService extends IntentService {
             ArrayList<RecipeDetails> details = BackgroundServicesUtils.getProfilePageRecipiesForPage(token, userName, i);
             if(details != null) {
                 MyProfileRecipiesContainer.getInstance().putRecipesForPage(i, details);
+                MyProfileRecipiesContainer.getInstance().setMyProfileRecipesInitialized(true);
             }
         }
     }

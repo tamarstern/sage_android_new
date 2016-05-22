@@ -233,14 +233,14 @@ public class ProfilePageActivity extends AppCompatActivity {
 	private void getAllRecipiesForUser() {
 		if(currentUserProfile) {
 			ArrayList<RecipeDetails> recipesByPage = MyProfileRecipiesContainer.getInstance().getRecipesByPage(pageNumber);
-			if( recipesByPage!= null && recipesByPage.size() > 0 ) {
-				initAdaptor(recipesByPage);
-			} else {
-				if(currentUserProfile && (pageNumber == 0)) {
+			if( recipesByPage!= null && MyProfileRecipiesContainer.getInstance().isMyProfileRecipesInitialized()) {
+				if(recipesByPage.size() > 0) {
+					initAdaptor(recipesByPage);
+				} else if(pageNumber == 0) {
 					noPublishedRecipesMyProfile.setVisibility(View.VISIBLE);
 				}
+				return;
 			}
-			return;
 		}
 		if(!currentUserProfile && pageNumber == 0) {
 			Intent i = getIntent();
@@ -395,6 +395,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 			if (details != null) {
 				if((pageNumber == 0 || pageNumber ==1) && currentUserProfile) {
 					MyProfileRecipiesContainer.getInstance().putRecipesForPage(pageNumber, details);
+					MyProfileRecipiesContainer.getInstance().setMyProfileRecipesInitialized(true);
 				} else if(!currentUserProfile && pageNumber == 0) {
 					NewsfeedContainer.getInstance().addProfileRecipesForUser(recipeAuthor, details);
 				}

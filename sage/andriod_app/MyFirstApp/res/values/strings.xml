@@ -150,5 +150,6 @@
     <string name="no_recipes_in_category_lbl">No recipes in category. To start adding recipes, click on the following icon on the menus: </string>
     <string name="no_published_recipes_my_profile">All your recipes are private. To start publishing recipes, search for the pubilsh recipes switch in each of your recipes.</string>
     <string name="no_recipes_found_matching_search_criteria" >No recipes found that match the search criteria.</string>
+    <string name="no_users_found_matching_search_criteria" >No users found that match the search criteria.</string>
 
 </resources>

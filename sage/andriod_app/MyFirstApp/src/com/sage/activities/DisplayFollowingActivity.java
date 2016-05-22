@@ -135,6 +135,11 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 		}
 
 		@Override
+		protected void handleNoUsersFound() {
+
+		}
+
+		@Override
 		protected void initializeUi(List<User> users) {
 			initAdapter(users);
 			if(isLoggedInUser) {

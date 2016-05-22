@@ -17,64 +17,68 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseFetchUsersTask extends AsyncTask<String, Void, JsonElement> {
-	
-	private Activity activity;
 
-	public BaseFetchUsersTask(Activity activity) {
-		this.activity = activity;	
-	}
+    private Activity activity;
 
-
-	@Override
-	protected JsonElement doInBackground(String... token) {
-
-		try {
-			String currentToken = token[0];
-			String secondParam = token[1];
-			int pageNumber = Integer.valueOf(token[2]);
-			return createAndExecuteService(currentToken, secondParam, pageNumber);
-		} catch (Exception e) {
-			ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
-			return null;
-		}
-	}
-
-	protected abstract void performCustomActionsOnException();
+    public BaseFetchUsersTask(Activity activity) {
+        this.activity = activity;
+    }
 
 
-	protected abstract JsonElement createAndExecuteService(String currentToken, String secondParam, int pageNumber) throws Exception;	
-	@Override
-	protected void onPostExecute(JsonElement result) {
-		if (result == null) {
-			performCustomActionsOnException();
-			return;
-		}
-		performCustomActionsOnPostExecute();
-		JsonObject resultJsonObject = result.getAsJsonObject();
+    @Override
+    protected JsonElement doInBackground(String... token) {
 
-		boolean foundResults = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
+        try {
+            String currentToken = token[0];
+            String secondParam = token[1];
+            int pageNumber = Integer.valueOf(token[2]);
+            return createAndExecuteService(currentToken, secondParam, pageNumber);
+        } catch (Exception e) {
+            ActivityUtils.HandleConnectionUnsuccessfullToServer(e);
+            return null;
+        }
+    }
 
-		if (foundResults) {
-			JsonElement dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME);
-			JsonArray resultDataObject = dataElement.getAsJsonArray();
-
-			Gson gson = new GsonBuilder().create();
-
-			List<User> users = gson.fromJson(resultDataObject, new TypeToken<ArrayList<User>>() {
-			}.getType());
-
-			
-
-			initializeUi(users);
-		}
-
-	}
-
-	protected abstract void performCustomActionsOnPostExecute();
+    protected abstract void performCustomActionsOnException();
 
 
-	protected abstract void initializeUi(List<User> users) ;
+    protected abstract JsonElement createAndExecuteService(String currentToken, String secondParam, int pageNumber) throws Exception;
 
-	
-	
+    @Override
+    protected void onPostExecute(JsonElement result) {
+        if (result == null) {
+            performCustomActionsOnException();
+            return;
+        }
+        performCustomActionsOnPostExecute();
+        JsonObject resultJsonObject = result.getAsJsonObject();
+
+        boolean foundResults = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
+
+        if (foundResults) {
+            JsonElement dataElement = resultJsonObject.get(ActivityConstants.DATA_ELEMENT_NAME);
+            JsonArray resultDataObject = dataElement.getAsJsonArray();
+
+            Gson gson = new GsonBuilder().create();
+
+            List<User> users = gson.fromJson(resultDataObject, new TypeToken<ArrayList<User>>() {
+            }.getType());
+            if (users.size() > 0) {
+                initializeUi(users);
+
+            } else {
+                handleNoUsersFound();
+            }
+        }
+
+    }
+
+    protected abstract void handleNoUsersFound();
+
+    protected abstract void performCustomActionsOnPostExecute();
+
+
+    protected abstract void initializeUi(List<User> users);
+
+
 }

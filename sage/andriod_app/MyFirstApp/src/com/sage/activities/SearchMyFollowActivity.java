@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
@@ -36,6 +37,8 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 	
 	private int pageNumber;
 
+	private TextView noUsersMatchCriteria;
+
 	RelativeLayout failedToLoadPanel;
 
 	@Override
@@ -45,12 +48,15 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 
 		listView = (ListView) findViewById(android.R.id.list);
 
+		noUsersMatchCriteria = (TextView) findViewById(R.id.no_users_found_matching_search_criteria);
+		noUsersMatchCriteria.setVisibility(View.GONE);
 		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
 		failedToLoadPanel.setVisibility(View.GONE);
 		failedToLoadPanel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				failedToLoadPanel.setVisibility(View.GONE);
+				noUsersMatchCriteria.setVisibility(View.GONE);
 				fetchUsers();
 			}
 		});
@@ -94,6 +100,7 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 			Toast.makeText(this, R.string.did_not_enter_search_text, Toast.LENGTH_SHORT).show();
 			return;
 		}
+		noUsersMatchCriteria.setVisibility(View.GONE);
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 
@@ -131,6 +138,11 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 			SearchFollowingService service = new SearchFollowingService(currentToken, userName, searchText, pageNumber);
 			return service.getUsers();
 
+		}
+
+		@Override
+		protected void handleNoUsersFound() {
+			noUsersMatchCriteria.setVisibility(View.VISIBLE);
 		}
 
 		@Override

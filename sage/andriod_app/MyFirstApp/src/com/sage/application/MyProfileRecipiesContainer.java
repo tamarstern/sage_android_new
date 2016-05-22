@@ -17,6 +17,8 @@ public class MyProfileRecipiesContainer {
 
     private static volatile MyProfileRecipiesContainer instance;
 
+    private boolean myProfileRecipesInitialized;
+
     private static final Object LOCK = new Object();
 
     private MyProfileRecipiesContainer() {
@@ -69,6 +71,7 @@ public class MyProfileRecipiesContainer {
 
     public void putRecipesForPage(Integer pageNumber, ArrayList<RecipeDetails> details) {
         this.profilePageMap.put(pageNumber, new ArrayList<RecipeDetails>(details));
+
     }
 
     public void updateRecipeInProfile(RecipeDetails recipeDetails) {
@@ -166,5 +169,13 @@ public class MyProfileRecipiesContainer {
             ArrayList<RecipeDetails> recipesByPage = getRecipesByPage(page);
             removeLike(details, recipesByPage);
         }
+    }
+
+    public boolean isMyProfileRecipesInitialized() {
+        return myProfileRecipesInitialized;
+    }
+
+    public void setMyProfileRecipesInitialized(boolean myProfileRecipesInitialized) {
+        this.myProfileRecipesInitialized = myProfileRecipesInitialized;
     }
 }

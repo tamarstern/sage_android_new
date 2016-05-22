@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
@@ -39,7 +40,9 @@ public class SearchUserActivity extends AppCompatActivity {
 
 	private int pageNumber;
 
-	RelativeLayout failedToLoadPanel;
+	private TextView noUsersFoundThatMatchCriteria;
+
+	private RelativeLayout failedToLoadPanel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +51,15 @@ public class SearchUserActivity extends AppCompatActivity {
 
 		listView = (ListView) findViewById(android.R.id.list);
 
+		noUsersFoundThatMatchCriteria = (TextView)findViewById(R.id.no_users_found_matching_search_criteria);
+		noUsersFoundThatMatchCriteria.setVisibility(View.GONE);
 		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
 		failedToLoadPanel.setVisibility(View.GONE);
 		failedToLoadPanel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				failedToLoadPanel.setVisibility(View.GONE);
+				noUsersFoundThatMatchCriteria.setVisibility(View.GONE);
 				fetchUsers();
 			}
 		});
@@ -109,6 +115,7 @@ public class SearchUserActivity extends AppCompatActivity {
 			Toast.makeText(this, R.string.did_not_enter_search_text, Toast.LENGTH_SHORT).show();
 			return;
 		}
+		noUsersFoundThatMatchCriteria.setVisibility(View.GONE);
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 
@@ -149,6 +156,11 @@ public class SearchUserActivity extends AppCompatActivity {
 			SearchUsersService service = new SearchUsersService(currentToken, textToSearch, pageNumber);
 			return service.getUsers();
 
+		}
+
+		@Override
+		protected void handleNoUsersFound() {
+			noUsersFoundThatMatchCriteria.setVisibility(View.VISIBLE);
 		}
 
 		@Override
