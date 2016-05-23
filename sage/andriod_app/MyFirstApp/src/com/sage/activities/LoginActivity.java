@@ -325,9 +325,8 @@ public class LoginActivity extends Activity {
 			loginSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
 
 			if (loginSuccess) {
-				LoginUtility.signTermsAndConditions(getApplicationContext());
-				LoginUtility.signatureSentToServer(getApplicationContext());
-				continueToNextActivity(true);
+				boolean signedTerms = EntityUtils.signedTerms(getApplicationContext());
+				continueToNextActivity(signedTerms);
 			} else {
 				Toast.makeText(getApplicationContext(), "Login failed. Incorrect username or password",
 						Toast.LENGTH_LONG).show();
