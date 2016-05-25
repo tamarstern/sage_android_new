@@ -66,7 +66,7 @@ public class LikesCommentsFragment extends Fragment implements IClosePopupCommen
 
 		addComment = (ImageButton) likesCommentsPanel.findViewById(R.id.comments_button_fragment);
 		addComment.setOnClickListener(new AddCommentsClickListener(inflater, container, likesCommentsPanel,
-				receiptDetails.get_id(), activity));
+				receiptDetails, activity));
 
 		addLike = (ImageButton) likesCommentsPanel.findViewById(R.id.like_button_fragment);
 		addLike.setOnClickListener(new OnClickListener() {
@@ -134,7 +134,7 @@ public class LikesCommentsFragment extends Fragment implements IClosePopupCommen
 		likeCommentsTextView.setText(likesCommentsTextAfterFormatting);
 
 		AddCommentsClickListener addComments = new AddCommentsClickListener(inflater, container, likesComments,
-				receiptDetails.get_id(), getActivity());
+				receiptDetails, getActivity());
 		likeCommentsTextView.setOnClickListener(addComments);
 		addComments.registerListener(this);
 

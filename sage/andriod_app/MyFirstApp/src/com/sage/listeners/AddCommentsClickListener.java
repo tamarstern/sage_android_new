@@ -2,6 +2,7 @@ package com.sage.listeners;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,17 +29,21 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.sage.activities.DisplayRecipeLikesActivity;
 import com.sage.activities.ProgressDialogContainer;
 import com.sage.activities.R;
 import com.sage.activity.interfaces.IClosePopupCommentListener;
 import com.sage.adapters.CommentsArrayAdapter;
 import com.sage.constants.ActivityConstants;
+import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeComment;
+import com.sage.entities.RecipeDetails;
 import com.sage.services.GetCommentsForRecipeService;
 import com.sage.services.SaveNewCommentService;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,7 +54,7 @@ public class AddCommentsClickListener implements OnClickListener {
 	private LayoutInflater inflater;
 	private ViewGroup container;
 	private View parent;
-	private String recipeId;
+	private RecipeDetails recipeDetails;
 	private Activity activity;
 	private ListView listView;
 	private ImageButton addCommentsButton;
@@ -56,17 +62,18 @@ public class AddCommentsClickListener implements OnClickListener {
 	private PopupWindow popupWindow;
 	private Button closeCommentsPopup;
 	private Context popupWindowContext;
+	private TextView likesLink;
 
 	private RelativeLayout failedToLoadPanel;
 
 	private Set<IClosePopupCommentListener> listeners = new HashSet<IClosePopupCommentListener>();
 
-	public AddCommentsClickListener(LayoutInflater inflater, ViewGroup container, View parent, String recipeId,
+	public AddCommentsClickListener(LayoutInflater inflater, ViewGroup container, View parent, RecipeDetails recipeId,
 			Activity context) {
 		this.inflater = inflater;
 		this.container = container;
 		this.parent = parent;
-		this.recipeId = recipeId;
+		this.recipeDetails = recipeId;
 		this.activity = context;
 	}
 
@@ -119,6 +126,19 @@ public class AddCommentsClickListener implements OnClickListener {
 			}
 		});
 
+		likesLink = (TextView) popupView.findViewById(R.id.likes_link);
+		String likes_comments_text = popupWindowContext.getResources().getString(R.string.likes_message);
+		String likesCommentsTextAfterFormatting = MessageFormat.format(likes_comments_text, recipeDetails.getLikes_count());
+		likesLink.setText(likesCommentsTextAfterFormatting);
+		likesLink.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(popupWindowContext, DisplayRecipeLikesActivity.class).
+						putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER,
+						recipeDetails);
+				popupWindowContext.startActivity(intent);
+			}
+		});
 
 		getCommentsForRecipe(popupWindowContext);
 
@@ -155,7 +175,7 @@ public class AddCommentsClickListener implements OnClickListener {
 
 		String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 
-		Object[] params = new Object[] { token, userName, recipeId, commentText };
+		Object[] params = new Object[] { token, userName, recipeDetails.get_id(), commentText };
 
 		new AddCommentTask().execute(params);
 	}
@@ -173,7 +193,7 @@ public class AddCommentsClickListener implements OnClickListener {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 
-		Object[] params = new Object[] { token, recipeId };
+		Object[] params = new Object[] { token, recipeDetails.get_id()};
 
 		new GetCommentsTask(context).execute(params);
 	}
@@ -181,7 +201,7 @@ public class AddCommentsClickListener implements OnClickListener {
 
 	public void notifyCommentsPopupClosed() {
 		for (IClosePopupCommentListener listener : listeners) {
-			listener.onClosePopupComment(listView.getCount(), recipeId);
+			listener.onClosePopupComment(listView.getCount(), recipeDetails.get_id());
 		}
 	}
 

@@ -99,6 +99,7 @@
     <string name="action_cancel">Cancel Save Link</string>
     <string name="a_recipe_must_have_a_name_message">A recipe must have a name, so that you will be able to identify it in your recipe box</string>
     <string name="likes_comments_message">{0} likes, {1} comments</string>
+    <string name="likes_message">{0} likes</string>
     <string name="confirm_exit_recipe_without_saving">Exit Recipe Without Saving?</string>
     <string name="exit_without_saving_button_label">Exit Recipe</string>
     <string name="go_back_to_recipe_button_label">Cancel</string>
@@ -182,7 +183,9 @@ Last updated May 20, 2016
     <string name="terms_not_signed_message">In order to continue, please sign the terms</string>
     <string name="no_recipes_in_category_lbl">No recipes in category. To start adding recipes, click on the following icon on the menus: </string>
     <string name="no_published_recipes_my_profile">All your recipes are private. To start publishing recipes, search for the pubilsh recipes switch in each of your recipes.</string>
-    <string name="no_recipes_found_matching_search_criteria" >No recipes found that match the search criteria.</string>
-    <string name="no_users_found_matching_search_criteria" >No users found that match the search criteria.</string>
+    <string name="no_recipes_found_matching_search_criteria">No recipes found that match the search criteria.</string>
+    <string name="no_users_found_matching_search_criteria">No users found that match the search criteria.</string>
+    <string name="users_who_likes_recipe">People who like the recipe</string>
+
 
 </resources>

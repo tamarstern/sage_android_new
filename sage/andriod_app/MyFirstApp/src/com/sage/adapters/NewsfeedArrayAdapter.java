@@ -129,7 +129,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 	private void initCommentButtonListener(ViewGroup parent, LayoutInflater inflater,
 			final RecipeDetails recipeUserBasicData, ImageButton addComment) {
 		AddCommentsClickListener commentsHandler = new AddCommentsClickListener(inflater, parent, rowView,
-				recipeUserBasicData.get_id(), context);
+				recipeUserBasicData, context);
 		commentsHandler.registerListener(this);
 		addComment.setOnClickListener(commentsHandler);
 	}
@@ -256,7 +256,7 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 		TextView comments_number = (TextView) rowView.findViewById(R.id.comments_likes_text);
 		RecipeDetails recipeUserBasicData = details.get(position);
 		AddCommentsClickListener commentsHandler = new AddCommentsClickListener(inflater, parent, rowView,
-				recipeUserBasicData.get_id(), context);
+				recipeUserBasicData, context);
 		commentsHandler.registerListener(this);
 		comments_number.setOnClickListener(commentsHandler);
 

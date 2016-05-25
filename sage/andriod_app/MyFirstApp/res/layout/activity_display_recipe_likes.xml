@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,9 +7,9 @@
     android:background="#C1CDC1"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="com.sage.activities.DisplayFollowingActivity" >
+    tools:context="com.sage.activities.DisplayRecipeLikesActivity">
 
-  <android.support.v7.widget.Toolbar
+    <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
@@ -16,7 +17,7 @@
         android:background="#797979"
         android:elevation="4dp"
         android:theme="@style/ToolbarStyle"
-      android:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -57,7 +58,7 @@
         android:layout_weight="1"
         android:background="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
-        android:divider="@android:color/transparent"      
+        android:divider="@android:color/transparent"
         android:fadeScrollbars="false"
         android:scrollX="0px"
         android:scrollY="0px"
