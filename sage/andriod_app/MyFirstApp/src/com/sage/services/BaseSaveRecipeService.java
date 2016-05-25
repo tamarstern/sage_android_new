@@ -51,20 +51,26 @@ public abstract class BaseSaveRecipeService extends BaseService {
 		initRecipeType(recipeDetails, builder);
 
 		if (recipeDetails.getRecipeType().equals(RecipeType.TEXT)) {
-
 			AddTextRecipeParameters(builder, recipeDetails);
 		}
-
 		if (recipeDetails.getRecipeType().equals(RecipeType.PICTURE)) {
-
 			AddPictureRecipeParameters(builder, recipeDetails);
 		}
-
-
 		if (recipeDetails.getRecipeType().equals(RecipeType.LINK)) {
 			builder.appendQueryParameter("url", recipeDetails.getUrl());
+			addLinkDetails(builder);
 		}
+	}
 
+	private void addLinkDetails(Builder builder) {
+		if(!TextUtils.isEmpty(recipeDetails.getLinkImageUrl())
+                && !TextUtils.isEmpty(recipeDetails.getLinkSiteName())
+                && !TextUtils.isEmpty(recipeDetails.getLinkTitle())){
+            builder.appendQueryParameter("linkDataInitialized", Boolean.toString(true));
+            builder.appendQueryParameter("linkTitle", recipeDetails.getLinkTitle());
+            builder.appendQueryParameter("linkImageUrl", recipeDetails.getLinkImageUrl());
+            builder.appendQueryParameter("linkSiteName", recipeDetails.getLinkSiteName());
+        }
 	}
 
 	private void AddPictureRecipeParameters(Builder builder, RecipeDetails recipeDetails) {
