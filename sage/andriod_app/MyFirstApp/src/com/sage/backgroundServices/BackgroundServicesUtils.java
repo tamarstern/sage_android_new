@@ -54,6 +54,9 @@ public class BackgroundServicesUtils {
     public static void initRecipeUrlData(String token, String userName, RecipeDetails recipe) {
         RecipeUrlDataContainer instance = RecipeUrlDataContainer.getInstance();
         boolean hasDataForRecipe = instance.hasDataForRecipe(recipe);
+        if(recipe.isLinkDataInitialized()) {
+            return;
+        }
         if(hasDataForRecipe) {
             recipe.setLinkSiteName(instance.getSiteName(recipe));
             recipe.setLinkTitle(instance.getTitle(recipe));
