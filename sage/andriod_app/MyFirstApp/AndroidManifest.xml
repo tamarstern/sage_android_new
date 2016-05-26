@@ -59,7 +59,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <receiver
             android:name="com.sage.backgroundServices.CategoriesReceiver"
-            android:process=":remote"></receiver>
+            android:process=":remote" />
 
         <service
             android:name="com.sage.backgroundServices.CategoriesBackgroundService"
@@ -67,17 +67,15 @@
 
         <receiver
             android:name="com.sage.backgroundServices.SignTermsReceiver"
-            android:process=":remote"></receiver>
+            android:process=":remote" />
 
         <service
             android:name="com.sage.backgroundServices.SignTermsService"
             android:exported="false" />
 
-
-
         <receiver
             android:name="com.sage.backgroundServices.GetNewsfeedRecipiesReceiver"
-            android:process=":remote"></receiver>
+            android:process=":remote" />
 
         <service
             android:name="com.sage.backgroundServices.GetNewsfeedRecipesService"
@@ -85,7 +83,7 @@
 
         <receiver
             android:name="com.sage.backgroundServices.DeleteRecipesReceiver"
-            android:process=":remote"></receiver>
+            android:process=":remote" />
 
         <service
             android:name="com.sage.backgroundServices.DeleteRecipesService"
@@ -93,7 +91,7 @@
 
         <receiver
             android:name="com.sage.backgroundServices.SaveRecipesReceiver"
-            android:process=":remote"></receiver>
+            android:process=":remote" />
 
         <service
             android:name="com.sage.backgroundServices.SaveRecipesService"
@@ -101,7 +99,7 @@
 
         <receiver
             android:name="com.sage.backgroundServices.SyncFollowUsersReceiver"
-            android:process=":remote"></receiver>
+            android:process=":remote" />
 
         <service
             android:name="com.sage.backgroundServices.SyncFollowAndUnfollowUsers"
@@ -109,7 +107,7 @@
 
         <receiver
             android:name="com.sage.backgroundServices.GetFollowingReceiver"
-            android:process=":remote"></receiver>
+            android:process=":remote" />
 
         <service
             android:name="com.sage.backgroundServices.FollowingBackgroundService"
@@ -117,7 +115,7 @@
 
         <receiver
             android:name="com.sage.backgroundServices.RecipesForCategoryReceiver"
-            android:process=":remote"></receiver>
+            android:process=":remote" />
 
         <service
             android:name="com.sage.backgroundServices.GetRecipesForCategoriesService"
@@ -125,7 +123,7 @@
 
         <receiver
             android:name="com.sage.backgroundServices.GetProfileRecipiesReceiver"
-            android:process=":remote"></receiver>
+            android:process=":remote" />
 
         <service
             android:name="com.sage.backgroundServices.GetProfilePageRecipesService"
@@ -133,14 +131,14 @@
 
         <receiver
             android:name="com.sage.backgroundServices.GetProfilePageRecipiesForFollowingReceiver"
-            android:process=":remote"></receiver>
+            android:process=":remote" />
 
         <service
             android:name="com.sage.backgroundServices.GetProfilePageRecipesForFollowing"
             android:exported="false" />
         <service
             android:name="com.sage.backgroundServices.GcmRegistrationService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -291,11 +289,12 @@
         <activity
             android:name=".DisplayImageActivity"
             android:label="@string/title_activity_display_image"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".TermsActivity"
             android:label="@string/title_activity_terms"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".DisplayRecipeLikesActivity"></activity>
     </application>
 
 </manifest>
