@@ -48,6 +48,9 @@ public class MyGcmListenerService extends GcmListenerService {
         if(messageType.equals(MessageType.addComment.toString())) {
             Log.i("addCommentGcm", "receive new gcm message ");
         }
+        if(messageType.equals(MessageType.addLike.toString())) {
+            Log.i("addLikeGcm", "receive new gcm message ");
+        }
     }
 
     private void decreaseFollowByCount(Bundle data) {

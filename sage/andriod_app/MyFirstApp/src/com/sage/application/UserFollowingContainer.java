@@ -58,6 +58,9 @@ public class UserFollowingContainer {
 
     public ArrayList<User> getUsers() {
         HashSet<User> users = (HashSet<User>)this.usersMap.get(FOLLOWING_KEY);
+        if(users == null) {
+            users = new HashSet<User>();
+        }
         return new ArrayList<User>(users);
     }
 
