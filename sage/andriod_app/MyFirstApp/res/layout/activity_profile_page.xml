@@ -64,6 +64,22 @@
         android:visibility="gone"/>
 
 
+    <TextView
+        android:id="@+id/no_published_recipes_other_user_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:singleLine="false"
+        android:text="@string/no_published_recipes_other_user_profile"
+        android:textColor="#6e6e6e"
+        android:textSize="20sp"
+        android:visibility="gone"/>
+
+
 
 
     <ListView
