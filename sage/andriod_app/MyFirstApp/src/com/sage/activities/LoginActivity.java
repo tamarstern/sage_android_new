@@ -121,7 +121,7 @@ public class LoginActivity extends Activity {
 	private void openNewsfeedIfAlreadyLoggedInToFacebook() {
 		AccessToken fb_token = AccessToken.getCurrentAccessToken();
 		if (fb_token != null) {
-			boolean termsSigned = EntityUtils.signedTerms(this);
+			boolean termsSigned = EntityUtils.signedTerms(this, null);
 			continueToNextActivity(termsSigned);
 		}
 	}
@@ -264,6 +264,7 @@ public class LoginActivity extends Activity {
 					signedTerms = termsJsonElement.getAsBoolean();
 				}
 				if(signedTerms) {
+					LoginUtility.signTermsAndConditions(getApplicationContext(), username);
 					LoginUtility.signatureSentToServer(getApplicationContext());
 				}
 				saveAuthDetails();
@@ -325,7 +326,10 @@ public class LoginActivity extends Activity {
 			loginSuccess = resultJsonObject.get(ActivityConstants.SUCCESS_ELEMENT_NAME).getAsBoolean();
 
 			if (loginSuccess) {
-				boolean signedTerms = EntityUtils.signedTerms(getApplicationContext());
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+				String username = preferences.getString(ActivityConstants.USER_NAME, null);
+
+				boolean signedTerms = EntityUtils.signedTerms(getApplicationContext(),username);
 				continueToNextActivity(signedTerms);
 			} else {
 				Toast.makeText(getApplicationContext(), "Login failed. Incorrect username or password",

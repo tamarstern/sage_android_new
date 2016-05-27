@@ -45,6 +45,9 @@ public class UserFollowingContainer {
 
     public boolean isFollowing(User user) {
         ArrayList<User> users = getUsers();
+        if(users == null) {
+            return false;
+        }
         return users.contains(user);
     }
 

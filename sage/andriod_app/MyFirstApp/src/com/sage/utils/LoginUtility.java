@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 
 import com.sage.constants.ActivityConstants;
 
+import java.util.HashSet;
+
 public class LoginUtility {
 
 	public static void saveAuthDetails(Context context, String token, String userDisplayName, String username,
@@ -42,23 +44,30 @@ public class LoginUtility {
 		editor.putString(ActivityConstants.USER_NAME, "");
 		editor.putString(ActivityConstants.PASSWORD, "");
 		editor.putString(ActivityConstants.USER_OBJECT_ID, "");
-		editor.putBoolean(ActivityConstants.SIGNED_TERMS, false);
 		editor.putBoolean(ActivityConstants.SEND_SIGNATURE_TO_SERVER, false);
 		editor.commit();
 	}
 
-	public static void signTermsAndConditions(Context context) {
+	public static void signTermsAndConditions(Context context, String username) {
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean(ActivityConstants.SIGNED_TERMS, true);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+
+		HashSet<String> usersWhoSignedTerms = (HashSet<String>) sharedPref.getStringSet(ActivityConstants.SIGNED_TERMS, new HashSet<String>());
+		usersWhoSignedTerms.add(username);
+		editor.putStringSet(ActivityConstants.SIGNED_TERMS, usersWhoSignedTerms);
+
 		editor.putBoolean(ActivityConstants.SEND_SIGNATURE_TO_SERVER, false);
 		editor.commit();
 	}
 
-	public static void unsignTermsAndConditions(Context context) {
+	public static void unsignTermsAndConditions(Context context, String username) {
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean(ActivityConstants.SIGNED_TERMS, false);
+		HashSet<String> usersWhoSignedTerms = (HashSet<String>) settings.getStringSet(ActivityConstants.SIGNED_TERMS, new HashSet<String>());
+		usersWhoSignedTerms.remove(username);
+		editor.putStringSet(ActivityConstants.SIGNED_TERMS, usersWhoSignedTerms);
+
 		editor.putBoolean(ActivityConstants.SEND_SIGNATURE_TO_SERVER, false);
 		editor.commit();
 	}

@@ -40,14 +40,17 @@ public class SignTermsService extends IntentService {
             if(EntityUtils.termsSignatureSentToServer(this)) {
                 return;
             }
-            if(!EntityUtils.signedTerms(this)) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            String username = sharedPref.getString(ActivityConstants.USER_NAME, null);
+
+            if(!EntityUtils.signedTerms(this, username)) {
                 return;
             }
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
             String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-            String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
-            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(userName)) {
-                signTermsInBackground(userName);
+
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(username)) {
+                signTermsInBackground(username);
             }
         } catch (Exception e) {
             Log.e("failedFetchCategories", "failed to get categories", e);

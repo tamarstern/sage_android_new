@@ -1,7 +1,9 @@
 package com.sage.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.LoginUtility;
@@ -38,10 +41,13 @@ public class TermsActivity extends AppCompatActivity {
         });
 
         signedTerms = (Button)findViewById(R.id.accept_terms);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final String username = preferences.getString(ActivityConstants.USER_NAME, null);
+
         signedTerms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(EntityUtils.signedTerms(getApplicationContext())) {
+                if(EntityUtils.signedTerms(getApplicationContext(), username)) {
                     Intent intent = new Intent(getApplicationContext(), NewsfeedActivity.class);
                     intent.putExtra(EntityDataTransferConstants.AFTER_LOGIN, true);
                     startActivity(intent);
@@ -56,9 +62,9 @@ public class TermsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(termsAccepted.isChecked()) {
-                    LoginUtility.signTermsAndConditions(getApplicationContext());
+                    LoginUtility.signTermsAndConditions(getApplicationContext(), username);
                 } else {
-                    LoginUtility.unsignTermsAndConditions(getApplicationContext());
+                    LoginUtility.unsignTermsAndConditions(getApplicationContext(), username);
                 }
             }
         });

@@ -9,6 +9,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeCategoryBase;
 import com.sage.entities.RecipeDetails;
 
+import java.util.HashSet;
 import java.util.UUID;
 
 public class EntityUtils {
@@ -26,10 +27,12 @@ public class EntityUtils {
 		return isLoggedInUser(userId, context);
 	}
 
-	public static boolean signedTerms(Context context) {
+	public static boolean signedTerms(Context context, String userName) {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
-		return sharedPref.getBoolean(ActivityConstants.SIGNED_TERMS, false);
+		HashSet<String> usersWhoSignedTerms = (HashSet<String>) sharedPref.getStringSet(ActivityConstants.SIGNED_TERMS, new HashSet<String>());
+
+		return usersWhoSignedTerms.contains(userName);
 
 	}
 
