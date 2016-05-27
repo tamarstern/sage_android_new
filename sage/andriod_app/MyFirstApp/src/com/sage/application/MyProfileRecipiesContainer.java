@@ -1,5 +1,7 @@
 package com.sage.application;
 
+import android.text.TextUtils;
+
 import com.sage.entities.RecipeDetails;
 
 import java.util.ArrayList;
@@ -117,8 +119,10 @@ public class MyProfileRecipiesContainer {
     public void increaseFollowedByCount(String userId) {
         if(profilePageFollowedByMap.containsKey(userId)) {
             String followCountStr =  profilePageFollowedByMap.get(userId);
-            Integer followCount = Integer.valueOf(followCountStr) + 1;
-            profilePageFollowedByMap.put(userId, Integer.toString(followCount));
+            if(!TextUtils.isEmpty(followCountStr)) {
+                Integer followCount = Integer.valueOf(followCountStr) + 1;
+                profilePageFollowedByMap.put(userId, Integer.toString(followCount));
+            }
         }
     }
 

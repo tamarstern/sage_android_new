@@ -1,6 +1,8 @@
 package com.sage.entities;
 
-public class User implements Comparable<User> {
+import android.util.Log;
+
+public class User implements Comparable<User> , Cloneable{
 	
 	private String userDisplayName;
 	
@@ -36,6 +38,22 @@ public class User implements Comparable<User> {
 	public int compareTo(User another) {
 		return getUserDisplayName().compareTo(another.getUserDisplayName());
 	}
+
+	@Override
+	public User clone()  {
+		try {
+			User details =  (User)super.clone();
+			details.userDisplayName = this.userDisplayName;
+			details.username = this.username;
+			details._id = this._id;
+			return details;
+		} catch (CloneNotSupportedException e) {
+			Log.e("failCloneDetails", "failed to clone details", e);
+			return null;
+		}
+
+	}
+
 
 	@Override
 	public boolean equals(Object obj) {

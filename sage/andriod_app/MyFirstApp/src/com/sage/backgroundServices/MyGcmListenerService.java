@@ -22,7 +22,9 @@ public class MyGcmListenerService extends GcmListenerService {
     private enum MessageType {
         recipeUpdated,
         removeFollower,
-        addFollower
+        addFollower,
+        addComment,
+        addLike
     }
 
     private static final String TAG = "MyGcmListenerService";
@@ -42,6 +44,9 @@ public class MyGcmListenerService extends GcmListenerService {
         if(messageType.equals(MessageType.removeFollower.toString())) {
             Log.i("unfollowGcm", "receive new gcm message ");
             decreaseFollowByCount(data);
+        }
+        if(messageType.equals(MessageType.addComment.toString())) {
+            Log.i("addCommentGcm", "receive new gcm message ");
         }
     }
 
