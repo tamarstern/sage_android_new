@@ -65,6 +65,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 	private NewsfeedArrayAdapter adapter;
 
 	private TextView noPublishedRecipesMyProfile;
+	private TextView noPublishedRecipesOtherUserProfile;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,10 @@ public class ProfilePageActivity extends AppCompatActivity {
 
 		noPublishedRecipesMyProfile = (TextView)findViewById(R.id.no_published_recipes_my_profile);
 		noPublishedRecipesMyProfile.setVisibility(View.GONE);
+
+		noPublishedRecipesOtherUserProfile = (TextView)findViewById(R.id.no_published_recipes_other_user_profile);
+		noPublishedRecipesOtherUserProfile.setVisibility(View.GONE);
+
 		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
 		failedToLoadPanel.setVisibility(View.GONE);
 		failedToLoadPanel.setOnClickListener(new View.OnClickListener() {
@@ -410,8 +415,12 @@ public class ProfilePageActivity extends AppCompatActivity {
 
 		@Override
 		protected void handleNoRecipesFound() {
-			if(currentUserProfile) {
-				noPublishedRecipesMyProfile.setVisibility(View.VISIBLE);
+			if(pageNumber == 0) {
+				if(currentUserProfile) {
+					noPublishedRecipesMyProfile.setVisibility(View.VISIBLE);
+				} else {
+					noPublishedRecipesOtherUserProfile.setVisibility(View.VISIBLE);
+				}
 			}
 		}
 
