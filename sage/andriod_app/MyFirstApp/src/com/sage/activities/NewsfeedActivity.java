@@ -186,7 +186,7 @@ public class NewsfeedActivity extends AppCompatActivity {
 		final PendingIntent signTermsPIntent = PendingIntent.getBroadcast(this, SignTermsReceiver.REQUEST_CODE,
 				signTermsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				20*60*1000, signTermsPIntent);
+				30*60*1000, signTermsPIntent);
 
 		Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesReceiver.class);
 		final PendingIntent categoriesPIntent = PendingIntent.getBroadcast(this, CategoriesReceiver.REQUEST_CODE,
@@ -238,13 +238,13 @@ public class NewsfeedActivity extends AppCompatActivity {
 		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetNewsfeedRecipiesReceiver.REQUEST_CODE,
 				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				15*60*1000, newsfeedRecipiesPIntent);
+				20*60*1000, newsfeedRecipiesPIntent);
 
 		Intent profileRecipiesForFollowingIntent = new Intent(getApplicationContext(), GetProfilePageRecipiesForFollowingReceiver.class);
 		final PendingIntent profileRecipiesForFollowingPIntent = PendingIntent.getBroadcast(this, GetProfilePageRecipiesForFollowingReceiver.REQUEST_CODE,
 				profileRecipiesForFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				15*60*1000, profileRecipiesForFollowingPIntent);
+				20*60*1000, profileRecipiesForFollowingPIntent);
 
 
 

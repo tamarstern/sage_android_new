@@ -61,6 +61,13 @@ public class MyGcmListenerService extends GcmListenerService {
         }
         if (messageType.equals(MessageType.addComment.toString())) {
             Log.i("addCommentGcm", "receive new gcm message ");
+            String recipe = data.getString("recipe");
+            RecipeDetails details = getRecipeDetailsFromMessage(recipe);
+            String userStr = data.getString("userWhoAddComment");
+            User user = getUserFromMessage(userStr);
+            if(user != null && recipe != null) {
+                sendCommentNotification(details, user);
+            }
         }
         if (messageType.equals(MessageType.addLike.toString())) {
             Log.i("addLikeGcm", "receive new gcm message ");
@@ -68,15 +75,33 @@ public class MyGcmListenerService extends GcmListenerService {
             RecipeDetails details = getRecipeDetailsFromMessage(recipe);
             String userStr = data.getString("userWhoAddLike");
             User user = getUserFromMessage(userStr);
-            sendLikeNotification(details, user);
+            if(user != null && recipe != null) {
+                sendLikeNotification(details, user);
+            }
         }
     }
+
+    private void sendCommentNotification(RecipeDetails details, User user) {
+
+        String notificationTitle = getApplicationContext().getResources().getString(R.string.push_notifications_title);
+        String notificationDescription = getApplicationContext().getResources().getString(R.string.comment_push_notification_message);
+        String notificationDescriptionToShow = MessageFormat.format(notificationDescription, user.getUserDisplayName());
+        buildNotificationForRecipePage(details, notificationTitle, notificationDescriptionToShow);
+    }
+
+
 
     private void sendLikeNotification(RecipeDetails recipe, User user) {
 
         String notificationTitle = getApplicationContext().getResources().getString(R.string.push_notifications_title);
         String notificationDescription = getApplicationContext().getResources().getString(R.string.like_push_notification_message);
         String notificationDescriptionToShow = MessageFormat.format(notificationDescription, user.getUserDisplayName());
+        buildNotificationForRecipePage(recipe, notificationTitle, notificationDescriptionToShow);
+
+
+    }
+
+    private void buildNotificationForRecipePage(RecipeDetails recipe, String notificationTitle, String notificationDescriptionToShow) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.sage_dashboard_icon)
@@ -101,8 +126,6 @@ public class MyGcmListenerService extends GcmListenerService {
 
         int messageId = new Random().nextInt(10000);
         mNotificationManager.notify(messageId, mBuilder.build());
-
-
     }
 
     private void addActivityClassToStackBuilder(RecipeDetails recipe, TaskStackBuilder stackBuilder) {
