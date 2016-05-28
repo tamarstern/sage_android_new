@@ -1,18 +1,32 @@
 package com.sage.backgroundServices;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sage.activities.LinkRecipePageActivity;
+import com.sage.activities.PictureRecipePageActivity;
+import com.sage.activities.R;
+import com.sage.activities.TextReciptPageActivity;
 import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.application.NewsfeedContainer;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.User;
+import com.sage.utils.ActivityUtils;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ServicesUtils;
+
+import java.text.MessageFormat;
+import java.util.Random;
 
 /**
  * Created by tamar.twena on 4/17/2016.
@@ -33,42 +47,95 @@ public class MyGcmListenerService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
         Log.i("recieveGcmMessage", "receive new gcm message ");
         String messageType = data.getString("messageType");
-        if(messageType.equals(MessageType.recipeUpdated.toString())) {
+        if (messageType.equals(MessageType.recipeUpdated.toString())) {
             Log.i("recipeUpdatedGcm", "receive new gcm message ");
             handleRecipeSavedMessage(from, data);
         }
-        if(messageType.equals(MessageType.addFollower.toString())) {
+        if (messageType.equals(MessageType.addFollower.toString())) {
             Log.i("followGcm", "receive new gcm message ");
             increaseFollowByCount(data);
         }
-        if(messageType.equals(MessageType.removeFollower.toString())) {
+        if (messageType.equals(MessageType.removeFollower.toString())) {
             Log.i("unfollowGcm", "receive new gcm message ");
             decreaseFollowByCount(data);
         }
-        if(messageType.equals(MessageType.addComment.toString())) {
+        if (messageType.equals(MessageType.addComment.toString())) {
             Log.i("addCommentGcm", "receive new gcm message ");
         }
-        if(messageType.equals(MessageType.addLike.toString())) {
+        if (messageType.equals(MessageType.addLike.toString())) {
             Log.i("addLikeGcm", "receive new gcm message ");
+            String recipe = data.getString("recipe");
+            RecipeDetails details = getRecipeDetailsFromMessage(recipe);
+            String userStr = data.getString("userWhoAddLike");
+            User user = getUserFromMessage(userStr);
+            sendLikeNotification(details, user);
+        }
+    }
+
+    private void sendLikeNotification(RecipeDetails recipe, User user) {
+
+        String notificationTitle = getApplicationContext().getResources().getString(R.string.push_notifications_title);
+        String notificationDescription = getApplicationContext().getResources().getString(R.string.like_push_notification_message);
+        String notificationDescriptionToShow = MessageFormat.format(notificationDescription, user.getUserDisplayName());
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.sage_dashboard_icon)
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationDescriptionToShow);
+
+        Intent resultIntent = ActivityUtils.getRecipeIntent(recipe, this);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
+        addActivityClassToStackBuilder(recipe, stackBuilder);
+
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        int messageId = new Random().nextInt(10000);
+        mNotificationManager.notify(messageId, mBuilder.build());
+
+
+    }
+
+    private void addActivityClassToStackBuilder(RecipeDetails recipe, TaskStackBuilder stackBuilder) {
+        switch (recipe.getRecipeType()) {
+            case PICTURE:
+                stackBuilder.addParentStack(PictureRecipePageActivity.class);
+                break;
+            case LINK:
+                stackBuilder.addParentStack(LinkRecipePageActivity.class);
+                break;
+            default:
+                stackBuilder.addParentStack(TextReciptPageActivity.class);
+                break;
         }
     }
 
     private void decreaseFollowByCount(Bundle data) {
-        User user = getUserFromMessage(data);
-        if(EntityUtils.isLoggedInUser(user.getUsername(), getApplicationContext())) {
+        String followUserStr = data.getString("followUser");
+        User user = getUserFromMessage(followUserStr);
+        if (EntityUtils.isLoggedInUser(user.getUsername(), getApplicationContext())) {
             MyProfileRecipiesContainer.getInstance().decreaseFollowedByCount(user.get_id());
         }
     }
 
     private void increaseFollowByCount(Bundle data) {
-        User user = getUserFromMessage(data);
-        if(EntityUtils.isLoggedInUser(user.getUsername(), getApplicationContext())) {
+        String followUserStr = data.getString("followUser");
+        User user = getUserFromMessage(followUserStr);
+        if (EntityUtils.isLoggedInUser(user.getUsername(), getApplicationContext())) {
             MyProfileRecipiesContainer.getInstance().increaseFollowedByCount(user.get_id());
         }
     }
 
-    private User getUserFromMessage(Bundle data) {
-        String followUserStr = data.getString("followUser");
+    private User getUserFromMessage(String followUserStr) {
         Gson gson = new Gson();
         JsonElement gcmMessageElement = gson.fromJson(followUserStr, JsonElement.class);
         JsonObject followUserStrElementAsJsonObject = gcmMessageElement.getAsJsonObject();
@@ -76,19 +143,24 @@ public class MyGcmListenerService extends GcmListenerService {
     }
 
     private void handleRecipeSavedMessage(String from, Bundle data) {
-        String message = data.getString("publishedRecipe");
-        Log.i(TAG, "From: " + from);
-        Log.i(TAG, "Message: " + message);
 
-        Gson gson = new Gson();
-        JsonElement gcmMessageElement = gson.fromJson(message, JsonElement.class);
-        JsonObject gcmMessageElementAsJsonObject = gcmMessageElement.getAsJsonObject();
-        RecipeDetails detailsFromResponse = ServicesUtils.createRecipeDetailsFromResponse(gson, gcmMessageElementAsJsonObject);
+        Log.i(TAG, "From: " + from);
+
+        String recipeMessage = data.getString("publishedRecipe");
+        Log.i(TAG, "Message: " + recipeMessage);
+        RecipeDetails detailsFromResponse = getRecipeDetailsFromMessage(recipeMessage);
         NewsfeedContainer.getInstance().updateRecipeInNewsfeed(detailsFromResponse);
-        if(EntityUtils.isLoggedInUserRecipe(detailsFromResponse.getUserId(), getApplicationContext())) {
+        if (EntityUtils.isLoggedInUserRecipe(detailsFromResponse.getUserId(), getApplicationContext())) {
             MyProfileRecipiesContainer.getInstance().addRecipe(detailsFromResponse);
         } else {
             NewsfeedContainer.getInstance().addRecipeForUser(detailsFromResponse.getUserObjectId(), detailsFromResponse);
         }
+    }
+
+    private RecipeDetails getRecipeDetailsFromMessage(String recipeMessage) {
+        Gson gson = new Gson();
+        JsonElement gcmMessageElement = gson.fromJson(recipeMessage, JsonElement.class);
+        JsonObject gcmMessageElementAsJsonObject = gcmMessageElement.getAsJsonObject();
+        return ServicesUtils.createRecipeDetailsFromResponse(gson, gcmMessageElementAsJsonObject);
     }
 }

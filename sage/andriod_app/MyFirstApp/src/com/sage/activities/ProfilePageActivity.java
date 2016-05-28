@@ -410,7 +410,6 @@ public class ProfilePageActivity extends AppCompatActivity {
 				loadingMore = false;
 
 			}
-
 		}
 
 		@Override

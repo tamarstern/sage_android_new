@@ -53,37 +53,40 @@ public class ActivityUtils {
     }
 
     public static void openRecipeActivity(RecipeDetails details, Activity context) {
+        Intent intent = null;
+        intent = getRecipeIntent(details, context);
+        context.startActivity(intent);
+    }
+
+
+    public static Intent getRecipeIntent(RecipeDetails details, Context context) {
+        Intent intent;
         switch (details.getRecipeType()) {
             case PICTURE:
-                Intent pictureIntent = new Intent(context, PictureRecipePageActivity.class)
+                intent = new Intent(context, PictureRecipePageActivity.class)
                         .putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, details);
 
                 if (EntityUtils.isLoggedInUserRecipe(details.getUserId(), context)) {
-                    pictureIntent.putExtra(EntityDataTransferConstants.IN_MY_RECIPE_PAGE, true);
+                    intent.putExtra(EntityDataTransferConstants.IN_MY_RECIPE_PAGE, true);
                 }
-                context.startActivity(pictureIntent);
                 break;
             case LINK:
-                Intent linkIntent = new Intent(context, LinkRecipePageActivity.class)
+                intent = new Intent(context, LinkRecipePageActivity.class)
                         .putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, details);
 
                 if (EntityUtils.isLoggedInUserRecipe(details.getUserId(), context)) {
-                    linkIntent.putExtra(EntityDataTransferConstants.IN_MY_RECIPE_PAGE, true);
+                    intent.putExtra(EntityDataTransferConstants.IN_MY_RECIPE_PAGE, true);
                 }
-
-                context.startActivity(linkIntent);
                 break;
             default:
-                Intent textIntent = new Intent(context, TextReciptPageActivity.class)
+                intent = new Intent(context, TextReciptPageActivity.class)
                         .putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, details);
-
                 if (EntityUtils.isLoggedInUserRecipe(details.getUserId(), context)) {
-                    textIntent.putExtra(EntityDataTransferConstants.IN_MY_RECIPE_PAGE, true);
+                    intent.putExtra(EntityDataTransferConstants.IN_MY_RECIPE_PAGE, true);
                 }
-
-                context.startActivity(textIntent);
                 break;
         }
+        return intent;
     }
 
     public static void InitPopupWindowWithEventHandler(final PopupWindow popupWindow, Context context) {

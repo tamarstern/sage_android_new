@@ -187,6 +187,8 @@ Last updated May 20, 2016
     <string name="no_recipes_found_matching_search_criteria">No recipes found that match the search criteria.</string>
     <string name="no_users_found_matching_search_criteria">No users found that match the search criteria.</string>
     <string name="users_who_likes_recipe">People who like the recipe</string>
+    <string name="like_push_notification_message">{0} liked your recipe</string>
+    <string name="push_notifications_title">Sage Recipe Box</string>
 
 
 </resources>
