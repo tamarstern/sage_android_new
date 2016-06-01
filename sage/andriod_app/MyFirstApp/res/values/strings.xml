@@ -181,7 +181,7 @@ Last updated May 20, 2016
     <string name="title_activity_terms">TermsActivity</string>
     <string name="terms_title">Terms And Conditions</string>
     <string name="terms_not_signed_message">In order to continue, please sign the terms</string>
-    <string name="no_recipes_in_category_lbl">No recipes in category. To start adding recipes, click on the following icon on the menus: </string>
+    <string name="no_recipes_in_category_lbl">No recipes in category. To start adding recipes, click on the followingNicon on the menus: </string>
     <string name="no_published_recipes_my_profile">All your recipes are private. To start publishing recipes, search for the pubilsh recipes switch in each of your recipes.</string>
     <string name="no_published_recipes_other_user_profile">This user does not have public recipes.</string>
     <string name="no_recipes_found_matching_search_criteria">No recipes found that match the search criteria.</string>
