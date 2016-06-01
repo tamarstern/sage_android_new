@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
@@ -15,10 +16,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.activities.LinkRecipePageActivity;
 import com.sage.activities.PictureRecipePageActivity;
+import com.sage.activities.ProfilePageActivity;
 import com.sage.activities.R;
 import com.sage.activities.TextReciptPageActivity;
 import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.application.NewsfeedContainer;
+import com.sage.application.UserFollowingContainer;
+import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.User;
 import com.sage.utils.ActivityUtils;
@@ -53,7 +57,7 @@ public class MyGcmListenerService extends GcmListenerService {
         }
         if (messageType.equals(MessageType.addFollower.toString())) {
             Log.i("followGcm", "receive new gcm message ");
-            increaseFollowByCount(data);
+            handleFollowMessage(data);
         }
         if (messageType.equals(MessageType.removeFollower.toString())) {
             Log.i("unfollowGcm", "receive new gcm message ");
@@ -65,6 +69,9 @@ public class MyGcmListenerService extends GcmListenerService {
             RecipeDetails details = getRecipeDetailsFromMessage(recipe);
             String userStr = data.getString("userWhoAddComment");
             User user = getUserFromMessage(userStr);
+            if(EntityUtils.isLoggedInUser(user.getUsername(), this)) {
+                return;
+            }
             if(user != null && recipe != null) {
                 sendCommentNotification(details, user);
             }
@@ -75,6 +82,9 @@ public class MyGcmListenerService extends GcmListenerService {
             RecipeDetails details = getRecipeDetailsFromMessage(recipe);
             String userStr = data.getString("userWhoAddLike");
             User user = getUserFromMessage(userStr);
+            if(EntityUtils.isLoggedInUser(user.getUsername(), this)) {
+                return;
+            }
             if(user != null && recipe != null) {
                 sendLikeNotification(details, user);
             }
@@ -83,25 +93,40 @@ public class MyGcmListenerService extends GcmListenerService {
 
     private void sendCommentNotification(RecipeDetails details, User user) {
 
-        String notificationTitle = getApplicationContext().getResources().getString(R.string.push_notifications_title);
         String notificationDescription = getApplicationContext().getResources().getString(R.string.comment_push_notification_message);
         String notificationDescriptionToShow = MessageFormat.format(notificationDescription, user.getUserDisplayName());
-        buildNotificationForRecipePage(details, notificationTitle, notificationDescriptionToShow);
+        buildNotificationForRecipePage(details, notificationDescriptionToShow);
     }
-
-
 
     private void sendLikeNotification(RecipeDetails recipe, User user) {
-
-        String notificationTitle = getApplicationContext().getResources().getString(R.string.push_notifications_title);
         String notificationDescription = getApplicationContext().getResources().getString(R.string.like_push_notification_message);
         String notificationDescriptionToShow = MessageFormat.format(notificationDescription, user.getUserDisplayName());
-        buildNotificationForRecipePage(recipe, notificationTitle, notificationDescriptionToShow);
+        buildNotificationForRecipePage(recipe, notificationDescriptionToShow);
+    }
 
+    private void buildNotificationForProfilePage(User user, String notificationDescriptionToShow) {
+        String notificationTitle = getApplicationContext().getResources().getString(R.string.push_notifications_title);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.sage_dashboard_icon)
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationDescriptionToShow);
+
+        Intent resultIntent = getProfilePageIntent(user);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
+        stackBuilder.addParentStack(ProfilePageActivity.class);
+
+        drawNotification(mBuilder, resultIntent, stackBuilder);
 
     }
 
-    private void buildNotificationForRecipePage(RecipeDetails recipe, String notificationTitle, String notificationDescriptionToShow) {
+    private void buildNotificationForRecipePage(RecipeDetails recipe, String notificationDescriptionToShow) {
+
+        String notificationTitle = getApplicationContext().getResources().getString(R.string.push_notifications_title);
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.sage_dashboard_icon)
@@ -110,10 +135,18 @@ public class MyGcmListenerService extends GcmListenerService {
 
         Intent resultIntent = ActivityUtils.getRecipeIntent(recipe, this);
 
+        drawRecipeNotification(recipe, mBuilder, resultIntent);
+    }
+
+    private void drawRecipeNotification(RecipeDetails recipe, NotificationCompat.Builder mBuilder, Intent resultIntent) {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
         addActivityClassToStackBuilder(recipe, stackBuilder);
 
+        drawNotification(mBuilder, resultIntent, stackBuilder);
+    }
+
+    private void drawNotification(NotificationCompat.Builder mBuilder, Intent resultIntent, TaskStackBuilder stackBuilder) {
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
@@ -143,19 +176,58 @@ public class MyGcmListenerService extends GcmListenerService {
     }
 
     private void decreaseFollowByCount(Bundle data) {
-        String followUserStr = data.getString("followUser");
+        String followUserStr = data.getString("followedBy");
+        if(TextUtils.isEmpty(followUserStr)) {
+            return;
+        }
         User user = getUserFromMessage(followUserStr);
         if (EntityUtils.isLoggedInUser(user.getUsername(), getApplicationContext())) {
             MyProfileRecipiesContainer.getInstance().decreaseFollowedByCount(user.get_id());
         }
     }
 
+    private void handleFollowMessage(Bundle data) {
+        increaseFollowByCount(data);
+        drawNotificationMessage(data);
+    }
+
+    private void drawNotificationMessage(Bundle data) {
+        String baseUserStr = data.getString("baseUser");
+        if(TextUtils.isEmpty(baseUserStr)) {
+            return;
+        }
+        User baseUser = getUserFromMessage(baseUserStr);
+        if(baseUser == null) {
+            return;
+        }
+        String pushFollowDescription = getApplicationContext().getResources().getString(R.string.follow_push_notification_message);
+        String pushFollowDescriptionToShow = MessageFormat.format(pushFollowDescription, baseUser.getUserDisplayName());
+        buildNotificationForProfilePage(baseUser, pushFollowDescriptionToShow);
+    }
+
     private void increaseFollowByCount(Bundle data) {
         String followUserStr = data.getString("followUser");
+        if(TextUtils.isEmpty(followUserStr)) {
+            return;
+        }
         User user = getUserFromMessage(followUserStr);
+        if(user == null) {
+            return;
+        }
         if (EntityUtils.isLoggedInUser(user.getUsername(), getApplicationContext())) {
             MyProfileRecipiesContainer.getInstance().increaseFollowedByCount(user.get_id());
         }
+    }
+
+    private Intent getProfilePageIntent(User user) {
+        Intent intent = new Intent(this, ProfilePageActivity.class)
+                .putExtra(EntityDataTransferConstants.USER_DISPLAY_NAME_DATA_TRANSFER, user.getUserDisplayName())
+                .putExtra(EntityDataTransferConstants.USER_NAME_DATA_TRANSFER, user.getUsername())
+                .putExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER, user.get_id())
+                .putExtra(EntityDataTransferConstants.OPEN_USER_PROFILE, false);
+        boolean isFollowing = UserFollowingContainer.getInstance().isFollowing(user);
+        intent.putExtra(EntityDataTransferConstants.IS_FOLLOWING, isFollowing);
+        return intent;
     }
 
     private User getUserFromMessage(String followUserStr) {

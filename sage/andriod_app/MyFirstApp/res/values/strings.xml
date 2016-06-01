@@ -187,9 +187,11 @@ Last updated May 20, 2016
     <string name="no_recipes_found_matching_search_criteria">No recipes found that match the search criteria.</string>
     <string name="no_users_found_matching_search_criteria">No users found that match the search criteria.</string>
     <string name="users_who_likes_recipe">People who like the recipe</string>
-    <string name="like_push_notification_message">{0} liked your recipe</string>
+    <string name="like_push_notification_message">{0} liked your recipe.</string>
+    <string name="follow_push_notification_message">{0} started following you.</string>
     <string name="push_notifications_title">Sage Recipe Box</string>
-    <string name="comment_push_notification_message">{0} commented on your recipe</string>
+    <string name="comment_push_notification_message">{0} commented on your recipe.</string>
+    <string name="publish_recipe_instructions" >Want to publish your recipes to your followers? Switch the “Publish Recipe” switch in the recipe page to “On“.</string>
 
 
 </resources>

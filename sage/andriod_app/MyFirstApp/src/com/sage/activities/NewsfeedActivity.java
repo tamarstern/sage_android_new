@@ -104,6 +104,9 @@ public class NewsfeedActivity extends AppCompatActivity {
 
 		listView = (ListView) findViewById(android.R.id.list);
 		listView.addFooterView(footer);
+
+		View listHeader =  getLayoutInflater().inflate(R.layout.newsfeed_list_header, null);
+		listView.addHeaderView(listHeader);
 		initListView();
 
 		AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.OPEN_NEWSFEED_ACTIVITY);
