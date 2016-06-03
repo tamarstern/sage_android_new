@@ -17,6 +17,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.LoginUtility;
+import com.sage.activities.R;
 
 public class TermsActivity extends AppCompatActivity {
 

@@ -29,6 +29,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.services.GetSearchRecipes;
 import com.sage.tasks.GetRecipiesActivity;
+import com.sage.activities.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;

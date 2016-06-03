@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.utils.EntityUtils;
+import com.sage.activities.R;
 
 import java.io.Serializable;
 

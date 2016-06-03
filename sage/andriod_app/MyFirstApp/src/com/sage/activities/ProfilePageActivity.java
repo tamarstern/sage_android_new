@@ -33,6 +33,7 @@ import com.sage.entities.User;
 import com.sage.services.GetPublishedRecipesForUser;
 import com.sage.tasks.GetRecipiesActivity;
 import com.sage.utils.AnalyticsUtils;
+import com.sage.activities.R;
 
 import java.io.Serializable;
 import java.text.MessageFormat;

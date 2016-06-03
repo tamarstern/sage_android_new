@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
+import com.sage.activities.R;
 
 public class AddRecipeAsLinkActivity extends AppCompatActivity {
 

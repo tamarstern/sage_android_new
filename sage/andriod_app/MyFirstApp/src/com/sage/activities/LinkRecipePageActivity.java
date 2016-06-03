@@ -35,6 +35,7 @@ import com.sage.utils.ActivityUtils;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ImagesInitializer;
 import com.sage.utils.RecipeDetailsBinder;
+import com.sage.activities.R;
 
 import java.util.HashSet;
 import java.util.Set;

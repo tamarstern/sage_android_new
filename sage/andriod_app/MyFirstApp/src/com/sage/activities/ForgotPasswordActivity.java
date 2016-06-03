@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;
 import com.sage.services.FindUserService;
 import com.sage.utils.ActivityUtils;
+import com.sage.activities.R;
 
 public class ForgotPasswordActivity extends Activity {
 

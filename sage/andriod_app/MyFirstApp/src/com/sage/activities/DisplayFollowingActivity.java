@@ -20,6 +20,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.GetFollowingService;
 import com.sage.tasks.BaseFetchUsersTask;
+import com.sage.activities.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

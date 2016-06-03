@@ -13,6 +13,7 @@ import android.widget.EditText;
 import com.sage.constants.ActivityConstants;
 import com.sage.tasks.UpdateUserTask;
 import com.sage.utils.LoginUtility;
+import com.sage.activities.R;
 
 public class ResetPasswordActivity extends Activity {
 

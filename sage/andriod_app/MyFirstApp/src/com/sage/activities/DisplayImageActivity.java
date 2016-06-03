@@ -22,6 +22,7 @@ import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
 import com.sage.utils.CacheUtils;
 import com.sage.utils.ImagesInitializer;
+import com.sage.activities.R;
 
 public class DisplayImageActivity extends Activity {
 

@@ -38,6 +38,7 @@ import com.sage.utils.CacheUtils;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ImageSelectorUtils;
 import com.sage.utils.ImagesInitializer;
+import com.sage.activities.R;
 
 public class PictureRecipePageActivity extends AppCompatActivity implements IExitWithoutSaveListener {
 

@@ -22,6 +22,7 @@ import com.sage.listeners.SaveRecipeHandler;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
 import com.sage.utils.EntityUtils;
+import com.sage.activities.R;
 
 public class TextReciptPageActivity extends AppCompatActivity implements IExitWithoutSaveListener {
 

@@ -46,6 +46,7 @@ import com.sage.entities.RecipeDetails;
 import com.sage.services.GetNewsFeedRecipesForUser;
 import com.sage.tasks.GetRecipiesActivity;
 import com.sage.utils.AnalyticsUtils;
+import com.sage.activities.R;
 
 import org.apache.http.util.TextUtils;
 

@@ -15,6 +15,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.services.RegisterNewService;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
+import com.sage.activities.R;
 
 public class RegisterNewUserActivity extends Activity {
 	private EditText usernameEditText;

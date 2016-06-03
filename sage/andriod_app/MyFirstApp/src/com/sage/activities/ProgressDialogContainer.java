@@ -31,7 +31,7 @@ public class ProgressDialogContainer {
 				progressDialog = null;
 			}
 		} catch (IllegalArgumentException e) {
-			Log.e("illegal argumant exception on dissmiss dialog", "illegal argumant exception on dissmiss dialog", e);
+			Log.e("dismissDialog", "illegal argumant exception on dissmiss dialog", e);
 		} finally {
 			progressDialog = null;
 		}

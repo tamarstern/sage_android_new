@@ -24,6 +24,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.SearchFollowingService;
 import com.sage.tasks.BaseFetchUsersTask;
+import com.sage.activities.R;
 
 import java.util.List;
 
