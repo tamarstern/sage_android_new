@@ -111,7 +111,8 @@ public class MyGcmListenerService extends GcmListenerService {
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.sage_dashboard_icon)
                         .setContentTitle(notificationTitle)
-                        .setContentText(notificationDescriptionToShow);
+                        .setContentText(notificationDescriptionToShow).
+                        setAutoCancel(true);
 
         Intent resultIntent = getProfilePageIntent(user);
 
@@ -131,7 +132,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.sage_dashboard_icon)
                         .setContentTitle(notificationTitle)
-                        .setContentText(notificationDescriptionToShow);
+                        .setContentText(notificationDescriptionToShow).setAutoCancel(true);
 
         Intent resultIntent = ActivityUtils.getRecipeIntent(recipe, this);
 
