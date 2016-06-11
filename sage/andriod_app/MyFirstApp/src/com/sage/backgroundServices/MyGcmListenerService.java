@@ -238,12 +238,22 @@ public class MyGcmListenerService extends GcmListenerService {
     }
 
     private void handleRecipeSavedMessage(String from, Bundle data) {
-
         Log.i(TAG, "From: " + from);
-
         String recipeMessage = data.getString("publishedRecipe");
         Log.i(TAG, "Message: " + recipeMessage);
         RecipeDetails detailsFromResponse = getRecipeDetailsFromMessage(recipeMessage);
+        updateSavedRecipeInCache(detailsFromResponse);
+        String userMessage = data.getString("userWhoSharedRecipe");
+        User user = getUserFromMessage(userMessage);
+        if(user == null || TextUtils.isEmpty(user.getUserDisplayName())) {
+            return;
+        }
+        String pushFollowDescription = getApplicationContext().getResources().getString(R.string.recipe_updated_push_notification_message);
+        String pushFollowDescriptionToShow = MessageFormat.format(pushFollowDescription, user.getUserDisplayName());
+        buildNotificationForRecipePage(detailsFromResponse,pushFollowDescriptionToShow);
+    }
+
+    private void updateSavedRecipeInCache(RecipeDetails detailsFromResponse) {
         NewsfeedContainer.getInstance().updateRecipeInNewsfeed(detailsFromResponse);
         if (EntityUtils.isLoggedInUserRecipe(detailsFromResponse.getUserId(), getApplicationContext())) {
             MyProfileRecipiesContainer.getInstance().addRecipe(detailsFromResponse);

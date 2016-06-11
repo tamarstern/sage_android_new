@@ -192,6 +192,7 @@ Last updated May 20, 2016
     <string name="push_notifications_title">Sage Recipe Box</string>
     <string name="comment_push_notification_message">{0} commented on your recipe.</string>
     <string name="publish_recipe_instructions" >Want to publish your recipes to your followers? Switch the “Publish Recipe” switch in the recipe page to “On“.</string>
+    <string name="recipe_updated_push_notification_message">{0} shared a recipe with you.</string>
 
 
 </resources>
