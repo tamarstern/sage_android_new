@@ -193,6 +193,7 @@ Last updated May 20, 2016
     <string name="comment_push_notification_message">{0} commented on your recipe.</string>
     <string name="publish_recipe_instructions" >Want to publish your recipes to your followers? Switch the “Publish Recipe” switch in the recipe page to “On“.</string>
     <string name="recipe_updated_push_notification_message">{0} shared a recipe with you.</string>
+    <string name="need_permissions_to_insert_picture" >Until required permissions are approved, you cannot add images to Sage Recipe Box.</string>
 
 
 </resources>

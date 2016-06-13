@@ -1,10 +1,14 @@
 package com.sage.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.sage.activities.DisplayImageActivity;
 import com.sage.activities.R;
@@ -32,7 +37,13 @@ import com.sage.utils.ImageSelectorUtils;
 import com.sage.utils.ImagesInitializer;
 import com.sage.utils.RecipeDetailsBinder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RecipeDetailsFragment extends Fragment {
+
+	private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
+	final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
 	private RecipeDetails recipeDetails;
 
@@ -162,9 +173,56 @@ public class RecipeDetailsFragment extends Fragment {
 	}
 
 	private void changePictureAction() {
+
+		int permissionCheckWriteExternal = ContextCompat.checkSelfPermission(getActivity(),
+				android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+		int permissionCheckReadExternal = ContextCompat.checkSelfPermission(getActivity(),
+				android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+		if((permissionCheckWriteExternal != PackageManager.PERMISSION_GRANTED)
+				|| (permissionCheckReadExternal != PackageManager.PERMISSION_GRANTED)) {
+			ActivityCompat.requestPermissions(getActivity(),
+					new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+							Manifest.permission.READ_EXTERNAL_STORAGE},
+					REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+			return;
+		}
+
+
+
 		cameraOpened = true;
 		ImageSelectorUtils.selectImage(getActivity());
 
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		switch (requestCode) {
+			case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS:
+			{
+				Map<String, Integer> perms = new HashMap<String, Integer>();
+				// Initial
+				perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+				perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+				// Fill with results
+				for (int i = 0; i < permissions.length; i++)
+					perms.put(permissions[i], grantResults[i]);
+				// Check for ACCESS_FINE_LOCATION
+				if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+						&& perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+					// All Permissions Granted
+					cameraOpened = true;
+					ImageSelectorUtils.selectImage(getActivity());
+				} else {
+					String message = getResources().getString(R.string.need_permissions_to_insert_picture);
+					Toast.makeText(getActivity(),message , Toast.LENGTH_SHORT)
+							.show();
+				}
+			}
+			break;
+			default:
+				super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
 	}
 
 	@Override

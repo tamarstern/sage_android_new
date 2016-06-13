@@ -3,7 +3,9 @@ package com.sage.activities;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -22,7 +24,6 @@ import com.sage.listeners.SaveRecipeHandler;
 import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
 import com.sage.utils.EntityUtils;
-import com.sage.activities.R;
 
 public class TextReciptPageActivity extends AppCompatActivity implements IExitWithoutSaveListener {
 
@@ -130,6 +131,16 @@ public class TextReciptPageActivity extends AppCompatActivity implements IExitWi
 		} else {
 			super.onBackPressed();
 		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.recipe_details_panel);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+
 	}
 
 	@Override
