@@ -178,17 +178,19 @@ public class RecipeDetailsFragment extends Fragment {
 				android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
 		int permissionCheckReadExternal = ContextCompat.checkSelfPermission(getActivity(),
 				android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+		int permissionCheckCamera = ContextCompat.checkSelfPermission(getActivity(),
+				Manifest.permission.CAMERA);
 
 		if((permissionCheckWriteExternal != PackageManager.PERMISSION_GRANTED)
-				|| (permissionCheckReadExternal != PackageManager.PERMISSION_GRANTED)) {
+				|| (permissionCheckReadExternal != PackageManager.PERMISSION_GRANTED)
+				|| (permissionCheckCamera != PackageManager.PERMISSION_GRANTED)) {
 			ActivityCompat.requestPermissions(getActivity(),
 					new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-							Manifest.permission.READ_EXTERNAL_STORAGE},
+							Manifest.permission.READ_EXTERNAL_STORAGE,
+							Manifest.permission.CAMERA},
 					REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
 			return;
 		}
-
-
 
 		cameraOpened = true;
 		ImageSelectorUtils.selectImage(getActivity());
@@ -204,12 +206,14 @@ public class RecipeDetailsFragment extends Fragment {
 				// Initial
 				perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
 				perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+				perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
 				// Fill with results
 				for (int i = 0; i < permissions.length; i++)
 					perms.put(permissions[i], grantResults[i]);
 				// Check for ACCESS_FINE_LOCATION
 				if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-						&& perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+						&& perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+						&& perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 					// All Permissions Granted
 					cameraOpened = true;
 					ImageSelectorUtils.selectImage(getActivity());

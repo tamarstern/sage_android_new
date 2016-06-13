@@ -236,11 +236,16 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		int permissionCheckReadExternal = ContextCompat.checkSelfPermission(this,
 				android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
+		int permissionCheckCamera = ContextCompat.checkSelfPermission(this,
+				Manifest.permission.CAMERA);
+
+
 		if((permissionCheckWriteExternal != PackageManager.PERMISSION_GRANTED)
-				|| (permissionCheckReadExternal != PackageManager.PERMISSION_GRANTED)) {
+				|| (permissionCheckReadExternal != PackageManager.PERMISSION_GRANTED)
+				|| (permissionCheckCamera != PackageManager.PERMISSION_GRANTED)) {
 			ActivityCompat.requestPermissions(this,
 					new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-							Manifest.permission.READ_EXTERNAL_STORAGE},
+							Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
 					REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
 			return;
 		}
@@ -257,12 +262,14 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 				// Initial
 				perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
 				perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+				perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
 				// Fill with results
 				for (int i = 0; i < permissions.length; i++)
 					perms.put(permissions[i], grantResults[i]);
 				// Check for ACCESS_FINE_LOCATION
 				if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-						&& perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+						&& perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+						&& perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 					// All Permissions Granted
 					openChoosePicturePopup();
 				} else {
