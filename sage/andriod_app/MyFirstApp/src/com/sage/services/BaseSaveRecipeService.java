@@ -55,6 +55,7 @@ public abstract class BaseSaveRecipeService extends BaseService {
 		}
 		if (recipeDetails.getRecipeType().equals(RecipeType.PICTURE)) {
 			AddPictureRecipeParameters(builder, recipeDetails);
+			AddTextRecipeParameters(builder, recipeDetails);
 		}
 		if (recipeDetails.getRecipeType().equals(RecipeType.LINK)) {
 			builder.appendQueryParameter("url", recipeDetails.getUrl());
@@ -95,7 +96,6 @@ public abstract class BaseSaveRecipeService extends BaseService {
 			break;
 
 		}
-
 	}
 
 	private void addGenericParameters(Builder builder) {
