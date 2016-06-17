@@ -75,6 +75,7 @@ public class UsersArrayAdapter extends ArrayAdapter<User> {
 		followUser.setVisibility(View.GONE);
 		unfollowUser.setVisibility(View.VISIBLE);
 		AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.PRESS_FOLLOW_USER);
+		notifyDataSetChanged();
 
 	}
 
@@ -85,7 +86,7 @@ public class UsersArrayAdapter extends ArrayAdapter<User> {
 		followUser.setVisibility(View.VISIBLE);
 		unfollowUser.setVisibility(View.GONE);
 		AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.PRESS_UNFOLLOW_USER);
-
+		notifyDataSetChanged();
 	}
 
 	private void initFollowAndUnfollowButtonsVisibility(User user) {

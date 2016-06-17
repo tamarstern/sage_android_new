@@ -15,13 +15,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.constants.ActivityConstants;
@@ -32,13 +25,12 @@ import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.LoginUtility;
-import com.sage.activities.R;
 
 ;
 
 public class LoginActivity extends Activity {
 
-	private CallbackManager callbackManager;
+	//private CallbackManager callbackManager;
 
 	private EditText usernameEditText;
 	private EditText passwordEditText;
@@ -50,8 +42,8 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		FacebookSdk.sdkInitialize(getApplicationContext());
-		callbackManager = CallbackManager.Factory.create();
+		//FacebookSdk.sdkInitialize(getApplicationContext());
+		//callbackManager = CallbackManager.Factory.create();
 		setContentView(R.layout.activity_login);
 
 
@@ -97,7 +89,7 @@ public class LoginActivity extends Activity {
 		//orLabel.setVisibility(View.GONE);
 		
 		
-		LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+	/*	LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
 		facebookLoginButton.setReadPermissions("user_friends");
 		facebookLoginButton.setVisibility(View.GONE);
 		facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -116,16 +108,16 @@ public class LoginActivity extends Activity {
 			public void onError(FacebookException exception) {
 				Toast.makeText(getApplicationContext(), "Login Failed with exception!", Toast.LENGTH_LONG).show();
 			}
-		});
+		});*/
 	}
 
-	private void openNewsfeedIfAlreadyLoggedInToFacebook() {
+	/*private void openNewsfeedIfAlreadyLoggedInToFacebook() {
 		AccessToken fb_token = AccessToken.getCurrentAccessToken();
 		if (fb_token != null) {
 			boolean termsSigned = EntityUtils.signedTerms(this, null);
 			continueToNextActivity(termsSigned);
 		}
-	}
+	}*/
 
 	@Override
 	public void onBackPressed() {
@@ -138,7 +130,7 @@ public class LoginActivity extends Activity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		callbackManager.onActivityResult(requestCode, resultCode, data);
+	//	callbackManager.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void initRegisterLoginButton() {
