@@ -32,7 +32,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class PostRecipeImage {
 
-	private final String url = ServicesConstants.PICTURE_URL;
+	private final String url = ServicesConstants.PICTURE_URL_POST;
 	private Bitmap image;
 	private String token;
 	String username;

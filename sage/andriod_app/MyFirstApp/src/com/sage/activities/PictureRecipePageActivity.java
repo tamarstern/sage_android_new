@@ -31,7 +31,6 @@ import android.widget.Toast;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
 import com.sage.application.GoogleAnalyticsApplication;
 import com.sage.application.TCImageLoader;
-import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
@@ -175,7 +174,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		String id = CacheUtils.getRecipeImagePictureId(recipeDetails);
 		if(!TextUtils.isEmpty(id)) {
 
-			String url = ImagesInitializer.getUrl(this, id, ImageType.IMAGE_RECIPE_PICTURE);
+			String url = ImagesInitializer.getUrl( id);
 			TCImageLoader loader = ((GoogleAnalyticsApplication) this.getApplication()).getLoader();
 			loader.display(url, this.recipeAsPicture,this.progressBar, R.drawable.default_recipe_image);
 

@@ -46,7 +46,6 @@ import com.sage.entities.RecipeDetails;
 import com.sage.services.GetNewsFeedRecipesForUser;
 import com.sage.tasks.GetRecipiesActivity;
 import com.sage.utils.AnalyticsUtils;
-import com.sage.activities.R;
 
 import org.apache.http.util.TextUtils;
 
@@ -242,13 +241,13 @@ public class NewsfeedActivity extends AppCompatActivity {
 		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetNewsfeedRecipiesReceiver.REQUEST_CODE,
 				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				20*60*1000, newsfeedRecipiesPIntent);
+				10*60*1000, newsfeedRecipiesPIntent);
 
 		Intent profileRecipiesForFollowingIntent = new Intent(getApplicationContext(), GetProfilePageRecipiesForFollowingReceiver.class);
 		final PendingIntent profileRecipiesForFollowingPIntent = PendingIntent.getBroadcast(this, GetProfilePageRecipiesForFollowingReceiver.REQUEST_CODE,
 				profileRecipiesForFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				20*60*1000, profileRecipiesForFollowingPIntent);
+				10*60*1000, profileRecipiesForFollowingPIntent);
 
 
 

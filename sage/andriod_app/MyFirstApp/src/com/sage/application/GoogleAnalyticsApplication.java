@@ -13,9 +13,6 @@ public class GoogleAnalyticsApplication extends Application {
 
 	private static TCImageLoader loader;
 
-	public enum TrackerName {
-		APP_TRACKER, GLOBAL_TRACKER, ECOMMERCE_TRACKER,
-	}
 
 	public GoogleAnalyticsApplication() {
 		super();

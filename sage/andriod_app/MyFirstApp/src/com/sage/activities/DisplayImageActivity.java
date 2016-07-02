@@ -16,13 +16,11 @@ import android.widget.ProgressBar;
 
 import com.sage.application.GoogleAnalyticsApplication;
 import com.sage.application.TCImageLoader;
-import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
 import com.sage.utils.CacheUtils;
 import com.sage.utils.ImagesInitializer;
-import com.sage.activities.R;
 
 public class DisplayImageActivity extends Activity {
 
@@ -54,24 +52,25 @@ public class DisplayImageActivity extends Activity {
 
         Intent intent = getIntent();
         RecipeType type = (RecipeType) intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_IMAGE_TYPE);
-        initImage(intent, image, progressBar, type);
+        initImage(intent, type);
 
 
     }
 
-    private void initImage(Intent intent, ImageView image, ProgressBar progressBar, RecipeType type) {
+    private void initImage(Intent intent, RecipeType type) {
         RecipeDetails details = (RecipeDetails) intent.getSerializableExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER);
         String id;
         String url;
         if (type.equals(RecipeType.PICTURE)) {
             id = CacheUtils.getRecipeImagePictureId(details);
-            url = ImagesInitializer.getUrl(this, id, ImageType.IMAGE_RECIPE_PICTURE);
+            url = ImagesInitializer.getUrl( id);
+            TCImageLoader loader = ((GoogleAnalyticsApplication) this.getApplication()).getLoader();
+            loader.display(url, this.image,this.progressBar, R.drawable.default_recipe_image);
+
         } else {
             id = CacheUtils.getRecipeMainPictureId(details);
-            url = ImagesInitializer.getUrl(this, id, ImageType.RECIPE_PICTURE);
+            ImagesInitializer.initialRecipeImage(this, id, image, progressBar);
         }
-        TCImageLoader loader = ((GoogleAnalyticsApplication) this.getApplication()).getLoader();
-        loader.display(url, image, progressBar, R.drawable.default_recipe_image);
 
     }
 

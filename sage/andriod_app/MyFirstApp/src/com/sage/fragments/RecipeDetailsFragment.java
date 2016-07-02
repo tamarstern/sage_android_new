@@ -25,9 +25,6 @@ import android.widget.Toast;
 
 import com.sage.activities.DisplayImageActivity;
 import com.sage.activities.R;
-import com.sage.application.GoogleAnalyticsApplication;
-import com.sage.application.TCImageLoader;
-import com.sage.constants.ImageType;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
@@ -251,10 +248,7 @@ public class RecipeDetailsFragment extends Fragment {
 			ImageView mainPicture = (ImageView) recipeDetailsPanel.findViewById(R.id.receipt_main_pic);
 			ProgressBar progressBar = (ProgressBar) recipeDetailsPanel.findViewById(R.id.get_main_picture_progress);
 			String id = CacheUtils.getRecipeMainPictureId(recipeDetails);
-			String url = ImagesInitializer.getUrl(getActivity(), id, ImageType.RECIPE_PICTURE);
-			TCImageLoader loader = ((GoogleAnalyticsApplication) getActivity().getApplication()).getLoader();
-			loader.display(url, mainPicture,progressBar, R.drawable.default_recipe_image);
-			//ImagesInitializer.initRecipeMainPicture(mainPicture, recipeDetails, getActivity());
+			ImagesInitializer.initialRecipeImage(getActivity(), id, mainPicture, progressBar);
 		}
 
 	}
