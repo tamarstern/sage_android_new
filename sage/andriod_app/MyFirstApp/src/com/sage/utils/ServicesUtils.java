@@ -23,17 +23,17 @@ public class ServicesUtils {
 		return recipeDetails;
 	}
 
-	public static void saveRecipeMainPicture(String recipeId, Bitmap recipeMainImage, Context context, String token, String userObjectId) {
+	public static void saveRecipeMainPicture(String recipeId, Bitmap recipeMainImage, Context context, String token) {
 		if (recipeMainImage != null) {
-			Object[] mainImageParams = new Object[]{ token,userObjectId,
+			Object[] mainImageParams = new Object[]{ token,
 					context.getFilesDir().getPath().toString() + File.separator + recipeId};
 			new SetRecipeImageTask(ImageType.RECIPE_PICTURE, recipeId, recipeMainImage).execute(mainImageParams);
 		}
 	}
 
-	public static void saveRecipeImagePicture(String recipeId, Bitmap recipeAsPictureImage, Context context, String token, String userObjectId) {
+	public static void saveRecipeImagePicture(String recipeId, Bitmap recipeAsPictureImage, Context context, String token) {
 		if (recipeAsPictureImage != null) {
-			Object[] recipePictureParams = new Object[]{token,userObjectId,
+			Object[] recipePictureParams = new Object[]{token,
 					context.getFilesDir().getPath().toString() + File.separator + recipeId};
 			new SetRecipeImageTask(ImageType.IMAGE_RECIPE_PICTURE, recipeId, recipeAsPictureImage)
 					.execute(recipePictureParams);
@@ -44,12 +44,12 @@ public class ServicesUtils {
 
 	public static void saveRecipeImage(RecipeDetails recipe, String token, Context context, String userObjectId) {
 		Bitmap recipeMainImage = recipe.getImage();
-		saveRecipeMainPicture(recipe.get_id(), recipeMainImage, context, token, userObjectId);
+		saveRecipeMainPicture(recipe.get_id(), recipeMainImage, context, token);
 		if (!(recipe.getRecipeType().equals(RecipeType.PICTURE))) {
 			return;
 		}
 		Bitmap recipeAsPictureImage = (recipe).getRecipeAsPictureImage();
-		saveRecipeImagePicture(recipe.get_id(), recipeAsPictureImage, context, token, userObjectId);
+		saveRecipeImagePicture(recipe.get_id(), recipeAsPictureImage, context, token);
 	}
 
 

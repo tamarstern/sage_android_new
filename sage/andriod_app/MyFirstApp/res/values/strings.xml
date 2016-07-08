@@ -64,7 +64,7 @@
     <string name="follow_user">Follow</string>
     <string name="unfollow_user">Unfollow</string>
     <string name="user_followed_by">followed by </string>
-    <string name="publish_recipe">Publish Recipe</string>
+    <string name="publish_recipe">Share Recipe</string>
     <string name="unpublish_recipe">Unpublished</string>
     <string name="delete_recipe">Delete</string>
     <string name="save_in_sub_category">Save In Category</string>
@@ -181,8 +181,8 @@ Last updated May 20, 2016
     <string name="title_activity_terms">TermsActivity</string>
     <string name="terms_title">Terms And Conditions</string>
     <string name="terms_not_signed_message">In order to continue, please sign the terms</string>
-    <string name="no_recipes_in_category_lbl">No recipes in category. To start adding recipes, click on the followingNicon on the menus: </string>
-    <string name="no_published_recipes_my_profile">All your recipes are private. To start publishing recipes, search for the pubilsh recipes switch in each of your recipes.</string>
+    <string name="no_recipes_in_category_lbl">No recipes in category. </string>
+    <string name="no_published_recipes_my_profile">You did not share any recipes. To share a recipe, switch the \"Share Recipe\" button in the recipe page to \"On\".</string>
     <string name="no_published_recipes_other_user_profile">This user does not have public recipes.</string>
     <string name="no_recipes_found_matching_search_criteria">No recipes found that match the search criteria.</string>
     <string name="no_users_found_matching_search_criteria">No users found that match the search criteria.</string>
@@ -191,7 +191,7 @@ Last updated May 20, 2016
     <string name="follow_push_notification_message">{0} is now following you.</string>
     <string name="push_notifications_title">Sage Recipe Box</string>
     <string name="comment_push_notification_message">{0} commented on your recipe.</string>
-    <string name="publish_recipe_instructions" >Want to publish your recipes to your followers? Switch the “Publish Recipe” switch in the recipe page to “On“.</string>
+    <string name="publish_recipe_instructions" >To share a recipe, switch the \"Share Recipe\" button in the recipe page to \"ON\".</string>
     <string name="recipe_updated_push_notification_message">{0} shared a recipe with you.</string>
     <string name="need_permissions_to_insert_picture" >Until required permissions are approved, you cannot add images to Sage Recipe Box.</string>
 

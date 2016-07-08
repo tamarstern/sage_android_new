@@ -56,7 +56,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:drawableBottom="@drawable/plus_black"
         android:singleLine="false"
         android:text="@string/no_recipes_in_category_lbl"
         android:textColor="#6e6e6e"

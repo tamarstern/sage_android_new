@@ -17,6 +17,7 @@ import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
@@ -35,15 +36,14 @@ public class PostRecipeImage {
 	private final String url = ServicesConstants.PICTURE_URL_POST;
 	private Bitmap image;
 	private String token;
-	String username;
+
 	private String recipeId;
 	private String path;
 	private ImageType imageType;
 
-	public PostRecipeImage(Bitmap image, String token,String username, String recipeId, String path, ImageType imageType) {
+	public PostRecipeImage(Bitmap image, String token, String recipeId, String path, ImageType imageType) {
 		this.image = image;
 		this.token = token;
-		this.username = username;
 		this.recipeId = recipeId;
 		this.path = path;
 		this.imageType = imageType;
@@ -68,7 +68,10 @@ public class PostRecipeImage {
 			// Set verifier     
 			HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
 
-			HttpPost httpPost = new HttpPost(MessageFormat.format(url, recipeId, imageType.getValue(), token,username));
+			String urlImage = MessageFormat.format(url, recipeId, imageType.getValue());
+			HttpPost httpPost = new HttpPost(urlImage);
+			httpPost.addHeader(ServicesConstants.X_ACCESS_TOKEN, token);
+
 			f = new File(path);
 			f.createNewFile();
 
@@ -84,10 +87,12 @@ public class PostRecipeImage {
 			long byteCount =f.length();
 			Log.i("fileSizeSavedAtServer", "file size that was saved in Server " + byteCount);
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 			builder.addBinaryBody("file", f);
 			HttpEntity entity = builder.build();
 			httpPost.setEntity(entity);
 			HttpResponse response = httpClient.execute(httpPost);
+
 			HttpEntity respEntity = response.getEntity();
 
 			if (respEntity != null) {

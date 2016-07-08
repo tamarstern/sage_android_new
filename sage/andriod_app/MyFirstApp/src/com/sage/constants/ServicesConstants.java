@@ -5,7 +5,7 @@ public class ServicesConstants {
 	//public static String APP_SERVER_URL = "http://10.0.2.2:1337"
 	
 	//public static String APP_SERVER_URL = "https://192.168.0.180:1337";
-	//public static String APP_SERVER_URL = "https:// 192.168.43.91:1337";
+	//public static String APP_SERVER_URL = "https://192.168.4.185:1337";
 
 	public static String APP_SERVER_URL = "https://sageproductionservice.azurewebsites.net/";
 	public static final String UTF_8 = "UTF-8";
@@ -23,7 +23,7 @@ public class ServicesConstants {
 	public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
 	public static final String REGISTRATION_COMPLETE = "registrationComplete";
 
-	public static final String PICTURE_URL_POST = APP_SERVER_URL + "/api/recipesPerUser/picture/{0}?imageType={1}&token={2}&userObjectId={3}";
+	public static final String PICTURE_URL_POST = APP_SERVER_URL + "/api/recipesPerUser/picture/{0}?imageType={1}";
 
 	public static final String PICTURE_URL_GET = APP_SERVER_URL + "/api/recipesPerUser/picture/{0}";
 

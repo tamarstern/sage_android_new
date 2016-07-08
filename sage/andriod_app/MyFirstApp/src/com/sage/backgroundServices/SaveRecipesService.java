@@ -135,9 +135,9 @@ public class SaveRecipesService extends IntentService {
 
     private void saveRecipeImage(String token,Bitmap mainPicture, Bitmap recipeImagePicture, RecipeDetails detailsFromResponse, String userObjectId) {
         ServicesUtils.saveRecipeMainPicture(detailsFromResponse.get_id(),
-                mainPicture, getApplicationContext(), token, userObjectId);
+                mainPicture, getApplicationContext(), token);
         ServicesUtils.saveRecipeImagePicture(detailsFromResponse.get_id(),
-                recipeImagePicture, getApplicationContext(), token, userObjectId);
+                recipeImagePicture, getApplicationContext(), token);
     }
 
 
