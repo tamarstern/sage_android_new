@@ -105,7 +105,7 @@
     <string name="go_back_to_recipe_button_label">Cancel</string>
     <string name="enter_email_to_reset_password">Enter your email to reset your password</string>
     <string name="continue_lbl">Continue</string>
-    <string name="no_categories_lbl">No categories were created yet. You can add recipe categories per your liking</string>
+    <string name="no_categories_lbl">Divide your recipes to categories per your liking! Add a category by clicking the \"+\" button above</string>
     <string name="reset_password_lbl">Reset</string>
     <string name="action_who_i_follow">Following</string>
     <string name="title_activity_display_link_web_page">DisplayLinkWebPageActivity</string>
