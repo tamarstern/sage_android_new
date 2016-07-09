@@ -7,7 +7,7 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:background="@drawable/appliction_panel_style"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/add_comment_panel"
@@ -23,15 +23,16 @@
             android:id="@+id/add_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/add_comment_request"
-            android:layout_toStartOf="@+id/add_comment_request"
-            android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/add_comment_request"
+            android:layout_toStartOf="@+id/add_comment_request"
             android:gravity="start"
             android:hint="@string/add_comment"
             android:inputType="textCapSentences|textMultiLine"
+            android:layout_marginEnd="5dp"
             android:textColor="#355723"
             android:textSize="20sp"
             android:theme="@style/EditTextComments" />
@@ -40,20 +41,20 @@
             android:id="@+id/add_comment_request"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:contentDescription="@string/add_comment"
             android:src="@drawable/add_comment" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/failed_to_load_panel"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:id="@+id/failed_to_load_panel"
         android:layout_gravity="center"
         android:gravity="center">
 
@@ -62,53 +63,57 @@
             android:id="@+id/failed_to_load_icon"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/no_internet_connection"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/no_internet_connection" />
 
         <TextView
+            android:id="@+id/failed_to_load_lbl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/failed_to_load_lbl"
             android:layout_below="@id/failed_to_load_icon"
-            android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
 
-            android:text="@string/no_connection_tap_to_retry"/>
+            android:text="@string/no_connection_tap_to_retry" />
     </RelativeLayout>
 
 
     <RelativeLayout
+        android:id="@+id/back_likes_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/back_likes_panel"
-        android:gravity="bottom"
         android:layout_alignParentBottom="true"
-        >
-
-    <Button
-        android:id="@+id/close_comments_popup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:background="@android:color/transparent"
-        android:text="@string/close_comments_popup"
-        android:textAllCaps="false"
-        android:textColor="#000000"
-        android:textSize="15sp" />
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/close_comments_popup"
+            android:gravity="left|center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:text="@string/close_comments_popup"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/likes_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="20dp"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="@string/likes_message"
             android:textColor="#000000"
             android:textSize="15sp" />
@@ -116,9 +121,10 @@
 
     <ListView
         android:id="@android:id/list"
-        android:layout_above="@+id/back_likes_panel"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
+        android:layout_above="@+id/back_likes_panel"
+        android:layout_below="@+id/add_comment_panel"
         android:layout_weight="1"
         android:background="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
@@ -130,9 +136,7 @@
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbarSize="20dip"
         android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical"
-        android:layout_below="@+id/add_comment_panel">
-    </ListView>
+        android:scrollbars="vertical"></ListView>
 
 
 </RelativeLayout>
