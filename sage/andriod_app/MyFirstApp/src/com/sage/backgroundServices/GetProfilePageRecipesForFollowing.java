@@ -56,18 +56,18 @@ public class GetProfilePageRecipesForFollowing extends IntentService {
         for(RecipeDetails details : firstPageRecipies) {
             String userId = details.getUserObjectId();
             if(shouldProcessId(loggedInUserObjectId, processedUsers, userId)) {
-                addProfileRecipesForUser(token, processedUsers, userId);
+                addProfileRecipesForUser(token, processedUsers,loggedInUserObjectId, userId);
             }
             String ownerId = details.getOwnerObjectId();
             if(shouldProcessId(loggedInUserObjectId, processedUsers, ownerId)) {
-                addProfileRecipesForUser(token, processedUsers, ownerId);
+                addProfileRecipesForUser(token, processedUsers,loggedInUserObjectId, ownerId);
             }
         }
     }
 
-    private void addProfileRecipesForUser(String token, HashSet<String> processedUsers, String userId) throws Exception {
+    private void addProfileRecipesForUser(String token, HashSet<String> processedUsers,String loggedInUserId, String userId) throws Exception {
         Log.i("process for user", "process for user " + userId);
-        ArrayList<RecipeDetails> firstPage = BackgroundServicesUtils.getProfilePageRecipiesForPage(token, userId, 0);
+        ArrayList<RecipeDetails> firstPage = BackgroundServicesUtils.getProfilePageRecipiesForPage(token,loggedInUserId, userId, 0);
         if(firstPage != null) {
             NewsfeedContainer.getInstance().addProfileRecipesForUser(userId, firstPage);
             processedUsers.add(userId);

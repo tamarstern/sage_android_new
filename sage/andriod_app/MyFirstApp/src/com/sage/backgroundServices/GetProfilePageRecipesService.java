@@ -69,7 +69,7 @@ public class GetProfilePageRecipesService extends IntentService {
 
     private void initProfilePageRecipies(String token, String userName) throws Exception {
         for (int i = 0; i < 2; i++) {
-            ArrayList<RecipeDetails> details = BackgroundServicesUtils.getProfilePageRecipiesForPage(token, userName, i);
+            ArrayList<RecipeDetails> details = BackgroundServicesUtils.getProfilePageRecipiesForPage(token, userName, userName, i);
             if(details != null) {
                 MyProfileRecipiesContainer.getInstance().putRecipesForPage(i, details);
                 MyProfileRecipiesContainer.getInstance().setMyProfileRecipesInitialized(true);

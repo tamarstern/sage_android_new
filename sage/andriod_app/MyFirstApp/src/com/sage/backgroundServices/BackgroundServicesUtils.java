@@ -67,8 +67,8 @@ public class BackgroundServicesUtils {
         }
     }
 
-    public static ArrayList<RecipeDetails> getProfilePageRecipiesForPage(String token, String userName, int i) throws Exception {
-        GetPublishedRecipesForUser service = new GetPublishedRecipesForUser(token, userName, userName,
+    public static ArrayList<RecipeDetails> getProfilePageRecipiesForPage(String token, String loggedInUserName, String userName, int i) throws Exception {
+        GetPublishedRecipesForUser service = new GetPublishedRecipesForUser(token, loggedInUserName, userName,
                 i);
         JsonElement recipies = service.getRecipies();
         JsonObject recipiesAsJsonObject = recipies.getAsJsonObject();
