@@ -26,6 +26,7 @@ import com.sage.adapters.NewsfeedArrayAdapter;
 import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.application.NewsfeedContainer;
 import com.sage.application.UserFollowingContainer;
+import com.sage.backgroundServices.BackgroundServicesScheduler;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
@@ -33,7 +34,6 @@ import com.sage.entities.User;
 import com.sage.services.GetPublishedRecipesForUser;
 import com.sage.tasks.GetRecipiesActivity;
 import com.sage.utils.AnalyticsUtils;
-import com.sage.activities.R;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -72,6 +72,8 @@ public class ProfilePageActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile_page);
+
+		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
 
 		noPublishedRecipesMyProfile = (TextView)findViewById(R.id.no_published_recipes_my_profile);
 		noPublishedRecipesMyProfile.setVisibility(View.GONE);
