@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
 import com.sage.application.GoogleAnalyticsApplication;
 import com.sage.application.TCImageLoader;
+import com.sage.backgroundServices.BackgroundServicesScheduler;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
@@ -68,6 +69,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_picture_recipe_page);
+		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
 
 		Intent i = getIntent();
 

@@ -1,8 +1,6 @@
 package com.sage.activities;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,16 +27,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.sage.adapters.NewsfeedArrayAdapter;
 import com.sage.application.NewsfeedContainer;
-import com.sage.backgroundServices.CategoriesReceiver;
-import com.sage.backgroundServices.DeleteRecipesReceiver;
+import com.sage.backgroundServices.BackgroundServicesScheduler;
 import com.sage.backgroundServices.GcmRegistrationService;
-import com.sage.backgroundServices.GetFollowingReceiver;
-import com.sage.backgroundServices.GetNewsfeedRecipiesReceiver;
-import com.sage.backgroundServices.GetProfilePageRecipiesForFollowingReceiver;
-import com.sage.backgroundServices.GetProfileRecipiesReceiver;
-import com.sage.backgroundServices.SaveRecipesReceiver;
-import com.sage.backgroundServices.SignTermsReceiver;
-import com.sage.backgroundServices.SyncFollowUsersReceiver;
 import com.sage.constants.ActivityConstants;
 import com.sage.constants.ServicesConstants;
 import com.sage.entities.EntityDataTransferConstants;
@@ -80,7 +70,7 @@ public class NewsfeedActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_newsfeed);
 
-		scheduleAlarmBackgroundServices();
+		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
 
 		View footer = getLayoutInflater().inflate(R.layout.progress_bar_footer, null);
 		progressBar = (ProgressBar) footer.findViewById(R.id.get_recipies_progress);
@@ -181,77 +171,6 @@ public class NewsfeedActivity extends AppCompatActivity {
 	}
 
 
-	public void scheduleAlarmBackgroundServices() {
-		long firstMillis = System.currentTimeMillis();
-		AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-
-		Intent signTermsIntent = new Intent(getApplicationContext(), SignTermsReceiver.class);
-		final PendingIntent signTermsPIntent = PendingIntent.getBroadcast(this, SignTermsReceiver.REQUEST_CODE,
-				signTermsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				30*60*1000, signTermsPIntent);
-
-		Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesReceiver.class);
-		final PendingIntent categoriesPIntent = PendingIntent.getBroadcast(this, CategoriesReceiver.REQUEST_CODE,
-				categoriesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				8*60*1000, categoriesPIntent);
-
-		Intent profileRecipiesIntent = new Intent(getApplicationContext(), GetProfileRecipiesReceiver.class);
-		final PendingIntent profileRecipiesPIntent = PendingIntent.getBroadcast(this, GetProfileRecipiesReceiver.REQUEST_CODE,
-				profileRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				10*60*1000, profileRecipiesPIntent);
-
-		Intent followingIntent = new Intent(getApplicationContext(), GetFollowingReceiver.class);
-		final PendingIntent followingPIntent = PendingIntent.getBroadcast(this, GetFollowingReceiver.REQUEST_CODE,
-				followingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				5*60*1000, followingPIntent);
-
-		Intent syncFollowingIntent = new Intent(getApplicationContext(), SyncFollowUsersReceiver.class);
-		final PendingIntent syncFollowingPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
-				syncFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				1*60*1000, syncFollowingPIntent);
-
-		Intent deleteRecipesIntent = new Intent(getApplicationContext(), DeleteRecipesReceiver.class);
-		final PendingIntent deleteRecipesPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
-				deleteRecipesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				3*60*1000, deleteRecipesPIntent);
-
-
-		Intent saveRecipesIntent = new Intent(getApplicationContext(), SaveRecipesReceiver.class);
-		final PendingIntent saveRecipesPIntent = PendingIntent.getBroadcast(this, SyncFollowUsersReceiver.REQUEST_CODE,
-				saveRecipesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				5*60*1000, saveRecipesPIntent);
-
-
-
-
-		/*Intent recipesForCategoryIntent = new Intent(getApplicationContext(), RecipesForCategoryReceiver.class);
-		final PendingIntent recipesForCategoryPIntent = PendingIntent.getBroadcast(this, RecipesForCategoryReceiver.REQUEST_CODE,
-				recipesForCategoryIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				5*60*1000, recipesForCategoryPIntent);*/
-
-		Intent newsfeedRecipiesIntent = new Intent(getApplicationContext(), GetNewsfeedRecipiesReceiver.class);
-		final PendingIntent newsfeedRecipiesPIntent = PendingIntent.getBroadcast(this, GetNewsfeedRecipiesReceiver.REQUEST_CODE,
-				newsfeedRecipiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				10*60*1000, newsfeedRecipiesPIntent);
-
-		Intent profileRecipiesForFollowingIntent = new Intent(getApplicationContext(), GetProfilePageRecipiesForFollowingReceiver.class);
-		final PendingIntent profileRecipiesForFollowingPIntent = PendingIntent.getBroadcast(this, GetProfilePageRecipiesForFollowingReceiver.REQUEST_CODE,
-				profileRecipiesForFollowingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-				10*60*1000, profileRecipiesForFollowingPIntent);
-
-
-
-	}
 
 
 	private void initListView() {

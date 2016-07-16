@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.google.gson.JsonObject;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
 import com.sage.activity.interfaces.IInitLinkDetailsListener;
+import com.sage.backgroundServices.BackgroundServicesScheduler;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
@@ -35,7 +36,6 @@ import com.sage.utils.ActivityUtils;
 import com.sage.utils.EntityUtils;
 import com.sage.utils.ImagesInitializer;
 import com.sage.utils.RecipeDetailsBinder;
-import com.sage.activities.R;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -64,6 +64,9 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_link_recipe_page);
+
+		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
+
 
 		Fragment fragment = getFragmentManager().findFragmentById(R.id.recipe_title_panel);
 		if (fragment instanceof IInitLinkDetailsListener) {

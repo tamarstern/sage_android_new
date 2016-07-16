@@ -16,6 +16,7 @@ import android.view.WindowManager;
 
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
 import com.sage.activity.interfaces.IOnWindowFocusChanged;
+import com.sage.backgroundServices.BackgroundServicesScheduler;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeCategory;
 import com.sage.entities.RecipeDetails;
@@ -31,14 +32,12 @@ public class TextReciptPageActivity extends AppCompatActivity implements IExitWi
 
 	private RecipeCategory subCategory;
 
-	private MenuItem publishMenuItem;
-
-	private MenuItem unpublishMenuItem;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recipe_text_page);
+
+		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
 
 		Intent i = getIntent();
 

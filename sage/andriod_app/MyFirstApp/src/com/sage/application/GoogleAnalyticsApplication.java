@@ -13,6 +13,8 @@ public class GoogleAnalyticsApplication extends Application {
 
 	private static TCImageLoader loader;
 
+	private boolean backgroundServicesScheduled = false;
+
 
 	public GoogleAnalyticsApplication() {
 		super();
@@ -46,4 +48,11 @@ public class GoogleAnalyticsApplication extends Application {
 
 	  }
 
+	public synchronized boolean isBackgroundServicesScheduled() {
+		return backgroundServicesScheduled;
+	}
+
+	public synchronized void setBackgroundServicesScheduled(boolean backgroundServicesScheduled) {
+		this.backgroundServicesScheduled = backgroundServicesScheduled;
+	}
 }
