@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -29,7 +30,6 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.services.GetSearchRecipes;
 import com.sage.tasks.GetRecipiesActivity;
-import com.sage.activities.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,7 +40,7 @@ public class SearchActivity extends AppCompatActivity {
 
 	private ImageView searchImageView;
 
-	private ImageView switchToUserSearch;
+	private AppCompatTextView switchToUserSearch;
 
 	private EditText searchEditText;
 
@@ -151,6 +151,9 @@ public class SearchActivity extends AppCompatActivity {
 
 		View customNav = LayoutInflater.from(this).inflate(R.layout.search_recipes_layout, null);
 		supportActionBar.setCustomView(customNav);
+		Toolbar parent = (Toolbar)customNav.getParent();
+		parent.setContentInsetsAbsolute(0,0);
+		//parent.setContentInsetsRelative(0,0);
 
 		searchEditText = (EditText) customNav.findViewById(R.id.search_text);
 
@@ -167,7 +170,7 @@ public class SearchActivity extends AppCompatActivity {
 			}
 		});
 
-		switchToUserSearch = (ImageView) customNav.findViewById(R.id.switch_to_search_user_icon);
+		switchToUserSearch = (AppCompatTextView) customNav.findViewById(R.id.search_users);
 
 		switchToUserSearch.setOnClickListener(new OnClickListener() {
 

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -25,8 +26,8 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.SearchUsersService;
 import com.sage.tasks.BaseFetchUsersTask;
-import com.sage.activities.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchUserActivity extends AppCompatActivity {
@@ -37,7 +38,8 @@ public class SearchUserActivity extends AppCompatActivity {
 
 	private ImageView searchImageView;
 
-	private ImageView switchToSearchRecipe;
+	private AppCompatTextView switchToSearchRecipe;
+
 
 	private int pageNumber;
 
@@ -82,8 +84,11 @@ public class SearchUserActivity extends AppCompatActivity {
 		supportActionBar.setDisplayShowCustomEnabled(true);
 		supportActionBar.setDisplayShowHomeEnabled(false);
 
+
 		View customNav = LayoutInflater.from(this).inflate(R.layout.search_users_layout, null);
 		supportActionBar.setCustomView(customNav);
+		Toolbar parent = (Toolbar)customNav.getParent();
+		parent.setContentInsetsAbsolute(0,0);
 
 		searchEditText = (EditText) customNav.findViewById(R.id.search_text);
 
@@ -97,7 +102,7 @@ public class SearchUserActivity extends AppCompatActivity {
 			}
 		});
 
-		switchToSearchRecipe = (ImageView) customNav.findViewById(R.id.switch_to_search_recipe_icon);
+		switchToSearchRecipe = (AppCompatTextView) customNav.findViewById(R.id.search_recipes);
 
 		switchToSearchRecipe.setOnClickListener(new OnClickListener() {
 
@@ -116,6 +121,9 @@ public class SearchUserActivity extends AppCompatActivity {
 			Toast.makeText(this, R.string.did_not_enter_search_text, Toast.LENGTH_SHORT).show();
 			return;
 		}
+
+		initListAdapter(new ArrayList<User>());
+
 		noUsersFoundThatMatchCriteria.setVisibility(View.GONE);
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);

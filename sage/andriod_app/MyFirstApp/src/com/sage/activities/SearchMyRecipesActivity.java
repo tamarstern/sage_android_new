@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -29,7 +30,6 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.services.GetSearchMyRecipes;
 import com.sage.utils.ActivityUtils;
-import com.sage.activities.R;
 
 import java.util.ArrayList;
 
@@ -43,12 +43,16 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 
 	RelativeLayout failedToLoadPanel;
 
+	private TextView noRecipesMatchSearchCriteria;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_my_recipes);
 
 		listView = (ListView) findViewById(android.R.id.list);
+		noRecipesMatchSearchCriteria = (TextView)findViewById(R.id.no_recipes_found_matching_search_criteria);
+		noRecipesMatchSearchCriteria.setVisibility(View.GONE);
 
 		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
 		failedToLoadPanel.setVisibility(View.GONE);
@@ -56,6 +60,7 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				failedToLoadPanel.setVisibility(View.GONE);
+				noRecipesMatchSearchCriteria.setVisibility(View.GONE);
 				getSearchRecipies();
 			}
 		});
@@ -86,6 +91,7 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 
 			@Override
 			public void onClick(View v) {
+				noRecipesMatchSearchCriteria.setVisibility(View.GONE);
 				getSearchRecipies();
 			}
 		});
@@ -167,6 +173,8 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 						}.getType());
 
 				initListAdaptor(recipes);
+			} else {
+				noRecipesMatchSearchCriteria.setVisibility(View.VISIBLE);
 			}
 		}
 	}

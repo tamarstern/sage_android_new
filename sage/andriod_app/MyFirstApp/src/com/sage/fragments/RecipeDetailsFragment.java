@@ -250,7 +250,6 @@ public class RecipeDetailsFragment extends Fragment {
 			String id = CacheUtils.getRecipeMainPictureId(recipeDetails);
 			ImagesInitializer.initialRecipeImage(getActivity(), id, mainPicture, progressBar);
 		}
-
 	}
 
 	private void initWithRecipeDetails() {
@@ -274,6 +273,8 @@ public class RecipeDetailsFragment extends Fragment {
 
 	private void initIngredientsTextBox(View recipeDetailsPanel) {
 		this.ingredients = (EditText) recipeDetailsPanel.findViewById(R.id.receipt_ingredients_content);
+	//	ingredients.setHorizontallyScrolling(false);
+	//	ingredients.setMaxLines(Integer.MAX_VALUE);
 		RecipeDetailsBinder.bindTextBoxToIngredients(ingredients, recipeDetails);
 	}
 

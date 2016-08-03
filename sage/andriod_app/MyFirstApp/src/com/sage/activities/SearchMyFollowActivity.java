@@ -24,8 +24,8 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.SearchFollowingService;
 import com.sage.tasks.BaseFetchUsersTask;
-import com.sage.activities.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchMyFollowActivity extends AppCompatActivity {
@@ -101,6 +101,8 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 			Toast.makeText(this, R.string.did_not_enter_search_text, Toast.LENGTH_SHORT).show();
 			return;
 		}
+
+		initListAdapter(new ArrayList<User>());
 		noUsersMatchCriteria.setVisibility(View.GONE);
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
@@ -115,6 +117,12 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 
 		new SearchFollowingTask(this, searchText).execute(params);
 	}
+
+	private void initListAdapter(List<User> users) {
+		UsersArrayAdapter adapter = new UsersArrayAdapter(this, users);
+		listView.setAdapter(adapter);
+	}
+
 
 	private class SearchFollowingTask extends BaseFetchUsersTask {
 
@@ -148,10 +156,10 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 
 		@Override
 		protected void initializeUi(List<User> users) {
-			UsersArrayAdapter adapter = new UsersArrayAdapter(activity, users);
-			listView.setAdapter(adapter);
+			initListAdapter(users);
 
 		}
+
 
 		@Override
 		protected void performCustomActionsOnException() {
