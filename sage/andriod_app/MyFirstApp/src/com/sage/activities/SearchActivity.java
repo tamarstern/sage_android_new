@@ -76,6 +76,7 @@ public class SearchActivity extends AppCompatActivity {
 			}
 		});
 
+
 		View footer = getLayoutInflater().inflate(R.layout.progress_bar_footer, null);
 		progressBar = (ProgressBar) footer.findViewById(R.id.get_recipies_progress);
 
@@ -84,6 +85,15 @@ public class SearchActivity extends AppCompatActivity {
 		listView.addFooterView(footer);
 		initListView();
 		initializeActionBar();
+
+		Intent intent = getIntent();
+		String searchTextTransfered = (String) intent
+				.getSerializableExtra(ActivityConstants.SEARCH_TEXT_TRANSFERED);
+
+		if(!TextUtils.isEmpty(searchTextTransfered)) {
+			searchEditText.setText(searchTextTransfered);
+			OnClickSearchButton();
+		}
 
 	}
 
@@ -163,10 +173,7 @@ public class SearchActivity extends AppCompatActivity {
 
 			@Override
 			public void onClick(View v) {
-				pageNumber = 0;
-				noRecipesMatchSearchCriteria.setVisibility(View.GONE);
-				initListAdaptor();
-				getSearchRecipies();
+				OnClickSearchButton();
 			}
 		});
 
@@ -177,11 +184,22 @@ public class SearchActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(activity, SearchUserActivity.class);
+				Editable editableText = searchEditText.getEditableText();
+				if(editableText != null) {
+					intent.putExtra(ActivityConstants.SEARCH_TEXT_TRANSFERED, editableText.toString());
+				}
 				startActivity(intent);
 
 			}
 		});
 
+	}
+
+	private void OnClickSearchButton() {
+		pageNumber = 0;
+		noRecipesMatchSearchCriteria.setVisibility(View.GONE);
+		initListAdaptor();
+		getSearchRecipies();
 	}
 
 	private void getSearchRecipies() {

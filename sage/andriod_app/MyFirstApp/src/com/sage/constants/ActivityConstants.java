@@ -16,7 +16,6 @@ public class ActivityConstants {
 	
 	public static final String DATA_ELEMENT_NAME = "data";
 	public static final String URL_TITLE_ELEMENT_NAME = "linkTitle";
-	public static final String URL_DESCRIPTION_ELEMENT_NAME = "linkDescription";
 	public static final String URL_IMAGE_ELEMENT_NAME = "linkImageUrl";
 	public static final String URL_SITE_ELEMENT_NAME = "linkSiteName";
 	public static final String MESSAGE_ELEMENT_NAME = "message";
@@ -24,7 +23,7 @@ public class ActivityConstants {
 	public static final String SEND_SIGNATURE_TO_SERVER = "sendSignatureToServer";
 	public static final String TERMS_SIGNED_SERVER_INDICATION = "signedTermsAndConditions";
 
-	public static int EMPTY_FOLLOW_BY_COUNT = 0;
+	public static final String SEARCH_TEXT_TRANSFERED = "searchTextTransfered";
 
 
 }

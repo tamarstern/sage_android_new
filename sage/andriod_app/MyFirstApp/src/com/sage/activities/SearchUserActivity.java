@@ -70,7 +70,19 @@ public class SearchUserActivity extends AppCompatActivity {
 
 		initSupportActionBar();
 
+		Intent intent = getIntent();
+		String searchTextTransfered = (String) intent
+				.getSerializableExtra(ActivityConstants.SEARCH_TEXT_TRANSFERED);
+
+		if(!TextUtils.isEmpty(searchTextTransfered)) {
+			searchEditText.setText(searchTextTransfered);
+			failedToLoadPanel.setVisibility(View.GONE);
+			fetchUsers();
+		}
+
+
 	}
+
 
 	private void initSupportActionBar() {
 		final Activity activity = this;
@@ -98,6 +110,7 @@ public class SearchUserActivity extends AppCompatActivity {
 
 			@Override
 			public void onClick(View v) {
+				failedToLoadPanel.setVisibility(View.GONE);
 				fetchUsers();
 			}
 		});
@@ -109,6 +122,10 @@ public class SearchUserActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(activity, SearchActivity.class);
+				Editable editableText = searchEditText.getEditableText();
+				if(editableText != null) {
+					intent.putExtra(ActivityConstants.SEARCH_TEXT_TRANSFERED, editableText.toString());
+				}
 				startActivity(intent);
 			}
 		});
