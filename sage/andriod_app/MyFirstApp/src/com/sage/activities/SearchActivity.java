@@ -10,9 +10,11 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.EditText;
@@ -166,6 +168,17 @@ public class SearchActivity extends AppCompatActivity {
 		//parent.setContentInsetsRelative(0,0);
 
 		searchEditText = (EditText) customNav.findViewById(R.id.search_text);
+
+		searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					OnClickSearchButton();
+					return true;
+				}
+				return false;
+			}
+		});
 
 		searchImageView = (ImageView) customNav.findViewById(R.id.search_recipe_icon);
 

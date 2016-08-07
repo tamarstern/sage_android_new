@@ -25,6 +25,8 @@
             android:layout_toStartOf="@+id/search_user_icon"
             android:background="@android:color/transparent"
             android:hint="@string/search_users_hint"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
             android:textColor="#ffffff"
             android:textColorHint="#ffffff" />
 

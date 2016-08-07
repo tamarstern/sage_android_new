@@ -10,9 +10,11 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -76,8 +78,7 @@ public class SearchUserActivity extends AppCompatActivity {
 
 		if(!TextUtils.isEmpty(searchTextTransfered)) {
 			searchEditText.setText(searchTextTransfered);
-			failedToLoadPanel.setVisibility(View.GONE);
-			fetchUsers();
+			onClickSearchButton();
 		}
 
 
@@ -104,14 +105,26 @@ public class SearchUserActivity extends AppCompatActivity {
 
 		searchEditText = (EditText) customNav.findViewById(R.id.search_text);
 
+		searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					onClickSearchButton();
+					return true;
+				}
+				return false;
+			}
+		});
+
+
+
 		searchImageView = (ImageView) customNav.findViewById(R.id.search_user_icon);
 
 		searchImageView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				failedToLoadPanel.setVisibility(View.GONE);
-				fetchUsers();
+				onClickSearchButton();
 			}
 		});
 
@@ -130,6 +143,11 @@ public class SearchUserActivity extends AppCompatActivity {
 			}
 		});
 
+	}
+
+	private void onClickSearchButton() {
+		failedToLoadPanel.setVisibility(View.GONE);
+		fetchUsers();
 	}
 
 	private void fetchUsers() {

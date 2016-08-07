@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -83,6 +85,18 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 
 		searchEditText = (EditText) customNav.findViewById(R.id.search_text);
 
+		searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					fetchUsers();
+					return true;
+				}
+				return false;
+			}
+		});
+
+
 		searchImageView = (ImageView) customNav.findViewById(R.id.search_my_follow_icon);
 
 		searchImageView.setOnClickListener(new OnClickListener() {
@@ -96,6 +110,8 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 	}
 
 	private void fetchUsers() {
+		noUsersMatchCriteria.setVisibility(View.GONE);
+		failedToLoadPanel.setVisibility(View.GONE);
 		if (searchEditText.getEditableText() == null
 				|| TextUtils.isEmpty(searchEditText.getEditableText().toString())) {
 			Toast.makeText(this, R.string.did_not_enter_search_text, Toast.LENGTH_SHORT).show();
@@ -103,7 +119,6 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 		}
 
 		initListAdapter(new ArrayList<User>());
-		noUsersMatchCriteria.setVisibility(View.GONE);
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 

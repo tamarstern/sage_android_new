@@ -25,6 +25,8 @@
             android:layout_toStartOf="@+id/search_recipe_icon"
             android:background="@android:color/transparent"
             android:hint="@string/search_recipes_hint"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
             android:textColor="#ffffff"
             android:textColorHint="#ffffff" />
 

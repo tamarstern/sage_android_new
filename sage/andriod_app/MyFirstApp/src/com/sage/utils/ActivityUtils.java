@@ -42,6 +42,7 @@ public class ActivityUtils {
         context.startActivity(intent);
     }
 
+
     public static void openDisplayLinkActivity(Activity activity, RecipeDetails recipeDetails,
                                                boolean isLoggedInUserRecipe) {
         Intent intent = new Intent(activity, DisplayLinkWebPageActivity.class)

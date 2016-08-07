@@ -17,6 +17,8 @@
         android:layout_toStartOf="@+id/search_my_follow_icon"
         android:background="@android:color/transparent"
         android:hint="@string/search_my_follow_hint"
+        android:singleLine="true"
+        android:imeOptions="actionSearch"
         android:textColor="#ffffff"
         android:textColorHint="#ffffff" />
 
