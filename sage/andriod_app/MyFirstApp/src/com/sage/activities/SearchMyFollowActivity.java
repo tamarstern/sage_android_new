@@ -26,6 +26,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.SearchFollowingService;
 import com.sage.tasks.BaseFetchUsersTask;
+import com.sage.utils.ActivityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,11 +86,14 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 
 		searchEditText = (EditText) customNav.findViewById(R.id.search_text);
 
+		final Activity activity = this;
+
 		searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 					fetchUsers();
+					ActivityUtils.hideSoftKeyboard(activity);
 					return true;
 				}
 				return false;
@@ -104,6 +108,7 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				fetchUsers();
+				ActivityUtils.hideSoftKeyboard(activity);
 			}
 
 		});

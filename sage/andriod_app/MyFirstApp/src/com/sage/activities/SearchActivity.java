@@ -32,6 +32,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.services.GetSearchRecipes;
 import com.sage.tasks.GetRecipiesActivity;
+import com.sage.utils.ActivityUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -174,6 +175,7 @@ public class SearchActivity extends AppCompatActivity {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 					OnClickSearchButton();
+					ActivityUtils.hideSoftKeyboard(activity);
 					return true;
 				}
 				return false;
@@ -187,6 +189,7 @@ public class SearchActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				OnClickSearchButton();
+				ActivityUtils.hideSoftKeyboard(activity);
 			}
 		});
 

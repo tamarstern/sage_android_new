@@ -85,11 +85,14 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 
 		searchEditText = (EditText) customNav.findViewById(R.id.search_text);
 
+		final Activity activity = this;
+
 		searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 					onClickSearchButton();
+					ActivityUtils.hideSoftKeyboard(activity);
 					return true;
 				}
 				return false;
@@ -104,6 +107,7 @@ public class SearchMyRecipesActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				onClickSearchButton();
+				ActivityUtils.hideSoftKeyboard(activity);
 			}
 		});
 

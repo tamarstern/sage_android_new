@@ -28,6 +28,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.SearchUsersService;
 import com.sage.tasks.BaseFetchUsersTask;
+import com.sage.utils.ActivityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,7 @@ public class SearchUserActivity extends AppCompatActivity {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 					onClickSearchButton();
+					ActivityUtils.hideSoftKeyboard(activity);
 					return true;
 				}
 				return false;
@@ -125,6 +127,7 @@ public class SearchUserActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				onClickSearchButton();
+				ActivityUtils.hideSoftKeyboard(activity);
 			}
 		});
 
