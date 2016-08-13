@@ -299,6 +299,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 			toolbarFragment.handlePagePressed();
 		} else {
 			Intent intent = new Intent(this, NewsfeedActivity.class);
+			intent.putExtra(EntityDataTransferConstants.NEW_RECIPE_UNSAVED, true);
 			startActivity(intent);
 		}
 

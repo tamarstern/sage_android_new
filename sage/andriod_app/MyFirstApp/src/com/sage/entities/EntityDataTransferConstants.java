@@ -17,6 +17,8 @@ public class EntityDataTransferConstants {
 	public static final String IN_MY_RECIPE_PAGE  = "inRecipePage";
 	
 	public static final String RECIPE_DELETED  = "recipeDeleted";
+
+	public static final String NEW_RECIPE_UNSAVED  = "newRecipeUnsaved";
 	
 	public static final String AFTER_LOGIN = "afterLogin";
 	

@@ -37,14 +37,18 @@ public class ProfilePageHandler {
 
     private boolean openUserProfile;
 
+    private boolean newRecipeUnsaved;
+
     public ProfilePageHandler(Activity context, String userDisplayName, String userId, String userObjectId,
-                                    boolean openUserProfile) {
+                                    boolean openUserProfile, boolean newRecipeUnsaved) {
         this.context = context;
 
         this.userDisplayName = userDisplayName;
         this.userId = userId;
         this.userObjectId = userObjectId;
         this.openUserProfile = openUserProfile;
+        this.newRecipeUnsaved = newRecipeUnsaved;
+
 
     }
 
@@ -114,6 +118,9 @@ public class ProfilePageHandler {
         }
         if(!openUserProfile) {
             intent.putExtra(EntityDataTransferConstants.IS_FOLLOWING, isFollowing);
+        }
+        if(this.newRecipeUnsaved) {
+            intent.putExtra(EntityDataTransferConstants.NEW_RECIPE_UNSAVED, true);
         }
 
         context.startActivity(intent);

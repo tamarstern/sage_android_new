@@ -61,7 +61,7 @@ public class ToolbarFragment extends Fragment {
 					ActivityUtils.handleExitWithoutSavingPopup(activity);
 
 				} else {
-					openNewsfeed(activity);
+					openNewsfeed(activity, false);
 				}
 			}
 
@@ -111,7 +111,7 @@ public class ToolbarFragment extends Fragment {
 					setPagePressed(PagePressed.CATEGORIES);
 					ActivityUtils.handleExitWithoutSavingPopup(activity);
 				} else {
-					openCategoriesPage(activity);
+					openCategoriesPage(activity, false);
 				}
 
 			}
@@ -126,18 +126,24 @@ public class ToolbarFragment extends Fragment {
 		return inRecipePage && (EntityUtils.isRecipeChanges(context, details));
 	}
 
-	private void openCategoriesPage(final Context applicationContext) {
+	private void openCategoriesPage(final Context applicationContext, boolean recipeUnsaved) {
 		Intent intent = new Intent(applicationContext, ActivityCategoriesPage.class);
+		if(recipeUnsaved) {
+			intent.putExtra(EntityDataTransferConstants.NEW_RECIPE_UNSAVED, true);
+		}
 		startActivity(intent);
 	}
 
-	private void openProfilePage(final Activity applicationContext) {
-		ProfilePageHandler handler = new ProfilePageHandler(applicationContext,null, null, null, true );
+	private void openProfilePage(final Activity applicationContext, boolean newRecipeUnsaved) {
+		ProfilePageHandler handler = new ProfilePageHandler(applicationContext,null, null, null, true, newRecipeUnsaved );
 		handler.HandleOpenProfilePage();
 	}
 
-	private void openNewsfeed(final Context applicationContext) {
+	private void openNewsfeed(final Context applicationContext, boolean recipeUnsaved) {
 		Intent intent = new Intent(applicationContext, NewsfeedActivity.class);
+		if(recipeUnsaved) {
+			intent.putExtra(EntityDataTransferConstants.NEW_RECIPE_UNSAVED, true);
+		}
 		startActivity(intent);
 	}
 
@@ -153,7 +159,7 @@ public class ToolbarFragment extends Fragment {
 					setPagePressed(PagePressed.PROFILE);
 					ActivityUtils.handleExitWithoutSavingPopup(activity);
 				} else {
-					openProfilePage(activity);
+					openProfilePage(activity, false);
 				}
 
 			}
@@ -173,13 +179,13 @@ public class ToolbarFragment extends Fragment {
 		if (pagePressed != null) {
 			switch (pagePressed) {
 			case CATEGORIES:
-				openCategoriesPage(getActivity());
+				openCategoriesPage(getActivity(), true);
 				break;
 			case PROFILE:
-				openProfilePage(getActivity());
+				openProfilePage(getActivity(), true);
 				break;
 			case HOME:
-				openNewsfeed(getActivity());
+				openNewsfeed(getActivity(), true);
 				break;
 			case ADD_NEW:
 				handler.handleAddRecipe();
@@ -188,7 +194,7 @@ public class ToolbarFragment extends Fragment {
 				settingsHandler.handle();
 				break;
 			default:
-				openNewsfeed(getActivity());
+				openNewsfeed(getActivity(), true);
 				break;
 			}
 			pagePressed = null;

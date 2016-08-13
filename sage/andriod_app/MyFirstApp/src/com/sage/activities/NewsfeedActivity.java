@@ -279,6 +279,10 @@ public class NewsfeedActivity extends AppCompatActivity {
 		if (isReceipeDeleted) {
 			return;
 		}
+		boolean isNewRecipeUnsaved = intent.getSerializableExtra(EntityDataTransferConstants.NEW_RECIPE_UNSAVED) != null;
+		if (isNewRecipeUnsaved) {
+			return;
+		}
 		boolean afterLogin = intent.getSerializableExtra(EntityDataTransferConstants.AFTER_LOGIN) != null;
 		if (afterLogin) {
 			return;

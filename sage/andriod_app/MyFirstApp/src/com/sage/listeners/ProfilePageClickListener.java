@@ -12,7 +12,7 @@ public class ProfilePageClickListener implements OnClickListener {
 	private ProfilePageHandler handler;
 	public ProfilePageClickListener(Activity context, String userDisplayName, String userId, String userObjectId,
 			boolean openUserProfile) {
-		handler = new ProfilePageHandler(context, userDisplayName, userId,userObjectId,openUserProfile);
+		handler = new ProfilePageHandler(context, userDisplayName, userId,userObjectId,openUserProfile, false);
 	}
 
 	@Override

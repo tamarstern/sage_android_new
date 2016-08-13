@@ -157,9 +157,13 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 	
 	@Override
 	public void onBackPressed() {
+		boolean isNewRecipeUnsaved = getIntent().getSerializableExtra(EntityDataTransferConstants.NEW_RECIPE_UNSAVED) != null;
 		if(recipeDetails != null) {
 			ActivityUtils.openRecipeActivity(recipeDetails, this);
-		} else  {
+		} else if(isNewRecipeUnsaved) {
+			Intent intent = new Intent(this, NewsfeedActivity.class);
+			startActivity(intent);
+		}  else {
 			super.onBackPressed();
 		}	
 	}

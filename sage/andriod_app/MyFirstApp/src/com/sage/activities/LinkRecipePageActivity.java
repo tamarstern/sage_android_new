@@ -228,6 +228,7 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 			toolbarFragment.handlePagePressed();
 		} else {
 			Intent intent = new Intent(this, NewsfeedActivity.class);
+			intent.putExtra(EntityDataTransferConstants.NEW_RECIPE_UNSAVED, true);
 			startActivity(intent);
 		}
 	}

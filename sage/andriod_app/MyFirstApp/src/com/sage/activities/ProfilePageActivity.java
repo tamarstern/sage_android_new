@@ -165,6 +165,17 @@ public class ProfilePageActivity extends AppCompatActivity {
 	}
 
 	@Override
+	public void onBackPressed() {
+		Intent intent = getIntent();
+		boolean isNewRecipeUnsaved = intent.getSerializableExtra(EntityDataTransferConstants.NEW_RECIPE_UNSAVED) != null;
+		if (isNewRecipeUnsaved) {
+			return;
+		}
+		super.onBackPressed();
+	}
+
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (currentUserProfile) {
 			getMenuInflater().inflate(R.menu.menu_my_profile, menu);
