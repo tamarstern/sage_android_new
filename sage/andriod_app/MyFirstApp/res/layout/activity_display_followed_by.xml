@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -5,9 +6,9 @@
     android:background="#C1CDC1"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="com.sage.activities.DisplayFollowingActivity" >
+    tools:context="com.sage.activities.DisplayFollowedByActivity">
 
-  <android.support.v7.widget.Toolbar
+    <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
@@ -41,7 +42,6 @@
             android:layout_below="@id/failed_to_load_icon"
             android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
-
             android:text="@string/no_connection_tap_to_retry"/>
     </RelativeLayout>
 
@@ -56,7 +56,7 @@
         android:layout_weight="1"
         android:background="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
-        android:divider="@android:color/transparent"      
+        android:divider="@android:color/transparent"
         android:fadeScrollbars="false"
         android:scrollX="0px"
         android:scrollY="0px"
@@ -71,5 +71,6 @@
         android:name="com.sage.fragments.ToolbarFragment"
         android:layout_width="match_parent"
         android:layout_height="55dp"        />
+
 
 </LinearLayout>

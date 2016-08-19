@@ -161,7 +161,17 @@ public class ProfilePageActivity extends AppCompatActivity {
 		Toolbar myToolbar = (Toolbar) findViewById(R.id.title_profile_page);
 		setSupportActionBar(myToolbar);
 		getSupportActionBar().setTitle("");
+		final Activity activity = this;
+		if(currentUserProfile) {
+			myToolbar.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(activity, DisplayFollowedByActivity.class);
+					startActivity(intent);
+				}
+			});
 
+		}
 	}
 
 	@Override
