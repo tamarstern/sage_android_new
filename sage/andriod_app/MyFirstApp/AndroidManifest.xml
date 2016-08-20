@@ -77,6 +77,16 @@
             android:name="com.sage.backgroundServices.GetNewsfeedRecipiesReceiver"
             android:process=":remote" />
 
+
+        <service
+            android:name="com.sage.backgroundServices.FollowedByBackgroundService"
+            android:exported="false" />
+
+        <receiver
+            android:name="com.sage.backgroundServices.GetFollowedByReceiver"
+            android:process=":remote" />
+
+
         <service
             android:name="com.sage.backgroundServices.GetNewsfeedRecipesService"
             android:exported="false" />

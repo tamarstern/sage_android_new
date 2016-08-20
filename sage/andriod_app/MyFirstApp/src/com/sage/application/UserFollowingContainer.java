@@ -19,6 +19,8 @@ public class UserFollowingContainer {
 
     public static String FOLLOWING_KEY = "followingKey";
 
+    public static String FOLLOWED_BY_KEY = "followedByKey";
+
     public static String USERS_TO_FOLLOW_KEY = "usersToFollowKey";
 
     public static String USERS_TO_UNFOLLOW_KEY = "usersToUnfollowKey";
@@ -56,6 +58,20 @@ public class UserFollowingContainer {
         this.usersMap.put(FOLLOWING_KEY, categoriesSet);
     }
 
+    public void putFollowedBy(ArrayList<User> users) {
+        HashSet<User> categoriesSet = new HashSet<User>(users);
+        this.usersMap.put(FOLLOWED_BY_KEY, categoriesSet);
+    }
+
+    public ArrayList<User> getFollowedBy() {
+        HashSet<User> users = (HashSet<User>)this.usersMap.get(FOLLOWED_BY_KEY);
+        if(users == null) {
+            users = new HashSet<User>();
+        }
+        return new ArrayList<User>(users);
+    }
+
+
     public ArrayList<User> getUsers() {
         HashSet<User> users = (HashSet<User>)this.usersMap.get(FOLLOWING_KEY);
         if(users == null) {
@@ -91,6 +107,10 @@ public class UserFollowingContainer {
 
     public boolean followingInitialized() {
         return this.usersMap.containsKey(FOLLOWING_KEY);
+    }
+
+    public boolean followedByInitialized() {
+        return this.usersMap.containsKey(FOLLOWED_BY_KEY);
     }
 
     public HashSet<User> getUsersToFollow() {

@@ -15,11 +15,13 @@ import android.widget.RelativeLayout;
 
 import com.google.gson.JsonElement;
 import com.sage.adapters.UsersArrayAdapter;
+import com.sage.application.UserFollowingContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.GetFollowedByService;
 import com.sage.tasks.BaseFetchUsersTask;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -79,6 +81,12 @@ public class DisplayFollowedByActivity extends AppCompatActivity {
 
 
     private void fetchUsers() {
+
+        if(UserFollowingContainer.getInstance().followedByInitialized()) {
+            ArrayList<User> users = UserFollowingContainer.getInstance().getFollowedBy();
+            initAdapter(users);
+            return;
+        }
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String loggedInUserObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);

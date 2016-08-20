@@ -117,7 +117,9 @@
     <string name="logout">Logout</string>
     <string name="settings_title">Settings</string>
     <string name="who_i_follow_title">Following</string>
+    <string name="followed_by_title">Followed By</string>
     <string name="search_my_follow_hint">Search Users I Follow</string>
+    <string name="search_followed_by_hint">Search Users Who Follow Me</string>
     <string name="search_recipes_hint">Search</string>
     <string name="search_users_hint">Search</string>
     <string name="search_recipe_box_hint">Search Recipe Box</string>
@@ -193,9 +195,9 @@ Last updated May 20, 2016
     <string name="search_recipes_lbl">Recipes</string>
     <string name="push_notifications_title">Sage Recipe Box</string>
     <string name="comment_push_notification_message">{0} commented on your recipe.</string>
-    <string name="publish_recipe_instructions" >To share a recipe, switch the \"Share Recipe\" button in the recipe page to \"ON\".</string>
+    <string name="publish_recipe_instructions">To share a recipe, switch the \"Share Recipe\" button in the recipe page to \"ON\".</string>
     <string name="recipe_updated_push_notification_message">{0} shared a recipe with you.</string>
-    <string name="need_permissions_to_insert_picture" >Until required permissions are approved, you cannot add images to Sage Recipe Box.</string>
+    <string name="need_permissions_to_insert_picture">Until required permissions are approved, you cannot add images to Sage Recipe Box.</string>
 
 
 </resources>
