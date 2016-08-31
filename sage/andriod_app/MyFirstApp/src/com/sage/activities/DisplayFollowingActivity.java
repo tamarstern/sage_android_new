@@ -16,11 +16,11 @@ import android.widget.RelativeLayout;
 import com.google.gson.JsonElement;
 import com.sage.adapters.UsersArrayAdapter;
 import com.sage.application.UserFollowingContainer;
+import com.sage.backgroundServices.BackgroundServicesScheduler;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.GetFollowingService;
 import com.sage.tasks.BaseFetchUsersTask;
-import com.sage.activities.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +38,8 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_display_following);
 
 		listView = (ListView) findViewById(android.R.id.list);
+
+		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
 
 		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);
 		failedToLoadPanel.setVisibility(View.GONE);
@@ -141,7 +143,7 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 		}
 
 		@Override
-		protected void initializeUi(List<User> users) {
+		protected void initializeWhenFoundUsers(List<User> users) {
 			initAdapter(users);
 			if(isLoggedInUser) {
 				UserFollowingContainer.getInstance().putUsers(new ArrayList<User>(users));

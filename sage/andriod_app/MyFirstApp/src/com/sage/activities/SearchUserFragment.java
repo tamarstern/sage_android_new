@@ -115,7 +115,7 @@ public class SearchUserFragment extends Fragment implements ISearchableFragment 
         }
 
         @Override
-        protected void initializeUi(List<User> users) {
+        protected void initializeWhenFoundUsers(List<User> users) {
             initListAdapter(users);
         }
 

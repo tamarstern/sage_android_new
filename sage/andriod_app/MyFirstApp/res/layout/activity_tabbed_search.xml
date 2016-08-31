@@ -9,7 +9,8 @@
     tools:context="com.sage.activities.TabbedSearchActivity"
     android:background="#C1CDC1"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"

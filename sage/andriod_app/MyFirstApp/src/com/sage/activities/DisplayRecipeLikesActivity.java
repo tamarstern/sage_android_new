@@ -13,13 +13,14 @@ import android.widget.RelativeLayout;
 
 import com.google.gson.JsonElement;
 import com.sage.adapters.UsersArrayAdapter;
+import com.sage.backgroundServices.BackgroundServicesScheduler;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.User;
 import com.sage.services.GetLikesService;
 import com.sage.tasks.BaseFetchUsersTask;
-import com.sage.activities.R;
+import com.sage.utils.ActivityUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,10 @@ public class DisplayRecipeLikesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_recipe_likes);
+
+        BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
+
+        ActivityUtils.forceInitFollowingList(this);
 
         listView = (ListView) findViewById(android.R.id.list);
 
@@ -109,7 +114,7 @@ public class DisplayRecipeLikesActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void initializeUi(List<User> users) {
+        protected void initializeWhenFoundUsers(List<User> users) {
             initAdapter(users);
 
 

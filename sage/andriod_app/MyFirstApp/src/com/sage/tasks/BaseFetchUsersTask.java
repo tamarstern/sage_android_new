@@ -64,7 +64,7 @@ public abstract class BaseFetchUsersTask extends AsyncTask<String, Void, JsonEle
             List<User> users = gson.fromJson(resultDataObject, new TypeToken<ArrayList<User>>() {
             }.getType());
             if (users.size() > 0) {
-                initializeUi(users);
+                initializeWhenFoundUsers(users);
 
             } else {
                 handleNoUsersFound();
@@ -78,7 +78,7 @@ public abstract class BaseFetchUsersTask extends AsyncTask<String, Void, JsonEle
     protected abstract void performCustomActionsOnPostExecute();
 
 
-    protected abstract void initializeUi(List<User> users);
+    protected abstract void initializeWhenFoundUsers(List<User> users);
 
 
 }

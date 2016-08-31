@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonElement;
 import com.sage.adapters.UsersArrayAdapter;
+import com.sage.backgroundServices.BackgroundServicesScheduler;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.SearchFollowingService;
@@ -51,6 +52,9 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_search_my_follow);
 
 		listView = (ListView) findViewById(android.R.id.list);
+
+		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
+		ActivityUtils.forceInitFollowingList(this);
 
 		noUsersMatchCriteria = (TextView) findViewById(R.id.no_users_found_matching_search_criteria);
 		noUsersMatchCriteria.setVisibility(View.GONE);
@@ -175,7 +179,7 @@ public class SearchMyFollowActivity extends AppCompatActivity {
 		}
 
 		@Override
-		protected void initializeUi(List<User> users) {
+		protected void initializeWhenFoundUsers(List<User> users) {
 			initListAdapter(users);
 
 		}

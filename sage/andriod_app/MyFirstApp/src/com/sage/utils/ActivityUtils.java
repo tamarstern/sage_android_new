@@ -23,12 +23,22 @@ import com.sage.activities.PictureRecipePageActivity;
 import com.sage.activities.ResetPasswordActivity;
 import com.sage.activities.TextReciptPageActivity;
 import com.sage.activity.interfaces.IExitWithoutSaveListener;
+import com.sage.application.UserFollowingContainer;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.listeners.ExitRecipeWithoutSavingPopupHandler;
+import com.sage.tasks.FollowingListBackgroundInitializer;
 
 public class ActivityUtils {
+
+    public static void forceInitFollowingList(Activity activity) {
+        if(!UserFollowingContainer.getInstance().followingInitialized()) {
+            FollowingListBackgroundInitializer initializer = new FollowingListBackgroundInitializer();
+            initializer.fetchUsers(activity);
+        }
+
+    }
 
     public static void openCategoriesPage(RecipeDetails recipeDetails, Context context) {
         Intent intent = new Intent(context, ActivityCategoriesPage.class)

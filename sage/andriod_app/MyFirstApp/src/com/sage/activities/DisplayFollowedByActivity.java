@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import com.google.gson.JsonElement;
 import com.sage.adapters.UsersArrayAdapter;
 import com.sage.application.UserFollowingContainer;
+import com.sage.backgroundServices.BackgroundServicesScheduler;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.GetFollowedByService;
@@ -35,6 +36,8 @@ public class DisplayFollowedByActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_followed_by);
+
+        BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
 
         listView = (ListView) findViewById(android.R.id.list);
 
@@ -136,7 +139,7 @@ public class DisplayFollowedByActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void initializeUi(List<User> users) {
+        protected void initializeWhenFoundUsers(List<User> users) {
             initAdapter(users);
         }
 

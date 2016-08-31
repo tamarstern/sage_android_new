@@ -211,7 +211,7 @@ public class SearchUserActivity extends AppCompatActivity {
 		}
 
 		@Override
-		protected void initializeUi(List<User> users) {
+		protected void initializeWhenFoundUsers(List<User> users) {
 			initListAdapter(users);
 
 

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sage.backgroundServices.BackgroundServicesScheduler;
 import com.sage.utils.ActivityUtils;
 
 public class TabbedSearchActivity extends AppCompatActivity {
@@ -32,6 +33,9 @@ public class TabbedSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed_search);
+
+        BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
+        ActivityUtils.forceInitFollowingList(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
