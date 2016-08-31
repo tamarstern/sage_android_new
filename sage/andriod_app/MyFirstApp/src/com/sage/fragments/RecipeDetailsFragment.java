@@ -39,7 +39,6 @@ import java.util.Map;
 
 public class RecipeDetailsFragment extends Fragment {
 
-	private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
 	final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
 	private RecipeDetails recipeDetails;
