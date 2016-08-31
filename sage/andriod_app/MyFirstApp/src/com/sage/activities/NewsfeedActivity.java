@@ -251,7 +251,7 @@ public class NewsfeedActivity extends AppCompatActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_search) {
-			Intent searchIntent = new Intent(this, SearchActivity.class);
+			Intent searchIntent = new Intent(this, TabbedSearchActivity.class);
 			startActivity(searchIntent);
 			return true;
 		} else {

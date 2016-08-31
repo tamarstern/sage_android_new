@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sage.activities"
     android:installLocation="auto"
-    android:versionCode="18"
-    android:versionName="18.0">
+    android:versionCode="19"
+    android:versionName="19.0">
 
     <uses-sdk
         android:minSdkVersion="19"
@@ -77,7 +77,6 @@
             android:name="com.sage.backgroundServices.GetNewsfeedRecipiesReceiver"
             android:process=":remote" />
 
-
         <service
             android:name="com.sage.backgroundServices.FollowedByBackgroundService"
             android:exported="false" />
@@ -85,7 +84,6 @@
         <receiver
             android:name="com.sage.backgroundServices.GetFollowedByReceiver"
             android:process=":remote" />
-
 
         <service
             android:name="com.sage.backgroundServices.GetNewsfeedRecipesService"
@@ -275,9 +273,8 @@
         <activity
             android:name=".SearchMyRecipesActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_search_my_recipes"
-           />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".DisplayFollowingActivity"
             android:configChanges="orientation|screenSize"
@@ -305,18 +302,24 @@
             android:name=".TermsActivity"
             android:label="@string/title_activity_terms"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".DisplayRecipeLikesActivity"
+        <activity
+            android:name=".DisplayRecipeLikesActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".DisplayFollowedByActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".SearchFollowedByActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".TabbedSearchActivity"
+            android:label="@string/title_activity_tabbed_search"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".DisplayFollowedByActivity"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".SearchFollowedByActivity"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustPan"/>
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>
