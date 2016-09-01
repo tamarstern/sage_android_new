@@ -21,6 +21,7 @@ import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;
 import com.sage.services.GetFollowedByService;
 import com.sage.tasks.BaseFetchUsersTask;
+import com.sage.utils.ActivityUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +39,7 @@ public class DisplayFollowedByActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_followed_by);
 
         BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
+        ActivityUtils.forceInitFollowingList(this);
 
         listView = (ListView) findViewById(android.R.id.list);
 

@@ -33,6 +33,7 @@ import com.sage.entities.RecipeDetails;
 import com.sage.entities.User;
 import com.sage.services.GetPublishedRecipesForUser;
 import com.sage.tasks.GetRecipiesActivity;
+import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
 
 import java.io.Serializable;
@@ -74,6 +75,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_profile_page);
 
 		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
+		ActivityUtils.forceInitFollowingList(this);
 
 		noPublishedRecipesMyProfile = (TextView)findViewById(R.id.no_published_recipes_my_profile);
 		noPublishedRecipesMyProfile.setVisibility(View.GONE);

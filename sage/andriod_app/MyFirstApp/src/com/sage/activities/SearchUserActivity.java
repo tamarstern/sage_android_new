@@ -57,6 +57,8 @@ public class SearchUserActivity extends AppCompatActivity {
 
 		listView = (ListView) findViewById(android.R.id.list);
 
+		ActivityUtils.forceInitFollowingList(this);
+
 		noUsersFoundThatMatchCriteria = (TextView)findViewById(R.id.no_users_found_matching_search_criteria);
 		noUsersFoundThatMatchCriteria.setVisibility(View.GONE);
 		failedToLoadPanel = (RelativeLayout)findViewById(R.id.failed_to_load_panel);

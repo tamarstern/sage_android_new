@@ -35,6 +35,7 @@ import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.services.GetNewsFeedRecipesForUser;
 import com.sage.tasks.GetRecipiesActivity;
+import com.sage.utils.ActivityUtils;
 import com.sage.utils.AnalyticsUtils;
 
 import org.apache.http.util.TextUtils;
@@ -71,6 +72,7 @@ public class NewsfeedActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_newsfeed);
 
 		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
+		ActivityUtils.forceInitFollowingList(this);
 
 		View footer = getLayoutInflater().inflate(R.layout.progress_bar_footer, null);
 		progressBar = (ProgressBar) footer.findViewById(R.id.get_recipies_progress);
