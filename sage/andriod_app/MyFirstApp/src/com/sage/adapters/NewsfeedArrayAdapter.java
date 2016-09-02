@@ -3,6 +3,8 @@ package com.sage.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +23,10 @@ import com.google.gson.JsonObject;
 import com.sage.activities.R;
 import com.sage.activity.interfaces.IClosePopupCommentListener;
 import com.sage.application.RecipeUrlDataContainer;
+import com.sage.application.UserFollowingContainer;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
+import com.sage.entities.User;
 import com.sage.listeners.AddCommentsClickListener;
 import com.sage.listeners.ProfilePageClickListener;
 import com.sage.listeners.RecipeDetailsClickListener;
@@ -51,6 +55,8 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 	private ProgressBar getLinkDetailsProgress;
 	private TextView ownerTextView;
 	private LayoutInflater inflater;
+	private TextView followTextView;
+	private TextView unfollowTextView;
 
 	public NewsfeedArrayAdapter(Activity context, ArrayList<RecipeDetails> details) {
 		super(context, 0, details);
@@ -73,6 +79,8 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 		initUserNameTextView(recipeUser, recipeUserBasicData);
 
 		ownerTextView = (TextView) rowView.findViewById(R.id.owner_name);
+
+		initFollowAndUnfollowButtons(recipeUserBasicData);
 
 		initOwnerTextView(recipeUserBasicData);
 
@@ -112,6 +120,76 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 		return rowView;
 
 	}
+
+	private void initFollowAndUnfollowButtons(final RecipeDetails details) {
+		followTextView = (TextView)rowView.findViewById(R.id.follow_user);
+		followTextView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				followUser(details);
+			}
+		});
+		unfollowTextView = (TextView) rowView.findViewById(R.id.unfollow_user);
+		unfollowTextView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				unfollowUser(details);
+			}
+		});
+		if(details.isFeaturedRecipe()) {
+			followTextView.setVisibility(View.VISIBLE);
+			unfollowTextView.setVisibility(View.GONE);
+		} else if(EntityUtils.isLoggedInUser(details.getUserId(), context)) {
+			followTextView.setVisibility(View.GONE);
+			unfollowTextView.setVisibility(View.GONE);
+		} else {
+				if(UserFollowingContainer.getInstance().followingInitialized()) {
+					User user = createUserObject(details);
+					if(UserFollowingContainer.getInstance().isFollowing(user)) {
+						followTextView.setVisibility(View.GONE);
+						unfollowTextView.setVisibility(View.VISIBLE);
+					} else {
+						followTextView.setVisibility(View.VISIBLE);
+						unfollowTextView.setVisibility(View.GONE);
+					}
+				} else {
+					followTextView.setVisibility(View.GONE);
+					unfollowTextView.setVisibility(View.VISIBLE);
+				}
+			}
+		}
+
+
+	private void followUser(RecipeDetails recipeDetails) {
+		User user = createUserObject(recipeDetails);
+		UserFollowingContainer.getInstance().follow(user);
+		followTextView.setVisibility(View.GONE);
+		unfollowTextView.setVisibility(View.VISIBLE);
+		AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.PRESS_FOLLOW_USER);
+		notifyDataSetChanged();
+
+	}
+
+	@NonNull
+	private User createUserObject(RecipeDetails recipeDetails) {
+		User user = new User();
+		user.setUserDisplayName(recipeDetails.getUserDisplayName());
+		String userId = recipeDetails.getUserObjectId();
+		user.set_id(userId);
+		String username = recipeDetails.getUserId();
+		user.setUsername(username);
+		return user;
+	}
+
+	private void unfollowUser(RecipeDetails recipeDetails) {
+		User user = createUserObject(recipeDetails);
+		UserFollowingContainer.getInstance().unFollow(user);
+		followTextView.setVisibility(View.VISIBLE);
+		unfollowTextView.setVisibility(View.GONE);
+		AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.PRESS_UNFOLLOW_USER);
+		notifyDataSetChanged();
+	}
+
 
 	private void initLinkAndMainPictureVisibility(final int position, final RecipeDetails recipeUserBasicData) {
 		if (!recipeUserBasicData.getRecipeType().equals(RecipeType.LINK)) {
@@ -342,6 +420,13 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 		} else {
 			getLinkDetailsProgress.setVisibility(View.GONE);
 			recipeMainPicture.setVisibility(View.VISIBLE);
+			Drawable defaultDrawable = null;
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+				defaultDrawable = context.getDrawable(R.drawable.default_recipe_image);
+				recipeMainPicture.setImageDrawable(defaultDrawable);
+			} else {
+				recipeMainPicture.setImageAlpha(R.drawable.default_recipe_image);
+			}
 		}
 		initLinkOwnerName(recipeBasicData);
 
