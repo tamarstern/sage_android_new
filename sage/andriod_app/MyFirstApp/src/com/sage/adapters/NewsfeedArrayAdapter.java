@@ -3,7 +3,6 @@ package com.sage.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +20,7 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.sage.activities.R;
 import com.sage.activity.interfaces.IClosePopupCommentListener;
-import com.sage.application.GoogleAnalyticsApplication;
 import com.sage.application.RecipeUrlDataContainer;
-import com.sage.application.TCImageLoader;
-import com.sage.constants.ImageType;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
 import com.sage.listeners.AddCommentsClickListener;
@@ -346,8 +342,6 @@ public class NewsfeedArrayAdapter extends ArrayAdapter<RecipeDetails> implements
 		} else {
 			getLinkDetailsProgress.setVisibility(View.GONE);
 			recipeMainPicture.setVisibility(View.VISIBLE);
-			Drawable defaultDrawable = context.getDrawable(R.drawable.default_recipe_image);
-			recipeMainPicture.setImageDrawable(defaultDrawable);
 		}
 		initLinkOwnerName(recipeBasicData);
 
