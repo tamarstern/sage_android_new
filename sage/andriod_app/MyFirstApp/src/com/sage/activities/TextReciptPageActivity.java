@@ -38,6 +38,7 @@ public class TextReciptPageActivity extends AppCompatActivity implements IExitWi
 		setContentView(R.layout.activity_recipe_text_page);
 
 		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
+		ActivityUtils.forceInitFollowingList(this);
 
 		Intent i = getIntent();
 

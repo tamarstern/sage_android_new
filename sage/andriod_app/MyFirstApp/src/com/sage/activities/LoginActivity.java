@@ -181,8 +181,8 @@ public class LoginActivity extends Activity {
 		});
 	}
 
-	private void continueToNextActivity(boolean signedTerms) {
-
+	private void initFollowingAndContinueToNextActivity(boolean signedTerms) {
+		ActivityUtils.forceInitFollowingList(this);
 		if(signedTerms) {
 			Intent intent = new Intent(getApplicationContext(), NewsfeedActivity.class);
 			intent.putExtra(EntityDataTransferConstants.AFTER_LOGIN, true);
@@ -261,7 +261,7 @@ public class LoginActivity extends Activity {
 					LoginUtility.signatureSentToServer(getApplicationContext());
 				}
 				saveAuthDetails();
-				continueToNextActivity(signedTerms);
+				initFollowingAndContinueToNextActivity(signedTerms);
 			} else {
 				Toast.makeText(getApplicationContext(), "Login failed. Incorrect username or password",
 						Toast.LENGTH_LONG).show();
@@ -321,9 +321,8 @@ public class LoginActivity extends Activity {
 			if (loginSuccess) {
 				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 				String username = preferences.getString(ActivityConstants.USER_NAME, null);
-
 				boolean signedTerms = EntityUtils.signedTerms(getApplicationContext(),username);
-				continueToNextActivity(signedTerms);
+				initFollowingAndContinueToNextActivity(signedTerms);
 			} else {
 				Toast.makeText(getApplicationContext(), "Login failed. Incorrect username or password",
 						Toast.LENGTH_LONG).show();

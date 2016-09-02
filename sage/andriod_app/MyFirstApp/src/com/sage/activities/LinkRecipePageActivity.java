@@ -66,7 +66,7 @@ public class LinkRecipePageActivity extends AppCompatActivity implements IExitWi
 		setContentView(R.layout.activity_link_recipe_page);
 
 		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
-
+		ActivityUtils.forceInitFollowingList(this);
 
 		Fragment fragment = getFragmentManager().findFragmentById(R.id.recipe_title_panel);
 		if (fragment instanceof IInitLinkDetailsListener) {

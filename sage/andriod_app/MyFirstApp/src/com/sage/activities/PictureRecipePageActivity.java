@@ -70,6 +70,7 @@ public class PictureRecipePageActivity extends AppCompatActivity implements IExi
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_picture_recipe_page);
 		BackgroundServicesScheduler.scheduleAlarmBackgroundServices(this);
+		ActivityUtils.forceInitFollowingList(this);
 
 		Intent i = getIntent();
 

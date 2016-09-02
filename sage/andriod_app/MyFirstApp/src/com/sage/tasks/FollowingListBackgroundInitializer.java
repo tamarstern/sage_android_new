@@ -3,6 +3,7 @@ package com.sage.tasks;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import com.google.gson.JsonElement;
 import com.sage.application.UserFollowingContainer;
@@ -25,6 +26,10 @@ public class FollowingListBackgroundInitializer {
         String loggedInUserObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 
         String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
+
+        if(TextUtils.isEmpty(loggedInUserObjectId) || TextUtils.isEmpty(token)) {
+            return;
+        }
 
         String[] params = new String[] { token, loggedInUserObjectId, Integer.toString(0) };
 
