@@ -90,6 +90,8 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 		Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 		setSupportActionBar(myToolbar);
 		getSupportActionBar().setTitle(R.string.who_i_follow_title);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
 	}
 
 	@Override
@@ -104,8 +106,10 @@ public class DisplayFollowingActivity extends AppCompatActivity {
 			Intent intent = new Intent(this, SearchMyFollowActivity.class);
 			startActivity(intent);
 			return true;
+		} else if(item.getItemId() ==  android.R.id.home) {
+			onBackPressed();
+			return true;
 		} else {
-
 			return super.onOptionsItemSelected(item);
 
 		}

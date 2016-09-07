@@ -62,6 +62,8 @@ public class DisplayFollowedByActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle(R.string.followed_by_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -76,8 +78,10 @@ public class DisplayFollowedByActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SearchFollowedByActivity.class);
             startActivity(intent);
             return true;
-        } else {
-
+        }  else if(item.getItemId() ==  android.R.id.home) {
+            onBackPressed();
+            return true;
+        }else {
             return super.onOptionsItemSelected(item);
 
         }
