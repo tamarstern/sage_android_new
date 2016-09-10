@@ -7,8 +7,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -46,17 +48,21 @@ public class LoginActivity extends Activity {
 		//callbackManager = CallbackManager.Factory.create();
 		setContentView(R.layout.activity_login);
 
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		String token = sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
 
-		String token = getDirectAuthenticationToken();
+		String userName = sharedPref.getString(ActivityConstants.USER_NAME, null);
+		String password = sharedPref.getString(ActivityConstants.PASSWORD, null);
+
 		if (!TextUtils.isEmpty(token)) {
 			initLoginFormVisibility(View.GONE);
 			AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.ENTER_APP_WHEN_ALREADY_LOGGED_IN);
 			new AuthenticateWithTokenTask(this).execute(token);
-
-
+		} else if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
+			initLoginFormVisibility(View.GONE);
+			new LoginTask(this, userName, password).execute();;
 		} else {
 			initLoginFormUi();
-
 		}
 	}
 
@@ -66,6 +72,16 @@ public class LoginActivity extends Activity {
 
 		usernameEditText = (EditText) findViewById(R.id.email);
 		passwordEditText = (EditText) findViewById(R.id.password);
+		passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					validateAndPerformLogin();
+					return true;
+				}
+				return false;
+			}
+		});
 
 		initFacebookLoginButton();
 
@@ -78,10 +94,6 @@ public class LoginActivity extends Activity {
 
 
 
-	private String getDirectAuthenticationToken() {
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		return sharedPref.getString(ActivityConstants.AUTH_TOKEN, null);
-	}
 
 	private void initFacebookLoginButton() {
 		
@@ -163,22 +175,23 @@ public class LoginActivity extends Activity {
 
 	private void initDirectAuthenticationLoginButton() {
 		Button button = (Button) findViewById(R.id.email_sign_in_button);
-
-		final Activity activity = this;
 		button.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
-				LoginValidator validator = new LoginValidator(getApplicationContext());
-				boolean isValidLogin = validator.validateUserNamePassword(usernameEditText, passwordEditText);
-				if (isValidLogin) {
-					AnalyticsUtils.sendAnalyticsTrackingEvent(activity, AnalyticsUtils.PRESS_LOGIN_BUTTON);
-					new LoginTask(activity, usernameEditText.getEditableText().toString(), passwordEditText.getEditableText().toString()).execute();
-
-				}
+				validateAndPerformLogin();
 			}
 		});
+	}
+
+	private void validateAndPerformLogin() {
+		LoginValidator validator = new LoginValidator(getApplicationContext());
+		boolean isValidLogin = validator.validateUserNamePassword(usernameEditText, passwordEditText);
+		if (isValidLogin) {
+            AnalyticsUtils.sendAnalyticsTrackingEvent(this, AnalyticsUtils.PRESS_LOGIN_BUTTON);
+            new LoginTask(this, usernameEditText.getEditableText().toString(),
+                    passwordEditText.getEditableText().toString()).execute();
+
+        }
 	}
 
 	private void initFollowingAndContinueToNextActivity(boolean signedTerms) {
@@ -270,7 +283,7 @@ public class LoginActivity extends Activity {
 
 		private void saveAuthDetails() {
 			LoginUtility.saveAuthDetails(getApplicationContext(), token, userDisplayName,
-					usernameEditText.getText().toString(), passwordEditText.getText().toString(), userObjectId);
+					username, password, userObjectId);
 		}
 
 	}

@@ -88,7 +88,7 @@ public class BackgroundServicesScheduler {
         final PendingIntent signTermsPIntent = PendingIntent.getBroadcast(activity, SignTermsReceiver.REQUEST_CODE,
                 signTermsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-                30*60*1000, signTermsPIntent);
+                1*60*1000, signTermsPIntent);
 
         application.setBackgroundServicesScheduled(true);
 
