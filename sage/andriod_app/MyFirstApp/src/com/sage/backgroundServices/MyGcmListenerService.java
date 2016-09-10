@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.activities.LinkRecipePageActivity;
+import com.sage.activities.NewsfeedActivity;
 import com.sage.activities.PictureRecipePageActivity;
 import com.sage.activities.ProfilePageActivity;
 import com.sage.activities.R;
@@ -42,7 +43,8 @@ public class MyGcmListenerService extends GcmListenerService {
         removeFollower,
         addFollower,
         addComment,
-        addLike
+        addLike,
+        onDemandMessage
     }
 
     private static final String TAG = "MyGcmListenerService";
@@ -65,29 +67,53 @@ public class MyGcmListenerService extends GcmListenerService {
         }
         if (messageType.equals(MessageType.addComment.toString())) {
             Log.i("addCommentGcm", "receive new gcm message ");
-            String recipe = data.getString("recipe");
-            RecipeDetails details = getRecipeDetailsFromMessage(recipe);
-            String userStr = data.getString("userWhoAddComment");
-            User user = getUserFromMessage(userStr);
-            if(EntityUtils.isLoggedInUser(user.getUsername(), this)) {
-                return;
-            }
-            if(user != null && recipe != null) {
-                sendCommentNotification(details, user);
-            }
+            handleAddCommentMessage(data);
         }
         if (messageType.equals(MessageType.addLike.toString())) {
             Log.i("addLikeGcm", "receive new gcm message ");
-            String recipe = data.getString("recipe");
-            RecipeDetails details = getRecipeDetailsFromMessage(recipe);
-            String userStr = data.getString("userWhoAddLike");
-            User user = getUserFromMessage(userStr);
-            if(EntityUtils.isLoggedInUser(user.getUsername(), this)) {
-                return;
-            }
-            if(user != null && recipe != null) {
-                sendLikeNotification(details, user);
-            }
+            handleAddLikeMessage(data);
+        }
+        if(messageType.equals(MessageType.onDemandMessage.toString())) {
+            Log.i("onDemandMessage", "receive new gcm message ");
+            handleOnDemandMessage(data);
+        }
+    }
+
+    private void handleOnDemandMessage(Bundle data) {
+        String message = data.getString("onDemandMessage");
+        if(!TextUtils.isEmpty(message)) {
+
+            NotificationCompat.Builder mBuilder = getNotificationBuilder(message);
+            Intent intent = new Intent(this, NewsfeedActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addParentStack(NewsfeedActivity.class);
+            drawNotification(mBuilder, intent, stackBuilder);
+        }
+    }
+
+    private void handleAddLikeMessage(Bundle data) {
+        String recipe = data.getString("recipe");
+        RecipeDetails details = getRecipeDetailsFromMessage(recipe);
+        String userStr = data.getString("userWhoAddLike");
+        User user = getUserFromMessage(userStr);
+        if(EntityUtils.isLoggedInUser(user.getUsername(), this)) {
+            return;
+        }
+        if(user != null && recipe != null) {
+            sendLikeNotification(details, user);
+        }
+    }
+
+    private void handleAddCommentMessage(Bundle data) {
+        String recipe = data.getString("recipe");
+        RecipeDetails details = getRecipeDetailsFromMessage(recipe);
+        String userStr = data.getString("userWhoAddComment");
+        User user = getUserFromMessage(userStr);
+        if(EntityUtils.isLoggedInUser(user.getUsername(), this)) {
+            return;
+        }
+        if(user != null && recipe != null) {
+            sendCommentNotification(details, user);
         }
     }
 
@@ -105,14 +131,7 @@ public class MyGcmListenerService extends GcmListenerService {
     }
 
     private void buildNotificationForProfilePage(User user, String notificationDescriptionToShow) {
-        String notificationTitle = getApplicationContext().getResources().getString(R.string.push_notifications_title);
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.sage_dashboard_icon)
-                        .setContentTitle(notificationTitle)
-                        .setContentText(notificationDescriptionToShow).
-                        setAutoCancel(true);
+        NotificationCompat.Builder mBuilder = getNotificationBuilder(notificationDescriptionToShow);
 
         Intent resultIntent = getProfilePageIntent(user);
 
@@ -124,15 +143,19 @@ public class MyGcmListenerService extends GcmListenerService {
 
     }
 
-    private void buildNotificationForRecipePage(RecipeDetails recipe, String notificationDescriptionToShow) {
-
+    private NotificationCompat.Builder getNotificationBuilder(String notificationDescriptionToShow) {
         String notificationTitle = getApplicationContext().getResources().getString(R.string.push_notifications_title);
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.sage_dashboard_icon)
-                        .setContentTitle(notificationTitle)
-                        .setContentText(notificationDescriptionToShow).setAutoCancel(true);
+        return new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.sage_dashboard_icon)
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationDescriptionToShow).
+                setAutoCancel(true);
+    }
+
+    private void buildNotificationForRecipePage(RecipeDetails recipe, String notificationDescriptionToShow) {
+
+        NotificationCompat.Builder mBuilder = getNotificationBuilder(notificationDescriptionToShow);
 
         Intent resultIntent = ActivityUtils.getRecipeIntent(recipe, this);
 
