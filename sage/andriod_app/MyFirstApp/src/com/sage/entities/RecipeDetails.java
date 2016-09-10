@@ -89,6 +89,7 @@ public class RecipeDetails implements Serializable, Comparable<RecipeDetails>, C
 			details.recipeType = this.recipeType;
 			details.preparationComments = this.preparationComments;
 			details.header = this.header;
+			this.published = true;
 			return details;
 		} catch (CloneNotSupportedException e) {
 			Log.e("failCloneDetails", "failed to clone details", e);
@@ -101,9 +102,8 @@ public class RecipeDetails implements Serializable, Comparable<RecipeDetails>, C
 
 	}
 
-	public RecipeDetails(String title, String comments) {
-		this.header = title;
-		this.preparationComments = comments;
+	public RecipeDetails(boolean published) {
+		this.published=published;
 	}
 
 	public String getHeader() {

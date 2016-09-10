@@ -20,7 +20,6 @@ import android.widget.ProgressBar;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.entities.RecipeType;
-import com.sage.activities.R;
 
 public class AddRecipeAsLinkActivity extends AppCompatActivity {
 
@@ -137,7 +136,7 @@ public class AddRecipeAsLinkActivity extends AppCompatActivity {
 	private void saveRecipeAsLink() {
 		String url = holder.webView.getUrl();
 		Context applicationContext = getApplicationContext();
-		RecipeDetails recipeLinkDetails = new RecipeDetails();
+		RecipeDetails recipeLinkDetails = new RecipeDetails(true);
 		recipeLinkDetails.setRecipeType(RecipeType.LINK);
 		recipeLinkDetails.setUrl(url);
 		Intent intent = new Intent(applicationContext, LinkRecipePageActivity.class)

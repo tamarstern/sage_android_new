@@ -59,7 +59,7 @@ public class AddRecipePopupHandler {
 			@Override
 			public void onClick(View v) {
 				AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.CLICK_ADD_LINK_RECIPE);
-				RecipeDetails recipeDetails = new RecipeDetails();
+				RecipeDetails recipeDetails = new RecipeDetails(true);
 				recipeDetails.setRecipeType(RecipeType.LINK);
 				Intent intent = new Intent(context, AddRecipeAsLinkActivity.class)
 						.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, recipeDetails)
@@ -76,7 +76,7 @@ public class AddRecipePopupHandler {
 
 			@Override
 			public void onClick(View v) {
-				RecipeDetails textRecipe = new RecipeDetails();
+				RecipeDetails textRecipe = new RecipeDetails(true);
 				textRecipe.setRecipeType(RecipeType.TEXT);
 				AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.CLICK_ADD_TEXT_RECIPE);
 				Intent intent = new Intent(context, TextReciptPageActivity.class)
@@ -95,7 +95,7 @@ public class AddRecipePopupHandler {
 			@Override
 			public void onClick(View v) {
 				AnalyticsUtils.sendAnalyticsTrackingEvent(context, AnalyticsUtils.CLICK_ADD_PICTURE_RECIPE);
-				RecipeDetails pictureRecipe = new RecipeDetails();
+				RecipeDetails pictureRecipe = new RecipeDetails(true);
 				pictureRecipe.setRecipeType(RecipeType.PICTURE);
 				Intent intent = new Intent(context, PictureRecipePageActivity.class)
 						.putExtra(EntityDataTransferConstants.RECIPE_DETAILS_DATA_TRANSFER, pictureRecipe)
