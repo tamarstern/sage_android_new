@@ -3,12 +3,12 @@ package com.sage.fragments;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 
 import com.sage.activities.R;
 import com.sage.entities.EntityDataTransferConstants;
@@ -19,7 +19,7 @@ public class RecipePublishedFragment extends Fragment {
 
 	private RecipeDetails receiptDetails;
 
-	private Switch publishedSwitch;
+	private SwitchCompat publishedSwitch;
 
 
 
@@ -39,7 +39,7 @@ public class RecipePublishedFragment extends Fragment {
 			return recipeDetailsPanel;
 		}
 
-		publishedSwitch = (Switch)recipeDetailsPanel.findViewById(R.id.publish_switch);
+		publishedSwitch = (SwitchCompat)recipeDetailsPanel.findViewById(R.id.publish_switch);
 		publishedSwitch.setChecked(receiptDetails.isPublished());
 		publishedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
