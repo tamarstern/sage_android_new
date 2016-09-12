@@ -212,10 +212,10 @@ public class MyGcmListenerService extends GcmListenerService {
 
     private void handleFollowMessage(Bundle data) {
         increaseFollowByCount(data);
-        drawNotificationMessage(data);
+        drawUserNotificationMessage(data);
     }
 
-    private void drawNotificationMessage(Bundle data) {
+    private void drawUserNotificationMessage(Bundle data) {
         String baseUserStr = data.getString("baseUser");
         if(TextUtils.isEmpty(baseUserStr)) {
             return;

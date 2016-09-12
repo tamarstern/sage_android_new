@@ -72,10 +72,12 @@ public class LoginActivity extends Activity {
 
 		usernameEditText = (EditText) findViewById(R.id.email);
 		passwordEditText = (EditText) findViewById(R.id.password);
+		final Activity activity = this;
 		passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					ActivityUtils.hideSoftKeyboard(activity);
 					validateAndPerformLogin();
 					return true;
 				}

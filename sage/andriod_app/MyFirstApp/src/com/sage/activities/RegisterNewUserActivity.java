@@ -34,10 +34,12 @@ public class RegisterNewUserActivity extends Activity {
 		usernameEditText = (EditText) findViewById(R.id.email_register);
 		passwordEditText = (EditText) findViewById(R.id.password_register);
 		userDisplayName = (EditText) findViewById(R.id.user_name_register);
+		final Activity activity = this;
 		passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					ActivityUtils.hideSoftKeyboard(activity);
 					performRegisterNewUser();
 					return true;
 				}
