@@ -109,7 +109,7 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 	private void initEditCategoryHandler() {
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		ViewGroup view = (ViewGroup) getWindow().getDecorView();
-		handler = new EditCategoryPopupHandler(inflater, view, null, this);
+		handler = new EditCategoryPopupHandler(inflater, view, this);
 		handler.registerListener(this);
 	}
 
@@ -122,7 +122,7 @@ public class ActivityCategoriesPage extends AppCompatActivity implements ICatego
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_new_category) {
-			handler.handleEditCategory();
+			handler.handleEditCategory(new RecipeCategory());
 			return true;
 		} else if (item.getItemId() == R.id.action_search_recipes) {
 			Intent intent = new Intent(this, SearchMyRecipesActivity.class);

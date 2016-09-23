@@ -6,16 +6,20 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -50,16 +54,15 @@ public class EditCategoryPopupHandler {
 
 	private Set<ICategoryEditListener> listeners = new HashSet<ICategoryEditListener>();
 
-	public EditCategoryPopupHandler(LayoutInflater inflater, ViewGroup container, RecipeCategory category,
-			Activity context) {
+	public EditCategoryPopupHandler(LayoutInflater inflater, ViewGroup container, Activity context) {
 		this.inflater = inflater;
 		this.container = container;
-		this.category = category;
 		this.context = context;
 
 	}
 
-	public void handleEditCategory() {
+	public void handleEditCategory(RecipeCategory category) {
+		this.category = category;
 		View popupView = inflater.inflate(R.layout.edit_category_popup, container, false);
 		Rect displayRectangle = new Rect();
 		Window window = context.getWindow();
@@ -71,9 +74,23 @@ public class EditCategoryPopupHandler {
 		ActivityUtils.InitPopupWindowWithEventHandler(popupWindow, context);
 		this.categoryName = (EditText) popupView.findViewById(R.id.category_name_editable);
 
-		final RecipeCategory currentCategory = getCategoryToEdit();
+		categoryName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					ActivityUtils.hideSoftKeyboard(context);
+					saveCategory(getCategory(), popupWindow);
+					return true;
+				}
+				return false;
+			}
+		});
 
-		initSaveButton(popupView, popupWindow, currentCategory);
+		if(!TextUtils.isEmpty(category.getHeader())) {
+			categoryName.setText(category.getHeader());
+		}
+
+		initSaveButton(popupView, popupWindow, category);
 
 		initCancelSaveButton(popupView, popupWindow);
 
@@ -91,14 +108,14 @@ public class EditCategoryPopupHandler {
 
 				String userName = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
 
-				Object[] params = new Object[] { category.get_id(), token, userName };
+				Object[] params = new Object[] { getCategory().get_id(), token, userName };
 
 				new DeleteCategoryTask(context, popupWindow).execute(params);
 
 			}
 		});
 		
-		if(EntityUtils.isNewCategory(category)) {
+		if(EntityUtils.isNewCategory(getCategory())) {
 			deleteCategory.setVisibility(View.GONE);
 		}
 
@@ -109,11 +126,16 @@ public class EditCategoryPopupHandler {
 		saveCategory.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View popupView) {
-				currentCategory.setHeader(categoryName.getText().toString());
-				SaveCategory(currentCategory, popupWindow);
+				ActivityUtils.hideSoftKeyboard(context);
+				saveCategory(currentCategory, popupWindow);
 			}
 
 		});
+	}
+
+	private void saveCategory(RecipeCategory currentCategory, PopupWindow popupWindow) {
+		currentCategory.setHeader(categoryName.getText().toString());
+		SaveCategory(currentCategory, popupWindow);
 	}
 
 	private void initCancelSaveButton(View popupView, final PopupWindow popupWindow) {
@@ -126,17 +148,6 @@ public class EditCategoryPopupHandler {
 		});
 	}
 
-	private RecipeCategory getCategoryToEdit() {
-		final RecipeCategory currentCategory;
-		if (category != null) {
-			currentCategory = category;
-			categoryName.setText(currentCategory.getHeader());
-		} else {
-			currentCategory = new RecipeCategory();
-
-		}
-		return currentCategory;
-	}
 
 	private void SaveCategory(RecipeCategory category, PopupWindow popupWindow) {
 		
@@ -174,6 +185,10 @@ public class EditCategoryPopupHandler {
 	public void unRegisterListener(ICategoryEditListener listener) {
 		listeners.remove(listener);
 
+	}
+
+	public RecipeCategory getCategory() {
+		return category;
 	}
 
 	private class SaveCategoryTask extends AsyncTask<Object, Void, JsonElement> {

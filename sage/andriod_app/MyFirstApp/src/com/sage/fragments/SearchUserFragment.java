@@ -1,4 +1,4 @@
-package com.sage.activities;
+package com.sage.fragments;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
+import com.sage.activities.ProgressDialogContainer;
+import com.sage.activities.R;
 import com.sage.adapters.UsersArrayAdapter;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.User;

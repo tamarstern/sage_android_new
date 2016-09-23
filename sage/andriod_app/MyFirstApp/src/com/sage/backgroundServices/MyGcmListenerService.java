@@ -16,8 +16,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sage.activities.LinkRecipePageActivity;
 import com.sage.activities.NewsfeedActivity;
+import com.sage.activities.PersonalPageActivity;
 import com.sage.activities.PictureRecipePageActivity;
-import com.sage.activities.ProfilePageActivity;
 import com.sage.activities.R;
 import com.sage.activities.TextReciptPageActivity;
 import com.sage.application.MyProfileRecipiesContainer;
@@ -137,7 +137,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
-        stackBuilder.addParentStack(ProfilePageActivity.class);
+        stackBuilder.addParentStack(PersonalPageActivity.class);
 
         drawNotification(mBuilder, resultIntent, stackBuilder);
 
@@ -244,7 +244,7 @@ public class MyGcmListenerService extends GcmListenerService {
     }
 
     private Intent getProfilePageIntent(User user) {
-        Intent intent = new Intent(this, ProfilePageActivity.class)
+        Intent intent = new Intent(this, PersonalPageActivity.class)
                 .putExtra(EntityDataTransferConstants.USER_DISPLAY_NAME_DATA_TRANSFER, user.getUserDisplayName())
                 .putExtra(EntityDataTransferConstants.USER_NAME_DATA_TRANSFER, user.getUsername())
                 .putExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER, user.get_id())

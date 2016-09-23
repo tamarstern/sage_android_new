@@ -18,7 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sage.adapters.GeneralSearchPageAdapter;
 import com.sage.backgroundServices.BackgroundServicesScheduler;
+import com.sage.fragments.ISearchableFragment;
 import com.sage.utils.ActivityUtils;
 
 public class TabbedSearchActivity extends AppCompatActivity {
@@ -47,7 +49,7 @@ public class TabbedSearchActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
-        final PagerAdapter pageAdapter = new PageAdapter
+        final PagerAdapter pageAdapter = new GeneralSearchPageAdapter
                 (getSupportFragmentManager());
         mViewPager.setAdapter(pageAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -74,7 +76,8 @@ public class TabbedSearchActivity extends AppCompatActivity {
     }
 
     private void performSearch(int position) {
-        PageAdapter adapter = (PageAdapter)mViewPager.getAdapter();
+        ActivityUtils.hideSoftKeyboard(this);
+        GeneralSearchPageAdapter adapter = (GeneralSearchPageAdapter)mViewPager.getAdapter();
         Fragment fragment = adapter.getItem(position);
         if(fragment instanceof ISearchableFragment) {
             Editable editableText = searchEditText.getEditableText();
@@ -108,7 +111,6 @@ public class TabbedSearchActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    ActivityUtils.hideSoftKeyboard(activity);
                     int position = tabLayout.getSelectedTabPosition();
                     performSearch(position);
                     return true;

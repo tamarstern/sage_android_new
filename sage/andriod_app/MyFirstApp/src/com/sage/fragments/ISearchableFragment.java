@@ -1,4 +1,4 @@
-package com.sage.activities;
+package com.sage.fragments;
 
 /**
  * Created by tamar.twena on 8/27/2016.

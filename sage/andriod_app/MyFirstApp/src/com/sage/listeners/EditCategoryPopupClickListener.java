@@ -12,16 +12,17 @@ import com.sage.entities.RecipeCategory;
 public class EditCategoryPopupClickListener implements OnClickListener {
 
 	private EditCategoryPopupHandler popupHandler;
-
+	private RecipeCategory category;
 	public EditCategoryPopupClickListener(LayoutInflater inflater, ViewGroup container, RecipeCategory category,
 			Activity context) {
-		popupHandler = new EditCategoryPopupHandler(inflater, container, category, context);
+		this.category = category;
+		popupHandler = new EditCategoryPopupHandler(inflater, container, context);
 
 	}
 
 	@Override
 	public void onClick(View v) {
-		popupHandler.handleEditCategory();
+		popupHandler.handleEditCategory(category);
 	}
 
 	public void notifySaveCategory(RecipeCategory category) {

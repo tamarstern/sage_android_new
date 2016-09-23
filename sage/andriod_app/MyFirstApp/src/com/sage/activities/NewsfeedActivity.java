@@ -257,9 +257,7 @@ public class NewsfeedActivity extends AppCompatActivity {
 			startActivity(searchIntent);
 			return true;
 		} else {
-
 			return super.onOptionsItemSelected(item);
-
 		}
 	}
 

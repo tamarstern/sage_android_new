@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +16,7 @@ import android.widget.ImageButton;
 import com.sage.activities.ActivityCategoriesPage;
 import com.sage.activities.NewsfeedActivity;
 import com.sage.activities.R;
+import com.sage.constants.ActivityConstants;
 import com.sage.entities.EntityDataTransferConstants;
 import com.sage.entities.RecipeDetails;
 import com.sage.listeners.AddRecipePopupHandler;
@@ -135,7 +138,12 @@ public class ToolbarFragment extends Fragment {
 	}
 
 	private void openProfilePage(final Activity applicationContext, boolean newRecipeUnsaved) {
-		ProfilePageHandler handler = new ProfilePageHandler(applicationContext,null, null, null, true, newRecipeUnsaved );
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+		String loggedInUserObjectId = sharedPref.getString(ActivityConstants.USER_OBJECT_ID, null);
+		String loggedInUserId = sharedPref.getString(ActivityConstants.USER_NAME, null);
+		String loggedInUserDisplayName = sharedPref.getString(ActivityConstants.USER_DISPLAY_NAME, null);
+		ProfilePageHandler handler = new ProfilePageHandler(applicationContext,loggedInUserDisplayName, loggedInUserId,
+				loggedInUserObjectId, true, newRecipeUnsaved );
 		handler.HandleOpenProfilePage();
 	}
 

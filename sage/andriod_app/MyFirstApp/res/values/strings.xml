@@ -121,7 +121,7 @@
     <string name="search_my_follow_hint">Search Users I Follow</string>
     <string name="search_followed_by_hint">Search Users Who Follow Me</string>
     <string name="search_recipes_hint">Search</string>
-    <string name="search_users_hint">Search</string>
+    <string name="search_users_hint">Enter search text here</string>
     <string name="search_recipe_box_hint">Search Recipe Box</string>
     <string name="title_activity_display_who_ifollow">DisplayWhoIFollowActivity</string>
     <string name="title_activity_search_user">SearchUserActivity</string>
@@ -200,6 +200,10 @@ Last updated May 20, 2016
     <string name="need_permissions_to_insert_picture">Until required permissions are approved, you cannot add images to Sage Recipe Box.</string>
     <string name="title_activity_tabbed_search">TabbedSearchActivity</string>
     <string name="failed_register_new_user">Failed to register new user : email already exist. Please select a different email and retry.</string>
+    <string name="profile_recipes_lbl">Recipes</string>
+    <string name="profile_following_lbl">Following</string>
+    <string name="profile_followed_by_lbl">Followed By</string>
+    <string name="title_activity_search_my_profile">SearchMyProfileActivity</string>
 
 
 </resources>

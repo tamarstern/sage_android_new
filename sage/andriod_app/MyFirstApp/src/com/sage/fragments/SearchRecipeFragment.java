@@ -1,4 +1,4 @@
-package com.sage.activities;
+package com.sage.fragments;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import com.sage.activities.R;
 import com.sage.adapters.NewsfeedArrayAdapter;
 import com.sage.constants.ActivityConstants;
 import com.sage.entities.RecipeDetails;
@@ -30,7 +31,7 @@ import java.util.Iterator;
 /**
  * Created by tamar.twena on 8/27/2016.
  */
-public class SearchRecipeFragment extends Fragment implements ISearchableFragment{
+public class SearchRecipeFragment extends Fragment implements ISearchableFragment {
 
     ListView listView;
 

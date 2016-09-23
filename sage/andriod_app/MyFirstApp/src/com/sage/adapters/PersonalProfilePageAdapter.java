@@ -1,26 +1,29 @@
-package com.sage.activities;
+package com.sage.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.view.ViewGroup;
+
+import com.sage.fragments.FollowingFragment;
+import com.sage.fragments.PersonalProfilePageRecipesFragment;
 
 import java.util.HashMap;
 
 /**
  * Created by tamar.twena on 8/27/2016.
  */
-public class PageAdapter extends FragmentStatePagerAdapter {
+public class PersonalProfilePageAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs = 2;
 
     private HashMap<Integer, Fragment> fragmentMap = new HashMap<Integer, Fragment>();
 
-    public PageAdapter(FragmentManager fm) {
+    public PersonalProfilePageAdapter(FragmentManager fm) {
         super(fm);
-        SearchRecipeFragment searchRecipeFragment = new SearchRecipeFragment();
-        fragmentMap.put(0, searchRecipeFragment);
-        SearchUserFragment searchUserFragment = new SearchUserFragment();
-        fragmentMap.put(1, searchUserFragment);
+        PersonalProfilePageRecipesFragment recipeFragment = new PersonalProfilePageRecipesFragment();
+        fragmentMap.put(0, recipeFragment);
+        FollowingFragment followingFragment = new FollowingFragment();
+        fragmentMap.put(1, followingFragment);
+
 
     }
 
@@ -37,17 +40,19 @@ public class PageAdapter extends FragmentStatePagerAdapter {
         }
     }
 
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        super.destroyItem(container, position, object);
-        fragmentMap.remove(position);
+    public void onStop() {
+        fragmentMap.get(0).onStop();
+        fragmentMap.get(1).onStop();
     }
+
+
 
     @Override
     public int getCount() {
         return mNumOfTabs;
     }
+
+
 
 
 

@@ -7,10 +7,10 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.sage.activities.ProfilePageActivity;
-import com.sage.activities.ProgressDialogContainer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sage.activities.PersonalPageActivity;
+import com.sage.activities.ProgressDialogContainer;
 import com.sage.application.MyProfileRecipiesContainer;
 import com.sage.application.UserFollowingContainer;
 import com.sage.constants.ActivityConstants;
@@ -105,7 +105,7 @@ public class ProfilePageHandler {
     }
 
     private void openProfilePageActivity(String followByCount, boolean isFollowing) {
-        Intent intent = new Intent(context, ProfilePageActivity.class)
+        Intent intent = new Intent(context, PersonalPageActivity.class)
                 .putExtra(EntityDataTransferConstants.USER_DISPLAY_NAME_DATA_TRANSFER, userDisplayName)
                 .putExtra(EntityDataTransferConstants.USER_NAME_DATA_TRANSFER, userId)
                 .putExtra(EntityDataTransferConstants.USER_OBJECT_ID_DATA_TRANSFER, userObjectId)
